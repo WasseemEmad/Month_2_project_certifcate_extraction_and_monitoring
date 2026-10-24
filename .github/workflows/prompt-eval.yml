@@ -1,0 +1,107 @@
+name: ISO Prompt & Extraction Regression Check
+
+on:
+  push:
+    branches: [main, master]
+  pull_request:
+    branches: [main, master]
+  workflow_dispatch:
+    inputs:
+      model_name:
+        description: "Gemini Model to evaluate"
+        required: false
+        default: "gemini-2.5-flash-lite"
+      workers:
+        description: "Number of parallel worker threads"
+        required: false
+        default: "8"
+
+jobs:
+  regression-eval:
+    name: Golden Dataset Regression (Mode 2)
+    runs-on: ubuntu-latest
+    env:
+      GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY || secrets.GEMINI_API_KEYS }}
+      RUN_MODE: "2"
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Set up Python 3.11
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+          cache: pip
+
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install -r requirements.txt
+
+      - name: Setup Gemini API Key
+        run: |
+          if [ -z "$GEMINI_API_KEY" ]; then
+            echo "::error::GEMINI_API_KEY secret is not set in repository settings!"
+            exit 1
+          fi
+          printf '%s\n' "$GEMINI_API_KEY" > gemini.txt
+          chmod 600 gemini.txt
+
+      - name: Run Golden Dataset Validation (Mode 2)
+        env:
+          MODEL_NAME: ${{ github.event.inputs.model_name || 'gemini-2.5-flash-lite' }}
+          WORKERS: ${{ github.event.inputs.workers || '4' }}
+        run: |
+          python main.py 2
+
+      - name: Generate GitHub Actions Step Summary
+        if: always()
+        run: |
+          python -c "
+          import json, os
+          from pathlib import Path
+
+          summary_path = Path('dataset_validation/validation_summary.json')
+          step_summary = os.environ.get('GITHUB_STEP_SUMMARY')
+          if summary_path.exists() and step_summary:
+              data = json.loads(summary_path.read_text(encoding='utf-8'))
+              s = data.get('summary', {})
+              lines = [
+                  '# 🏆 ISO Golden Dataset Regression Summary',
+                  '',
+                  f'| Metric | Result |',
+                  f'| :--- | :--- |',
+                  f'| **Total Cases** | {s.get(\"total_cases\", \"N/A\")} |',
+                  f'| **Passed Cases** | {s.get(\"passed_cases\", \"N/A\")} / {s.get(\"total_cases\", \"N/A\")} |',
+                  f'| **Failed Cases** | {s.get(\"failed_cases\", \"N/A\")} |',
+                  f'| **Pass Rate** | {s.get(\"pass_rate_percent\", 0)}% |',
+                  f'| **Average Score** | {s.get(\"average_total_score\", 0)} / 10 |',
+                  '',
+                  '### 📊 Feature Accuracy Breakdown',
+                  '',
+                  '| Feature Name | Avg Score | Accuracy (%) |',
+                  '| :--- | :--- | :--- |',
+              ]
+              for col, stats in s.get('column_breakdown', {}).items():
+                  lines.append(f'| \`{col}\` | {stats.get(\"avg_score\", 0):.4f} | {stats.get(\"accuracy_percent\", 0)}% |')
+              
+              baseline_file = Path('analytics/new_baseline.json')
+              if baseline_file.exists():
+                  lines.extend([
+                      '',
+                      '### 🎉 Improvement Detected!',
+                      'A candidate baseline with positive improvement was generated at \`analytics/new_baseline.json\`.',
+                  ])
+              with open(step_summary, 'a', encoding='utf-8') as f:
+                  f.write('\n'.join(lines) + '\n')
+          "
+
+      - name: Upload Validation Reports & Artifacts
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: regression-reports
+          path: |
+            analytics/
+            dataset_validation/
+          retention-days: 14
