@@ -28,6 +28,9 @@ from openpyxl.utils import get_column_letter
 from extractor import ISOExtractor, RunAnalytics, URLMetrics
 from dataset_validation import DatasetValidator
 from verifier import CertificateVerifier
+from tracing import trace_certificate, span_verification, flush_traces
+from database import log_certificate_request, DEFAULT_DB_PATH
+from judge import LLMJudge
 
 # ── Logging Configuration ─────────────────────────────────────────────────────
 logging.basicConfig(
@@ -201,8 +204,12 @@ def execute_extraction(
     output_path: Optional[str] = None,
     save_analytics: bool = True,
     verifier: Optional[CertificateVerifier] = None,
+    enable_tracing: bool = False,
+    enable_db_logging: bool = False,
+    enable_llm_judge: bool = False,
+    judge_sample_ratio: float = 0.15,
 ) -> pd.DataFrame:
-    """Runs multithreaded extraction on a list of certificate URLs, with optional verifier."""
+    """Runs multithreaded extraction on a list of certificate URLs, with optional verifier, tracing, DB logging, and LLM judge."""
     extractor = ISOExtractor(api_key=api_key, model_name=model_name)
     run_analytics = RunAnalytics(model_name=model_name)
 
@@ -211,13 +218,27 @@ def execute_extraction(
 
     total_urls = len(urls)
     results: List[Dict[str, Any]] = [None] * total_urls
+    metrics_by_url: Dict[str, URLMetrics] = {}
     completed_count = 0
 
     print(f"\nProcessing {total_urls} certificates with {workers} thread(s)...")
 
     def process_url_worker(index: int, cert_url: str) -> Tuple[int, Dict[str, Any], URLMetrics]:
-        record, metric = extractor.process_cert_url(cert_url=cert_url, temp_base_dir=temp_dir)
-        return index, record, metric
+        if enable_tracing:
+            with trace_certificate(cert_url, metadata={"model": model_name, "index": index + 1}) as cert_trace:
+                record, metric = extractor.process_cert_url(cert_url=cert_url, temp_base_dir=temp_dir)
+                cert_trace.update(
+                    output=record,
+                    metadata={
+                        "status": record.get("status"),
+                        "cost_usd": metric.total_cost_usd,
+                        "latency_ms": metric.total_latency_ms,
+                    },
+                )
+                return index, record, metric
+        else:
+            record, metric = extractor.process_cert_url(cert_url=cert_url, temp_base_dir=temp_dir)
+            return index, record, metric
 
     try:
         with ThreadPoolExecutor(max_workers=workers) as executor:
@@ -229,6 +250,8 @@ def execute_extraction(
             for future in as_completed(future_to_idx):
                 idx, record, metric = future.result()
                 results[idx] = record
+                if record.get("url"):
+                    metrics_by_url[record["url"]] = metric
                 run_analytics.record_url_metrics(metric)
                 completed_count += 1
 
@@ -264,9 +287,46 @@ def execute_extraction(
     verif_summary = None
     if verifier is not None:
         print("\nExecuting rule-based verification and confidence scoring...")
-        df_out, verif_summary = verifier.verify_dataframe(df_out)
+        if enable_tracing:
+            with span_verification({"batch_size": len(df_out)}) as verif_span:
+                df_out, verif_summary = verifier.verify_dataframe(df_out)
+                verif_span.update(output=verif_summary)
+        else:
+            df_out, verif_summary = verifier.verify_dataframe(df_out)
+
+    # ── Optional SQLite Logging ────────────────────────────────────────────────
+    if enable_db_logging:
+        print(f"\nLogging {len(df_out)} certificate requests to SQLite ({DEFAULT_DB_PATH})...")
+        request_ids = []
+        for idx, row in df_out.iterrows():
+            row_dict = row.to_dict()
+            metric_item = metrics_by_url.get(row_dict.get("url"))
+            req_id = log_certificate_request(
+                record=row_dict,
+                metrics=metric_item,
+                db_path=DEFAULT_DB_PATH,
+            )
+            request_ids.append(req_id)
+        df_out["request_id"] = request_ids
+        print(f"Logged {len(request_ids)} record(s) to SQLite table 'certificate_requests'.")
+
+    # ── Post-Batch Stratified LLM-as-a-Judge Evaluation (~15%) ─────────────────
+    judge_summary = None
+    if enable_llm_judge and len(df_out) > 0:
+        records_to_judge = df_out.to_dict(orient="records")
+        judge = LLMJudge(api_key=api_key, model_name=model_name)
+        judge_summary = judge.evaluate_batch(
+            records=records_to_judge,
+            sample_ratio=judge_sample_ratio,
+            db_path=DEFAULT_DB_PATH,
+        )
+
+    # Flush traces to Langfuse if enabled
+    if enable_tracing:
+        flush_traces()
 
     ordered_columns = [
+        "request_id",
         "url",
         "status",
         "verification_status",
@@ -307,6 +367,7 @@ def execute_extraction(
             analytics_dir="analytics",
             filename="analytics.json",
             verification_summary=verif_summary,
+            judge_summary=judge_summary,
         )
         summary_data = run_analytics.generate_summary()["summary"]
         print("-" * 65)
@@ -337,6 +398,20 @@ def execute_extraction(
                 print(f"  • {rule_k:<24}: {count_v} case(s)")
         else:
             print("  All cases fully passed verification rules!")
+        print("=" * 65)
+
+    if judge_summary is not None:
+        print("\n" + "=" * 65)
+        print("                 LLM JUDGE AUDIT SUMMARY")
+        print("=" * 65)
+        print(f"  Total Sampled Cases   : {judge_summary['total_sampled']} ({judge_summary['sample_rate_percent']}%)")
+        print(f"  Passed Cases (Score 1): {judge_summary['passed_count']} ({judge_summary['pass_rate_percent']}%)")
+        print(f"  Failed Cases (Score 0): {judge_summary['failed_count']}")
+        print(f"  Average Judge Score   : {judge_summary['avg_judge_score']:.4f} / 1.00")
+        print("-" * 65)
+        print("STRATIFIED VERDICT BREAKDOWN:")
+        for cat_name, cat_stats in judge_summary.get("category_breakdown", {}).items():
+            print(f"  • {cat_name:<16}: {cat_stats['passed']}/{cat_stats['sampled']} passed ({cat_stats['pass_rate_percent']}%)")
         print("=" * 65)
 
     return df_out
@@ -582,6 +657,10 @@ def run_mode_production():
         output_path=output_path,
         save_analytics=True,
         verifier=verifier,
+        enable_tracing=True,
+        enable_db_logging=True,
+        enable_llm_judge=True,
+        judge_sample_ratio=0.15,
     )
 
 

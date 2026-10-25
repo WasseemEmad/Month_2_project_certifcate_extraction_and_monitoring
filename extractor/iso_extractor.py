@@ -30,6 +30,7 @@ from .utils import (
     try_repair_json,
 )
 from .analytics import StepMetric, URLMetrics, estimate_cost
+from tracing import span_text_extraction, generation_llm_extraction
 
 CORE_CERT_FIELDS = ["site_name", "address", "scope", "iso_type", "issued_date", "expiration_date"]
 
@@ -76,55 +77,64 @@ class ISOExtractor:
             image_bytes = f.read()
 
         last_error = None
-        for attempt in range(3):
-            try:
-                response = self.client.models.generate_content(
-                    model=self.model_name,
-                    contents=[
-                        CERT_SCREENING_PROMPT,
-                        Part.from_bytes(data=image_bytes, mime_type=mime_type),
-                    ],
-                    config={"temperature": 0.0},
-                )
-                latency_ms = (time.perf_counter() - start) * 1000
-                usage = self._extract_usage(response)
-                cost_usd = estimate_cost(usage["input"], usage["output"], self.model_name)
-
-                raw = (response.text or "").strip()
-                cleaned = clean_json_markdown(raw)
+        with generation_llm_extraction("screening", self.model_name, CERT_SCREENING_PROMPT) as gen_obs:
+            for attempt in range(3):
                 try:
-                    res = json.loads(cleaned)
-                except json.JSONDecodeError:
-                    res = try_repair_json(raw)
-                    if res is None:
-                        raise ValueError(f"Failed to parse screening JSON: {raw[:150]}")
+                    response = self.client.models.generate_content(
+                        model=self.model_name,
+                        contents=[
+                            CERT_SCREENING_PROMPT,
+                            Part.from_bytes(data=image_bytes, mime_type=mime_type),
+                        ],
+                        config={"temperature": 0.0},
+                    )
+                    latency_ms = (time.perf_counter() - start) * 1000
+                    usage = self._extract_usage(response)
+                    cost_usd = estimate_cost(usage["input"], usage["output"], self.model_name)
 
-                metric = StepMetric(
-                    step_name="screening",
-                    latency_ms=latency_ms,
-                    input_tokens=usage["input"],
-                    output_tokens=usage["output"],
-                    cost_usd=cost_usd,
-                    retry_attempts=attempt + 1,
-                    status="success",
-                )
+                    raw = (response.text or "").strip()
+                    cleaned = clean_json_markdown(raw)
+                    try:
+                        res = json.loads(cleaned)
+                    except json.JSONDecodeError:
+                        res = try_repair_json(raw)
+                        if res is None:
+                            raise ValueError(f"Failed to parse screening JSON: {raw[:150]}")
 
-                return {
-                    "is_cert": bool(res.get("is_cert", False)),
-                    "is_iso_iatf": bool(res.get("is_iso_iatf", False)),
-                    "cert_type": res.get("cert_type"),
-                    "reason": res.get("reason", ""),
-                    "error": None,
-                }, metric
+                    metric = StepMetric(
+                        step_name="screening",
+                        latency_ms=latency_ms,
+                        input_tokens=usage["input"],
+                        output_tokens=usage["output"],
+                        cost_usd=cost_usd,
+                        retry_attempts=attempt + 1,
+                        status="success",
+                    )
 
-            except Exception as e:
-                err_str = str(e)
-                last_error = err_str
-                if "503" in err_str or "UNAVAILABLE" in err_str or "overload" in err_str.lower():
-                    wait = 8 * (attempt + 1)
-                    time.sleep(wait)
-                else:
-                    time.sleep(2)
+                    gen_obs.update(
+                        output=res,
+                        usage_details=usage,
+                        metadata={"cost_usd": cost_usd, "latency_ms": latency_ms, "retry_attempts": attempt + 1},
+                    )
+
+                    return {
+                        "is_cert": bool(res.get("is_cert", False)),
+                        "is_iso_iatf": bool(res.get("is_iso_iatf", False)),
+                        "cert_type": res.get("cert_type"),
+                        "reason": res.get("reason", ""),
+                        "error": None,
+                    }, metric
+
+                except Exception as e:
+                    err_str = str(e)
+                    last_error = err_str
+                    if "503" in err_str or "UNAVAILABLE" in err_str or "overload" in err_str.lower():
+                        wait = 8 * (attempt + 1)
+                        time.sleep(wait)
+                    else:
+                        time.sleep(2)
+
+            gen_obs.update(level="ERROR", status_message=str(last_error))
 
         latency_ms = (time.perf_counter() - start) * 1000
         metric = StepMetric(
@@ -156,49 +166,59 @@ class ISOExtractor:
             image_bytes = f.read()
 
         last_error = None
-        for attempt in range(3):
-            try:
-                response = self.client.models.generate_content(
-                    model=self.model_name,
-                    contents=[
-                        CERT_EXTRACTION_PROMPT,
-                        Part.from_bytes(data=image_bytes, mime_type=mime_type),
-                    ],
-                    config={"temperature": 0.0},
-                )
-                latency_ms = (time.perf_counter() - start) * 1000
-                usage = self._extract_usage(response)
-                cost_usd = estimate_cost(usage["input"], usage["output"], self.model_name)
-
-                metric = StepMetric(
-                    step_name="extraction",
-                    latency_ms=latency_ms,
-                    input_tokens=usage["input"],
-                    output_tokens=usage["output"],
-                    cost_usd=cost_usd,
-                    retry_attempts=attempt + 1,
-                    status="success",
-                )
-
-                if response.candidates and response.candidates[0].finish_reason == "MAX_TOKENS":
-                    return {}, metric
-
-                raw = (response.text or "").strip()
-                cleaned = clean_json_markdown(raw)
+        with generation_llm_extraction("page-extraction", self.model_name, CERT_EXTRACTION_PROMPT) as gen_obs:
+            for attempt in range(3):
                 try:
-                    return json.loads(cleaned), metric
-                except json.JSONDecodeError:
-                    repaired = try_repair_json(raw)
-                    if repaired is not None:
-                        return repaired, metric
+                    response = self.client.models.generate_content(
+                        model=self.model_name,
+                        contents=[
+                            CERT_EXTRACTION_PROMPT,
+                            Part.from_bytes(data=image_bytes, mime_type=mime_type),
+                        ],
+                        config={"temperature": 0.0},
+                    )
+                    latency_ms = (time.perf_counter() - start) * 1000
+                    usage = self._extract_usage(response)
+                    cost_usd = estimate_cost(usage["input"], usage["output"], self.model_name)
+
+                    metric = StepMetric(
+                        step_name="extraction",
+                        latency_ms=latency_ms,
+                        input_tokens=usage["input"],
+                        output_tokens=usage["output"],
+                        cost_usd=cost_usd,
+                        retry_attempts=attempt + 1,
+                        status="success",
+                    )
+
+                    if response.candidates and response.candidates[0].finish_reason == "MAX_TOKENS":
+                        gen_obs.update(output={}, usage_details=usage, metadata={"cost_usd": cost_usd})
+                        return {}, metric
+
+                    raw = (response.text or "").strip()
+                    cleaned = clean_json_markdown(raw)
+                    try:
+                        res = json.loads(cleaned)
+                    except json.JSONDecodeError:
+                        res = try_repair_json(raw)
+
+                    if res is not None:
+                        gen_obs.update(
+                            output=res,
+                            usage_details=usage,
+                            metadata={"cost_usd": cost_usd, "latency_ms": latency_ms},
+                        )
+                        return res, metric
                     time.sleep(1)
-            except Exception as e:
-                err_str = str(e)
-                last_error = err_str
-                if "503" in err_str or "UNAVAILABLE" in err_str or "overload" in err_str.lower():
-                    time.sleep(8 * (attempt + 1))
-                else:
-                    time.sleep(2)
+                except Exception as e:
+                    err_str = str(e)
+                    last_error = err_str
+                    if "503" in err_str or "UNAVAILABLE" in err_str or "overload" in err_str.lower():
+                        time.sleep(8 * (attempt + 1))
+                    else:
+                        time.sleep(2)
+
+            gen_obs.update(level="ERROR", status_message=str(last_error))
 
         latency_ms = (time.perf_counter() - start) * 1000
         metric = StepMetric(
@@ -242,47 +262,55 @@ class ISOExtractor:
         )
 
         last_error = None
-        for attempt in range(3):
-            try:
-                response = self.client.models.generate_content(
-                    model=self.model_name,
-                    contents=prompt,
-                    config={"response_mime_type": "application/json", "temperature": 0.0},
-                )
-                latency_ms = (time.perf_counter() - start) * 1000
-                usage = self._extract_usage(response)
-                cost_usd = estimate_cost(usage["input"], usage["output"], self.model_name)
-
-                metric = StepMetric(
-                    step_name="scope_classification",
-                    latency_ms=latency_ms,
-                    input_tokens=usage["input"],
-                    output_tokens=usage["output"],
-                    cost_usd=cost_usd,
-                    retry_attempts=attempt + 1,
-                    status="success",
-                )
-
-                raw = (response.text or "").strip()
-                cleaned = clean_json_markdown(raw)
+        with generation_llm_extraction("scope-classification", self.model_name, prompt) as gen_obs:
+            for attempt in range(3):
                 try:
-                    res = json.loads(cleaned)
-                except json.JSONDecodeError:
-                    res = try_repair_json(raw)
+                    response = self.client.models.generate_content(
+                        model=self.model_name,
+                        contents=prompt,
+                        config={"response_mime_type": "application/json", "temperature": 0.0},
+                    )
+                    latency_ms = (time.perf_counter() - start) * 1000
+                    usage = self._extract_usage(response)
+                    cost_usd = estimate_cost(usage["input"], usage["output"], self.model_name)
 
-                if isinstance(res, dict):
-                    return {
-                        "site_iso_type": res.get("site_iso_type"),
-                        "iso_product": res.get("iso_product"),
-                        "status": "OK",
-                    }, metric
-            except Exception as e:
-                err_str = str(e)
-                last_error = err_str
-                if "503" in err_str or "UNAVAILABLE" in err_str or "overload" in err_str.lower():
-                    time.sleep(8 * (attempt + 1))
-                else:
-                    time.sleep(2)
+                    metric = StepMetric(
+                        step_name="scope_classification",
+                        latency_ms=latency_ms,
+                        input_tokens=usage["input"],
+                        output_tokens=usage["output"],
+                        cost_usd=cost_usd,
+                        retry_attempts=attempt + 1,
+                        status="success",
+                    )
+
+                    raw = (response.text or "").strip()
+                    cleaned = clean_json_markdown(raw)
+                    try:
+                        res = json.loads(cleaned)
+                    except json.JSONDecodeError:
+                        res = try_repair_json(raw)
+
+                    if isinstance(res, dict):
+                        gen_obs.update(
+                            output=res,
+                            usage_details=usage,
+                            metadata={"cost_usd": cost_usd, "latency_ms": latency_ms},
+                        )
+                        return {
+                            "site_iso_type": res.get("site_iso_type"),
+                            "iso_product": res.get("iso_product"),
+                            "status": "OK",
+                        }, metric
+                except Exception as e:
+                    err_str = str(e)
+                    last_error = err_str
+                    if "503" in err_str or "UNAVAILABLE" in err_str or "overload" in err_str.lower():
+                        time.sleep(8 * (attempt + 1))
+                    else:
+                        time.sleep(2)
+
+            gen_obs.update(level="ERROR", status_message=str(last_error))
 
         latency_ms = (time.perf_counter() - start) * 1000
         metric = StepMetric(
@@ -361,7 +389,12 @@ class ISOExtractor:
 
         # ── Step 1: Download & convert ──────────────────────────────────────
         dl_start = time.perf_counter()
-        images, dl_err, meta = prepare_images_for_cert_url(cert_url, temp_base_dir, return_meta=True)
+        with span_text_extraction(url=cert_url) as txt_span:
+            images, dl_err, meta = prepare_images_for_cert_url(cert_url, temp_base_dir, return_meta=True)
+            txt_span.update(
+                output={"image_count": len(images) if images else 0, "error": dl_err},
+                metadata={"doc_type": meta.get("doc_type"), "page_count": meta.get("page_count", 0)},
+            )
         url_metrics.download_latency_ms = (time.perf_counter() - dl_start) * 1000
         result_record["doc_type"] = meta.get("doc_type", "unknown")
         result_record["page_count"] = meta.get("page_count", 0)

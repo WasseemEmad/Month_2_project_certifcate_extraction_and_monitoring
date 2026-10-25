@@ -261,6 +261,7 @@ class RunAnalytics:
         filename: str = "analytics.json",
         aggregated_filename: str = "analytics_aggregated.json",
         verification_summary: Optional[Dict[str, Any]] = None,
+        judge_summary: Optional[Dict[str, Any]] = None,
     ) -> Tuple[str, str]:
         """
         Saves the run analytics to a JSON file inside analytics_dir.
@@ -295,6 +296,8 @@ class RunAnalytics:
         run_summary = self.generate_summary()
         if verification_summary is not None:
             run_summary["verification_summary"] = verification_summary
+        if judge_summary is not None:
+            run_summary["judge_summary"] = judge_summary
 
         data[run_key] = run_summary
 
@@ -308,6 +311,7 @@ class RunAnalytics:
             run_key=run_key,
             run_summary=run_summary,
             verification_summary=verification_summary,
+            judge_summary=judge_summary,
         )
 
         return str(file_path.resolve()), run_key
@@ -319,6 +323,7 @@ class RunAnalytics:
         run_key: str,
         run_summary: Dict[str, Any],
         verification_summary: Optional[Dict[str, Any]] = None,
+        judge_summary: Optional[Dict[str, Any]] = None,
     ) -> str:
         """
         Maintains an aggregated runs summary file (analytics_aggregated.json)
@@ -352,6 +357,7 @@ class RunAnalytics:
             "total_output_tokens": summary_metrics.get("total_output_tokens", 0),
             "total_cost_usd": summary_metrics.get("total_cost_usd", 0.0),
             "verification": verification_summary,
+            "judge": judge_summary,
         }
 
         # Calculate cumulative totals across all recorded runs
@@ -388,6 +394,23 @@ class RunAnalytics:
                 "overall_avg_score": avg_score,
             }
 
+        # Judge aggregation if present
+        j_runs = [r["judge"] for r in runs_dict.values() if r.get("judge")]
+        overall_judge = None
+        if j_runs:
+            tot_sampled = sum(j.get("total_sampled", 0) for j in j_runs)
+            tot_passed = sum(j.get("passed_count", 0) for j in j_runs)
+            tot_failed = sum(j.get("failed_count", 0) for j in j_runs)
+            avg_judge_score = round((tot_passed / tot_sampled), 4) if tot_sampled > 0 else 1.0
+            overall_judge = {
+                "runs_with_judge": len(j_runs),
+                "total_sampled": tot_sampled,
+                "passed_count": tot_passed,
+                "failed_count": tot_failed,
+                "avg_judge_score": avg_judge_score,
+                "pass_rate_percent": round(avg_judge_score * 100, 2),
+            }
+
         agg_data["overall_aggregated"] = {
             "total_runs": total_runs_count,
             "total_urls_processed": tot_urls,
@@ -400,6 +423,7 @@ class RunAnalytics:
             "overall_total_output_tokens": tot_out_tokens,
             "overall_total_cost_usd": tot_cost,
             "overall_verification": overall_verif,
+            "overall_judge": overall_judge,
         }
 
         with open(agg_path, "w", encoding="utf-8") as f:
