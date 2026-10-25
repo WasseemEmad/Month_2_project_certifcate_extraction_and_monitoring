@@ -1,0 +1,113 @@
+{
+  "validation_timestamp": "2026-10-25 11:03:29",
+  "golden_file": "golden_dataset_regression.xlsx",
+  "total_cases": 40,
+  "passed_cases": 35,
+  "failed_cases": 5,
+  "pass_rate_percent": 87.5,
+  "false_pass_cases": 2,
+  "false_pass_rate_total_percent": 5,
+  "false_pass_rate_failed_percent": 40.0,
+  "false_pass_urls": [
+    {
+      "index": 18,
+      "url": "https://janyutech.com/wp-content/uploads/2025/06/TUVRheinland-certificate.png",
+      "confidence_score": 100,
+      "total_score": 9,
+      "verification_reviews": "Passed all verification rules"
+    },
+    {
+      "index": 12,
+      "url": "https://janyutech.com/wp-content/uploads/2025/06/TUVRheinland-certificate.png",
+      "confidence_score": 100,
+      "total_score": 9,
+      "verification_reviews": "Passed all verification rules"
+    }
+  ],
+  "average_total_score": 9.8,
+  "average_row_score": 0.98,
+  "feature_scores": {
+    "avg_is_certificate_score": 1.0,
+    "avg_is_iso_iatf_score": 1.0,
+    "avg_cert_type_score": 0.975,
+    "avg_site_name_score": 1.0,
+    "avg_address_score": 1.0,
+    "avg_scope_score": 1.0,
+    "avg_iso_type_score": 1.0,
+    "avg_issued_date_score": 0.95,
+    "avg_expiration_date_score": 0.95,
+    "avg_site_iso_type_score": 0.925
+  },
+  "column_breakdown": {
+    "is_certificate": {
+      "total_points": 40,
+      "max_possible_points": 40,
+      "avg_score": 1.0,
+      "accuracy_percent": 100.0,
+      "avg_similarity_percent": 100.0
+    },
+    "is_iso_iatf": {
+      "total_points": 40,
+      "max_possible_points": 40,
+      "avg_score": 1.0,
+      "accuracy_percent": 100.0,
+      "avg_similarity_percent": 100.0
+    },
+    "cert_type": {
+      "total_points": 39,
+      "max_possible_points": 40,
+      "avg_score": 0.975,
+      "accuracy_percent": 97.5,
+      "avg_similarity_percent": 98.8
+    },
+    "site_name": {
+      "total_points": 40,
+      "max_possible_points": 40,
+      "avg_score": 1.0,
+      "accuracy_percent": 100.0,
+      "avg_similarity_percent": 100.0
+    },
+    "address": {
+      "total_points": 40,
+      "max_possible_points": 40,
+      "avg_score": 1.0,
+      "accuracy_percent": 100.0,
+      "avg_similarity_percent": 99.94
+    },
+    "scope": {
+      "total_points": 40,
+      "max_possible_points": 40,
+      "avg_score": 1.0,
+      "accuracy_percent": 100.0,
+      "avg_similarity_percent": 99.95
+    },
+    "iso_type": {
+      "total_points": 40,
+      "max_possible_points": 40,
+      "avg_score": 1.0,
+      "accuracy_percent": 100.0,
+      "avg_similarity_percent": 99.91
+    },
+    "issued_date": {
+      "total_points": 38,
+      "max_possible_points": 40,
+      "avg_score": 0.95,
+      "accuracy_percent": 95.0,
+      "avg_similarity_percent": 95.0
+    },
+    "expiration_date": {
+      "total_points": 38,
+      "max_possible_points": 40,
+      "avg_score": 0.95,
+      "accuracy_percent": 95.0,
+      "avg_similarity_percent": 95.0
+    },
+    "site_iso_type": {
+      "total_points": 37,
+      "max_possible_points": 40,
+      "avg_score": 0.925,
+      "accuracy_percent": 92.5,
+      "avg_similarity_percent": 92.5
+    }
+  }
+}
