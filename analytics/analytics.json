@@ -1,0 +1,4668 @@
+{
+  "run 1": {
+    "run_timestamp": "2026-10-24 21:39:18",
+    "model": "gemini-2.5-flash-lite",
+    "summary": {
+      "total_urls": 70,
+      "successful_urls": 24,
+      "failed_urls": 46,
+      "total_latency_ms": 2243584.47,
+      "total_latency_seconds": 2243.58,
+      "avg_latency_per_url_ms": 32051.21,
+      "total_input_tokens": 150294,
+      "total_output_tokens": 10553,
+      "total_tokens": 160847,
+      "total_cost_usd": 0.014437,
+      "steps_breakdown": {
+        "download": {
+          "count": 70,
+          "total_latency_ms": 457685.41,
+          "avg_latency_ms": 6538.36
+        },
+        "screening": {
+          "count": 66,
+          "total_latency_ms": 1204095.29,
+          "avg_latency_ms": 18243.87,
+          "total_input_tokens": 62172,
+          "total_output_tokens": 5215,
+          "total_tokens": 67387,
+          "total_cost_usd": 0.006226
+        },
+        "extraction": {
+          "count": 26,
+          "total_latency_ms": 551122.67,
+          "avg_latency_ms": 21197.03,
+          "total_input_tokens": 31304,
+          "total_output_tokens": 4744,
+          "total_tokens": 36048,
+          "total_cost_usd": 0.003772
+        },
+        "scope_classification": {
+          "count": 26,
+          "total_latency_ms": 30608.82,
+          "avg_latency_ms": 1177.26,
+          "total_input_tokens": 56818,
+          "total_output_tokens": 594,
+          "total_tokens": 57412,
+          "total_cost_usd": 0.004439
+        }
+      }
+    },
+    "per_url_details": [
+      {
+        "url": "https://www.western.it/wp-content/uploads/2019/07/g16-1-150x150.png",
+        "status": "did not open need review",
+        "total_latency_ms": 965.39,
+        "download_latency_ms": 965.37,
+        "overhead_ms": 0.02,
+        "total_input_tokens": 0,
+        "total_output_tokens": 0,
+        "total_tokens": 0,
+        "total_cost_usd": 0,
+        "error": "did not open need review",
+        "steps": {
+          "screening": null,
+          "extraction": null,
+          "scope_classification": null
+        }
+      },
+      {
+        "url": "https://www.western.it/wp-content/uploads/2019/05/Certificato-EN-1090-1.pdf",
+        "status": "did not open need review",
+        "total_latency_ms": 955.04,
+        "download_latency_ms": 955.03,
+        "overhead_ms": 0.01,
+        "total_input_tokens": 0,
+        "total_output_tokens": 0,
+        "total_tokens": 0,
+        "total_cost_usd": 0,
+        "error": "did not open need review",
+        "steps": {
+          "screening": null,
+          "extraction": null,
+          "scope_classification": null
+        }
+      },
+      {
+        "url": "http://www.lcd.com.tw/uploadfiles/2020/09/202009021345224522.jpg",
+        "status": "did not open need review",
+        "total_latency_ms": 2965.83,
+        "download_latency_ms": 2965.82,
+        "overhead_ms": 0.01,
+        "total_input_tokens": 0,
+        "total_output_tokens": 0,
+        "total_tokens": 0,
+        "total_cost_usd": 0,
+        "error": "did not open need review",
+        "steps": {
+          "screening": null,
+          "extraction": null,
+          "scope_classification": null
+        }
+      },
+      {
+        "url": "https://www.teleste.com/wp-content/uploads/2024/06/certificates-card-960x540.jpg",
+        "status": "Not a certificate",
+        "total_latency_ms": 4748.33,
+        "download_latency_ms": 1196.93,
+        "overhead_ms": 0.49,
+        "total_input_tokens": 942,
+        "total_output_tokens": 65,
+        "total_tokens": 1007,
+        "total_cost_usd": 9e-05,
+        "error": null,
+        "steps": {
+          "screening": {
+            "latency_ms": 3550.91,
+            "input_tokens": 942,
+            "output_tokens": 65,
+            "total_tokens": 1007,
+            "cost_usd": 9e-05,
+            "retry_attempts": 1,
+            "status": "success",
+            "error": null
+          },
+          "extraction": null,
+          "scope_classification": null
+        }
+      },
+      {
+        "url": "http://www.cilinc.com/docs/HUBZONE%20Certification%20Approval%20lookup.pdf",
+        "status": "Not an ISO/IATF certificate",
+        "total_latency_ms": 5839.5,
+        "download_latency_ms": 2745.27,
+        "overhead_ms": 0.18,
+        "total_input_tokens": 942,
+        "total_output_tokens": 68,
+        "total_tokens": 1010,
+        "total_cost_usd": 9.1e-05,
+        "error": null,
+        "steps": {
+          "screening": {
+            "latency_ms": 3094.05,
+            "input_tokens": 942,
+            "output_tokens": 68,
+            "total_tokens": 1010,
+            "cost_usd": 9.1e-05,
+            "retry_attempts": 1,
+            "status": "success",
+            "error": null
+          },
+          "extraction": null,
+          "scope_classification": null
+        }
+      },
+      {
+        "url": "https://www.nexcopy.com/wp-content/uploads/web_2026/nexcopy-incorporated-document-seal.webp",
+        "status": "Not an ISO/IATF certificate",
+        "total_latency_ms": 5878.65,
+        "download_latency_ms": 3440.21,
+        "overhead_ms": 0.22,
+        "total_input_tokens": 942,
+        "total_output_tokens": 72,
+        "total_tokens": 1014,
+        "total_cost_usd": 9.2e-05,
+        "error": null,
+        "steps": {
+          "screening": {
+            "latency_ms": 2438.22,
+            "input_tokens": 942,
+            "output_tokens": 72,
+            "total_tokens": 1014,
+            "cost_usd": 9.2e-05,
+            "retry_attempts": 1,
+            "status": "success",
+            "error": null
+          },
+          "extraction": null,
+          "scope_classification": null
+        }
+      },
+      {
+        "url": "http://www.cilinc.com/docs/ITAR_cert_2024_without_code.pdf",
+        "status": "Not an ISO/IATF certificate",
+        "total_latency_ms": 9618.33,
+        "download_latency_ms": 2486.88,
+        "overhead_ms": 0.07,
+        "total_input_tokens": 942,
+        "total_output_tokens": 84,
+        "total_tokens": 1026,
+        "total_cost_usd": 9.6e-05,
+        "error": null,
+        "steps": {
+          "screening": {
+            "latency_ms": 7131.38,
+            "input_tokens": 942,
+            "output_tokens": 84,
+            "total_tokens": 1026,
+            "cost_usd": 9.6e-05,
+            "retry_attempts": 1,
+            "status": "success",
+            "error": null
+          },
+          "extraction": null,
+          "scope_classification": null
+        }
+      },
+      {
+        "url": "https://static.wixstatic.com/media/789e0a_e259347628c242a59192b60b20a4425b~mv2.png/v1/fill/w_49,h_4,al_c,q_85,usm_0.66_1.00_0.01,blur_2,enc_avif,quality_auto/02a%20ISO%20Pending%20Main.png",
+        "status": "Not a certificate",
+        "total_latency_ms": 2340.13,
+        "download_latency_ms": 718.08,
+        "overhead_ms": 0.07,
+        "total_input_tokens": 942,
+        "total_output_tokens": 69,
+        "total_tokens": 1011,
+        "total_cost_usd": 9.1e-05,
+        "error": null,
+        "steps": {
+          "screening": {
+            "latency_ms": 1621.98,
+            "input_tokens": 942,
+            "output_tokens": 69,
+            "total_tokens": 1011,
+            "cost_usd": 9.1e-05,
+            "retry_attempts": 1,
+            "status": "success",
+            "error": null
+          },
+          "extraction": null,
+          "scope_classification": null
+        }
+      },
+      {
+        "url": "http://www.cilinc.com/docs/400-Canal-St-2023_Certificate_Nadcap_Aerospace_Quality_System_audit.pdf",
+        "status": "Not an ISO/IATF certificate",
+        "total_latency_ms": 11156.22,
+        "download_latency_ms": 2833.62,
+        "overhead_ms": 0.13,
+        "total_input_tokens": 942,
+        "total_output_tokens": 78,
+        "total_tokens": 1020,
+        "total_cost_usd": 9.4e-05,
+        "error": null,
+        "steps": {
+          "screening": {
+            "latency_ms": 8322.47,
+            "input_tokens": 942,
+            "output_tokens": 78,
+            "total_tokens": 1020,
+            "cost_usd": 9.4e-05,
+            "retry_attempts": 1,
+            "status": "success",
+            "error": null
+          },
+          "extraction": null,
+          "scope_classification": null
+        }
+      },
+      {
+        "url": "https://static.wixstatic.com/media/789e0a_61967671dca14c2c801b2ff9f59589dd~mv2.png/v1/fill/w_49,h_4,al_c,q_85,usm_0.66_1.00_0.01,blur_2,enc_avif,quality_auto/02b%20ISO%20Pending%20Hover.png",
+        "status": "Not a certificate",
+        "total_latency_ms": 1844.93,
+        "download_latency_ms": 573.78,
+        "overhead_ms": 0.12,
+        "total_input_tokens": 942,
+        "total_output_tokens": 61,
+        "total_tokens": 1003,
+        "total_cost_usd": 8.9e-05,
+        "error": null,
+        "steps": {
+          "screening": {
+            "latency_ms": 1271.03,
+            "input_tokens": 942,
+            "output_tokens": 61,
+            "total_tokens": 1003,
+            "cost_usd": 8.9e-05,
+            "retry_attempts": 1,
+            "status": "success",
+            "error": null
+          },
+          "extraction": null,
+          "scope_classification": null
+        }
+      },
+      {
+        "url": "https://www.dekielectronics.com/storage/common-section/ul-certificate-070224031441.pdf",
+        "status": "Not an ISO/IATF certificate",
+        "total_latency_ms": 13984.29,
+        "download_latency_ms": 2172.32,
+        "overhead_ms": 0.15,
+        "total_input_tokens": 942,
+        "total_output_tokens": 94,
+        "total_tokens": 1036,
+        "total_cost_usd": 9.9e-05,
+        "error": null,
+        "steps": {
+          "screening": {
+            "latency_ms": 11811.82,
+            "input_tokens": 942,
+            "output_tokens": 94,
+            "total_tokens": 1036,
+            "cost_usd": 9.9e-05,
+            "retry_attempts": 1,
+            "status": "success",
+            "error": null
+          },
+          "extraction": null,
+          "scope_classification": null
+        }
+      },
+      {
+        "url": "https://www.italdiamant.com/wp-content/uploads/2023/06/white-net-world.png",
+        "status": "Not a certificate",
+        "total_latency_ms": 2828.65,
+        "download_latency_ms": 1116.79,
+        "overhead_ms": 0.12,
+        "total_input_tokens": 942,
+        "total_output_tokens": 62,
+        "total_tokens": 1004,
+        "total_cost_usd": 8.9e-05,
+        "error": null,
+        "steps": {
+          "screening": {
+            "latency_ms": 1711.74,
+            "input_tokens": 942,
+            "output_tokens": 62,
+            "total_tokens": 1004,
+            "cost_usd": 8.9e-05,
+            "retry_attempts": 1,
+            "status": "success",
+            "error": null
+          },
+          "extraction": null,
+          "scope_classification": null
+        }
+      },
+      {
+        "url": "https://www.canningconveyor.co.uk/files/document/8/1552669690_WELDINGCERTIFICATE.pdf",
+        "status": "Not an ISO/IATF certificate",
+        "total_latency_ms": 5910.78,
+        "download_latency_ms": 3046.97,
+        "overhead_ms": 0.08,
+        "total_input_tokens": 942,
+        "total_output_tokens": 69,
+        "total_tokens": 1011,
+        "total_cost_usd": 9.1e-05,
+        "error": null,
+        "steps": {
+          "screening": {
+            "latency_ms": 2863.73,
+            "input_tokens": 942,
+            "output_tokens": 69,
+            "total_tokens": 1011,
+            "cost_usd": 9.1e-05,
+            "retry_attempts": 1,
+            "status": "success",
+            "error": null
+          },
+          "extraction": null,
+          "scope_classification": null
+        }
+      },
+      {
+        "url": "https://www.canningconveyor.co.uk/files/document/203/1777463891_AVETTATEnureAnniversaryCertificate2025CanningConveyorCoLtd.pdf",
+        "status": "Not an ISO/IATF certificate",
+        "total_latency_ms": 14057.2,
+        "download_latency_ms": 3820.48,
+        "overhead_ms": 0.07,
+        "total_input_tokens": 942,
+        "total_output_tokens": 76,
+        "total_tokens": 1018,
+        "total_cost_usd": 9.3e-05,
+        "error": null,
+        "steps": {
+          "screening": {
+            "latency_ms": 10236.65,
+            "input_tokens": 942,
+            "output_tokens": 76,
+            "total_tokens": 1018,
+            "cost_usd": 9.3e-05,
+            "retry_attempts": 1,
+            "status": "success",
+            "error": null
+          },
+          "extraction": null,
+          "scope_classification": null
+        }
+      },
+      {
+        "url": "https://www.bearpwr.com/wp-content/uploads/2022/12/UK_Certificate_Industrial.pdf",
+        "status": "Not an ISO/IATF certificate",
+        "total_latency_ms": 29305.73,
+        "download_latency_ms": 24714.35,
+        "overhead_ms": 0.15,
+        "total_input_tokens": 942,
+        "total_output_tokens": 73,
+        "total_tokens": 1015,
+        "total_cost_usd": 9.3e-05,
+        "error": null,
+        "steps": {
+          "screening": {
+            "latency_ms": 4591.23,
+            "input_tokens": 942,
+            "output_tokens": 73,
+            "total_tokens": 1015,
+            "cost_usd": 9.3e-05,
+            "retry_attempts": 1,
+            "status": "success",
+            "error": null
+          },
+          "extraction": null,
+          "scope_classification": null
+        }
+      },
+      {
+        "url": "https://www.nexcopy.com/wp-content/uploads/2024/12/CA-Prop65_2022.pdf",
+        "status": "Not a certificate",
+        "total_latency_ms": 22769.63,
+        "download_latency_ms": 7187.54,
+        "overhead_ms": 0.51,
+        "total_input_tokens": 942,
+        "total_output_tokens": 58,
+        "total_tokens": 1000,
+        "total_cost_usd": 8.8e-05,
+        "error": null,
+        "steps": {
+          "screening": {
+            "latency_ms": 15581.58,
+            "input_tokens": 942,
+            "output_tokens": 58,
+            "total_tokens": 1000,
+            "cost_usd": 8.8e-05,
+            "retry_attempts": 1,
+            "status": "success",
+            "error": null
+          },
+          "extraction": null,
+          "scope_classification": null
+        }
+      },
+      {
+        "url": "https://www.dekielectronics.com/storage/common-section/ZED-Gold-Certificate-240225104300.pdf",
+        "status": "Not an ISO/IATF certificate",
+        "total_latency_ms": 30114.62,
+        "download_latency_ms": 8175.8,
+        "overhead_ms": 0.26,
+        "total_input_tokens": 942,
+        "total_output_tokens": 82,
+        "total_tokens": 1024,
+        "total_cost_usd": 9.5e-05,
+        "error": null,
+        "steps": {
+          "screening": {
+            "latency_ms": 21938.56,
+            "input_tokens": 942,
+            "output_tokens": 82,
+            "total_tokens": 1024,
+            "cost_usd": 9.5e-05,
+            "retry_attempts": 1,
+            "status": "success",
+            "error": null
+          },
+          "extraction": null,
+          "scope_classification": null
+        }
+      },
+      {
+        "url": "https://www.cnc-koebler.de/wp-content/uploads/2025/05/SCR-20250527-jolf-725x1024.jpg",
+        "status": "OK",
+        "total_latency_ms": 14134.0,
+        "download_latency_ms": 2406.59,
+        "overhead_ms": 1.04,
+        "total_input_tokens": 4521,
+        "total_output_tokens": 310,
+        "total_tokens": 4831,
+        "total_cost_usd": 0.000432,
+        "error": null,
+        "steps": {
+          "screening": {
+            "latency_ms": 1619.41,
+            "input_tokens": 942,
+            "output_tokens": 94,
+            "total_tokens": 1036,
+            "cost_usd": 9.9e-05,
+            "retry_attempts": 1,
+            "status": "success",
+            "error": null
+          },
+          "extraction": {
+            "latency_ms": 8651.47,
+            "input_tokens": 1204,
+            "output_tokens": 196,
+            "total_tokens": 1400,
+            "cost_usd": 0.000149,
+            "retry_attempts": 1,
+            "status": "success",
+            "error": null
+          },
+          "scope_classification": {
+            "latency_ms": 1455.49,
+            "input_tokens": 2375,
+            "output_tokens": 20,
+            "total_tokens": 2395,
+            "cost_usd": 0.000184,
+            "retry_attempts": 1,
+            "status": "success",
+            "error": null
+          }
+        }
+      },
+      {
+        "url": "https://i0.wp.com/fibercomposite.com/wp-content/uploads/2023/07/ISO-9001_2015-ANAB-blak-scaled.jpg?fit=800%2C435&ssl=1",
+        "status": "Partial: missing Address, Issued Date, Expiration Date",
+        "total_latency_ms": 6378.3,
+        "download_latency_ms": 1996.74,
+        "overhead_ms": 0.39,
+        "total_input_tokens": 4501,
+        "total_output_tokens": 199,
+        "total_tokens": 4700,
+        "total_cost_usd": 0.000398,
+        "error": null,
+        "steps": {
+          "screening": {
+            "latency_ms": 1493.94,
+            "input_tokens": 942,
+            "output_tokens": 84,
+            "total_tokens": 1026,
+            "cost_usd": 9.6e-05,
+            "retry_attempts": 1,
+            "status": "success",
+            "error": null
+          },
+          "extraction": {
+            "latency_ms": 1684.43,
+            "input_tokens": 1204,
+            "output_tokens": 98,
+            "total_tokens": 1302,
+            "cost_usd": 0.00012,
+            "retry_attempts": 1,
+            "status": "success",
+            "error": null
+          },
+          "scope_classification": {
+            "latency_ms": 1202.8,
+            "input_tokens": 2355,
+            "output_tokens": 17,
+            "total_tokens": 2372,
+            "cost_usd": 0.000182,
+            "retry_attempts": 1,
+            "status": "success",
+            "error": null
+          }
+        }
+      },
+      {
+        "url": "https://www.bearpwr.com/wp-content/uploads/2022/12/NTRL_Certificate_Medical.pdf",
+        "status": "Not an ISO/IATF certificate",
+        "total_latency_ms": 40302.02,
+        "download_latency_ms": 25510.53,
+        "overhead_ms": 0.08,
+        "total_input_tokens": 942,
+        "total_output_tokens": 113,
+        "total_tokens": 1055,
+        "total_cost_usd": 0.000105,
+        "error": null,
+        "steps": {
+          "screening": {
+            "latency_ms": 14791.41,
+            "input_tokens": 942,
+            "output_tokens": 113,
+            "total_tokens": 1055,
+            "cost_usd": 0.000105,
+            "retry_attempts": 1,
+            "status": "success",
+            "error": null
+          },
+          "extraction": null,
+          "scope_classification": null
+        }
+      },
+      {
+        "url": "https://www.bearpwr.com/wp-content/uploads/2022/12/CB_Certificate_Medical.pdf",
+        "status": "Not an ISO/IATF certificate",
+        "total_latency_ms": 42364.35,
+        "download_latency_ms": 24269.68,
+        "overhead_ms": 0.13,
+        "total_input_tokens": 942,
+        "total_output_tokens": 87,
+        "total_tokens": 1029,
+        "total_cost_usd": 9.7e-05,
+        "error": null,
+        "steps": {
+          "screening": {
+            "latency_ms": 18094.54,
+            "input_tokens": 942,
+            "output_tokens": 87,
+            "total_tokens": 1029,
+            "cost_usd": 9.7e-05,
+            "retry_attempts": 1,
+            "status": "success",
+            "error": null
+          },
+          "extraction": null,
+          "scope_classification": null
+        }
+      },
+      {
+        "url": "https://ledr-ingenieria.com/wp-content/uploads/2021/05/ISO-14001-284812-2019-AE-IBE-ENAC-1-en-US-20210517-20210517204324.pdf",
+        "status": "OK",
+        "total_latency_ms": 28913.11,
+        "download_latency_ms": 2667.25,
+        "overhead_ms": 0.65,
+        "total_input_tokens": 4508,
+        "total_output_tokens": 298,
+        "total_tokens": 4806,
+        "total_cost_usd": 0.000428,
+        "error": null,
+        "steps": {
+          "screening": {
+            "latency_ms": 16217.92,
+            "input_tokens": 942,
+            "output_tokens": 89,
+            "total_tokens": 1031,
+            "cost_usd": 9.7e-05,
+            "retry_attempts": 1,
+            "status": "success",
+            "error": null
+          },
+          "extraction": {
+            "latency_ms": 9416.8,
+            "input_tokens": 1204,
+            "output_tokens": 184,
+            "total_tokens": 1388,
+            "cost_usd": 0.000146,
+            "retry_attempts": 1,
+            "status": "success",
+            "error": null
+          },
+          "scope_classification": {
+            "latency_ms": 610.49,
+            "input_tokens": 2362,
+            "output_tokens": 25,
+            "total_tokens": 2387,
+            "cost_usd": 0.000185,
+            "retry_attempts": 1,
+            "status": "success",
+            "error": null
+          }
+        }
+      },
+      {
+        "url": "https://kvisgaard.dk/wp-content/uploads/2022/06/ISO-9001-2015-Certifikat-2021-11-17-UK.pdf",
+        "status": "OK",
+        "total_latency_ms": 37764.74,
+        "download_latency_ms": 3282.17,
+        "overhead_ms": 1.03,
+        "total_input_tokens": 4506,
+        "total_output_tokens": 272,
+        "total_tokens": 4778,
+        "total_cost_usd": 0.00042,
+        "error": null,
+        "steps": {
+          "screening": {
+            "latency_ms": 15878.75,
+            "input_tokens": 942,
+            "output_tokens": 87,
+            "total_tokens": 1029,
+            "cost_usd": 9.7e-05,
+            "retry_attempts": 1,
+            "status": "success",
+            "error": null
+          },
+          "extraction": {
+            "latency_ms": 17908.23,
+            "input_tokens": 1204,
+            "output_tokens": 161,
+            "total_tokens": 1365,
+            "cost_usd": 0.000139,
+            "retry_attempts": 1,
+            "status": "success",
+            "error": null
+          },
+          "scope_classification": {
+            "latency_ms": 694.56,
+            "input_tokens": 2360,
+            "output_tokens": 24,
+            "total_tokens": 2384,
+            "cost_usd": 0.000184,
+            "retry_attempts": 1,
+            "status": "success",
+            "error": null
+          }
+        }
+      },
+      {
+        "url": "https://ledr-ingenieria.com/wp-content/uploads/2021/05/ISO-9001-284813-2019-AQ-IBE-ENAC-1-en-US-20210517-20210517204016.pdf",
+        "status": "OK",
+        "total_latency_ms": 36114.74,
+        "download_latency_ms": 1718.72,
+        "overhead_ms": 0.65,
+        "total_input_tokens": 4508,
+        "total_output_tokens": 295,
+        "total_tokens": 4803,
+        "total_cost_usd": 0.000427,
+        "error": null,
+        "steps": {
+          "screening": {
+            "latency_ms": 14358.31,
+            "input_tokens": 942,
+            "output_tokens": 87,
+            "total_tokens": 1029,
+            "cost_usd": 9.7e-05,
+            "retry_attempts": 1,
+            "status": "success",
+            "error": null
+          },
+          "extraction": {
+            "latency_ms": 18526.7,
+            "input_tokens": 1204,
+            "output_tokens": 183,
+            "total_tokens": 1387,
+            "cost_usd": 0.000145,
+            "retry_attempts": 1,
+            "status": "success",
+            "error": null
+          },
+          "scope_classification": {
+            "latency_ms": 1510.36,
+            "input_tokens": 2362,
+            "output_tokens": 25,
+            "total_tokens": 2387,
+            "cost_usd": 0.000185,
+            "retry_attempts": 1,
+            "status": "success",
+            "error": null
+          }
+        }
+      },
+      {
+        "url": "https://sotekengineering.com/wp-content/uploads/2025/11/Cert-250709-9001.pdf",
+        "status": "did not open need review",
+        "total_latency_ms": 42416.42,
+        "download_latency_ms": 42416.41,
+        "overhead_ms": 0.01,
+        "total_input_tokens": 0,
+        "total_output_tokens": 0,
+        "total_tokens": 0,
+        "total_cost_usd": 0,
+        "error": "did not open need review",
+        "steps": {
+          "screening": null,
+          "extraction": null,
+          "scope_classification": null
+        }
+      },
+      {
+        "url": "https://www.dekielectronics.com/storage/common-section/Deki-qms-RVA-Final-Certificate-2-Final_page-0001-06062404531799.jpg",
+        "status": "OK",
+        "total_latency_ms": 40575.55,
+        "download_latency_ms": 6568.74,
+        "overhead_ms": 2.55,
+        "total_input_tokens": 4506,
+        "total_output_tokens": 290,
+        "total_tokens": 4796,
+        "total_cost_usd": 0.000424,
+        "error": null,
+        "steps": {
+          "screening": {
+            "latency_ms": 20912.23,
+            "input_tokens": 942,
+            "output_tokens": 92,
+            "total_tokens": 1034,
+            "cost_usd": 9.8e-05,
+            "retry_attempts": 1,
+            "status": "success",
+            "error": null
+          },
+          "extraction": {
+            "latency_ms": 12211.83,
+            "input_tokens": 1204,
+            "output_tokens": 177,
+            "total_tokens": 1381,
+            "cost_usd": 0.000143,
+            "retry_attempts": 1,
+            "status": "success",
+            "error": null
+          },
+          "scope_classification": {
+            "latency_ms": 880.2,
+            "input_tokens": 2360,
+            "output_tokens": 21,
+            "total_tokens": 2381,
+            "cost_usd": 0.000183,
+            "retry_attempts": 1,
+            "status": "success",
+            "error": null
+          }
+        }
+      },
+      {
+        "url": "https://www.nexcopy.com/wp-content/uploads/2024/12/SD_Duplicators_PC.pdf",
+        "status": "Not a certificate",
+        "total_latency_ms": 81116.44,
+        "download_latency_ms": 5454.6,
+        "overhead_ms": 0.47,
+        "total_input_tokens": 942,
+        "total_output_tokens": 60,
+        "total_tokens": 1002,
+        "total_cost_usd": 8.9e-05,
+        "error": null,
+        "steps": {
+          "screening": {
+            "latency_ms": 75661.37,
+            "input_tokens": 942,
+            "output_tokens": 60,
+            "total_tokens": 1002,
+            "cost_usd": 8.9e-05,
+            "retry_attempts": 1,
+            "status": "success",
+            "error": null
+          },
+          "extraction": null,
+          "scope_classification": null
+        }
+      },
+      {
+        "url": "https://jc-valves.com/wp-content/uploads/2026/03/ISO-9001-JC_eng_2026_29.pdf",
+        "status": "OK",
+        "total_latency_ms": 81112.24,
+        "download_latency_ms": 12658.14,
+        "overhead_ms": 1.91,
+        "total_input_tokens": 4521,
+        "total_output_tokens": 320,
+        "total_tokens": 4841,
+        "total_cost_usd": 0.000435,
+        "error": null,
+        "steps": {
+          "screening": {
+            "latency_ms": 40356.01,
+            "input_tokens": 942,
+            "output_tokens": 85,
+            "total_tokens": 1027,
+            "cost_usd": 9.6e-05,
+            "retry_attempts": 1,
+            "status": "success",
+            "error": null
+          },
+          "extraction": {
+            "latency_ms": 27498.9,
+            "input_tokens": 1204,
+            "output_tokens": 202,
+            "total_tokens": 1406,
+            "cost_usd": 0.000151,
+            "retry_attempts": 1,
+            "status": "success",
+            "error": null
+          },
+          "scope_classification": {
+            "latency_ms": 597.28,
+            "input_tokens": 2375,
+            "output_tokens": 33,
+            "total_tokens": 2408,
+            "cost_usd": 0.000188,
+            "retry_attempts": 1,
+            "status": "success",
+            "error": null
+          }
+        }
+      },
+      {
+        "url": "https://www.kostal-kontakt-systeme.com/fileadmin/user_upload/kostal-kontakt-systeme/Downloads/DIN_EN_ISO_14001/KOSTAL_Kontakt_Systeme_CHI_ISO_14001_EN.pdf",
+        "status": "OK",
+        "total_latency_ms": 38557.31,
+        "download_latency_ms": 17876.5,
+        "overhead_ms": 0.74,
+        "total_input_tokens": 4508,
+        "total_output_tokens": 325,
+        "total_tokens": 4833,
+        "total_cost_usd": 0.000436,
+        "error": null,
+        "steps": {
+          "screening": {
+            "latency_ms": 6772.54,
+            "input_tokens": 942,
+            "output_tokens": 90,
+            "total_tokens": 1032,
+            "cost_usd": 9.8e-05,
+            "retry_attempts": 1,
+            "status": "success",
+            "error": null
+          },
+          "extraction": {
+            "latency_ms": 12769.82,
+            "input_tokens": 1204,
+            "output_tokens": 209,
+            "total_tokens": 1413,
+            "cost_usd": 0.000153,
+            "retry_attempts": 1,
+            "status": "success",
+            "error": null
+          },
+          "scope_classification": {
+            "latency_ms": 1137.71,
+            "input_tokens": 2362,
+            "output_tokens": 26,
+            "total_tokens": 2388,
+            "cost_usd": 0.000185,
+            "retry_attempts": 1,
+            "status": "success",
+            "error": null
+          }
+        }
+      },
+      {
+        "url": "https://www.jablotron.com/file/edee/iso/2026/cert_13485_eniqnet_2025.pdf",
+        "status": "OK",
+        "total_latency_ms": 63748.47,
+        "download_latency_ms": 8507.54,
+        "overhead_ms": 36.84,
+        "total_input_tokens": 4517,
+        "total_output_tokens": 367,
+        "total_tokens": 4884,
+        "total_cost_usd": 0.000449,
+        "error": null,
+        "steps": {
+          "screening": {
+            "latency_ms": 27413.81,
+            "input_tokens": 942,
+            "output_tokens": 86,
+            "total_tokens": 1028,
+            "cost_usd": 9.6e-05,
+            "retry_attempts": 1,
+            "status": "success",
+            "error": null
+          },
+          "extraction": {
+            "latency_ms": 26475.11,
+            "input_tokens": 1204,
+            "output_tokens": 252,
+            "total_tokens": 1456,
+            "cost_usd": 0.000166,
+            "retry_attempts": 1,
+            "status": "success",
+            "error": null
+          },
+          "scope_classification": {
+            "latency_ms": 1315.17,
+            "input_tokens": 2371,
+            "output_tokens": 29,
+            "total_tokens": 2400,
+            "cost_usd": 0.000187,
+            "retry_attempts": 1,
+            "status": "success",
+            "error": null
+          }
+        }
+      },
+      {
+        "url": "https://www.kostal-kontakt-systeme.com/fileadmin/user_upload/kostal-kontakt-systeme/Downloads/DIN_EN_ISO_14001/KOSTAL_Kontakt_Systeme_Dresden_ISO_14001_EN.pdf",
+        "status": "OK",
+        "total_latency_ms": 46408.29,
+        "download_latency_ms": 16109.89,
+        "overhead_ms": 0.86,
+        "total_input_tokens": 4508,
+        "total_output_tokens": 299,
+        "total_tokens": 4807,
+        "total_cost_usd": 0.000428,
+        "error": null,
+        "steps": {
+          "screening": {
+            "latency_ms": 13878.35,
+            "input_tokens": 942,
+            "output_tokens": 90,
+            "total_tokens": 1032,
+            "cost_usd": 9.8e-05,
+            "retry_attempts": 1,
+            "status": "success",
+            "error": null
+          },
+          "extraction": {
+            "latency_ms": 15091.65,
+            "input_tokens": 1204,
+            "output_tokens": 183,
+            "total_tokens": 1387,
+            "cost_usd": 0.000145,
+            "retry_attempts": 1,
+            "status": "success",
+            "error": null
+          },
+          "scope_classification": {
+            "latency_ms": 1327.54,
+            "input_tokens": 2362,
+            "output_tokens": 26,
+            "total_tokens": 2388,
+            "cost_usd": 0.000185,
+            "retry_attempts": 1,
+            "status": "success",
+            "error": null
+          }
+        }
+      },
+      {
+        "url": "https://www.dekielectronics.com/storage/common-section/Deki-IATF-Digital-certificates-2-Final-_page-0001-06062404500653.jpg",
+        "status": "OK",
+        "total_latency_ms": 73343.91,
+        "download_latency_ms": 9304.07,
+        "overhead_ms": 0.7,
+        "total_input_tokens": 4505,
+        "total_output_tokens": 285,
+        "total_tokens": 4790,
+        "total_cost_usd": 0.000423,
+        "error": null,
+        "steps": {
+          "screening": {
+            "latency_ms": 30346.02,
+            "input_tokens": 942,
+            "output_tokens": 89,
+            "total_tokens": 1031,
+            "cost_usd": 9.7e-05,
+            "retry_attempts": 1,
+            "status": "success",
+            "error": null
+          },
+          "extraction": {
+            "latency_ms": 32674.47,
+            "input_tokens": 1204,
+            "output_tokens": 175,
+            "total_tokens": 1379,
+            "cost_usd": 0.000143,
+            "retry_attempts": 1,
+            "status": "success",
+            "error": null
+          },
+          "scope_classification": {
+            "latency_ms": 1018.65,
+            "input_tokens": 2359,
+            "output_tokens": 21,
+            "total_tokens": 2380,
+            "cost_usd": 0.000183,
+            "retry_attempts": 1,
+            "status": "success",
+            "error": null
+          }
+        }
+      },
+      {
+        "url": "https://www.kostal-kontakt-systeme.com/fileadmin/user_upload/kostal-kontakt-systeme/Downloads/DIN_EN_ISO_14001/KOSTAL_Kontakt_Systeme_TI_ISO_14001_EN.pdf",
+        "status": "OK",
+        "total_latency_ms": 56276.33,
+        "download_latency_ms": 15264.83,
+        "overhead_ms": 0.59,
+        "total_input_tokens": 4508,
+        "total_output_tokens": 282,
+        "total_tokens": 4790,
+        "total_cost_usd": 0.000423,
+        "error": null,
+        "steps": {
+          "screening": {
+            "latency_ms": 12473.3,
+            "input_tokens": 942,
+            "output_tokens": 91,
+            "total_tokens": 1033,
+            "cost_usd": 9.8e-05,
+            "retry_attempts": 1,
+            "status": "success",
+            "error": null
+          },
+          "extraction": {
+            "latency_ms": 27709.98,
+            "input_tokens": 1204,
+            "output_tokens": 165,
+            "total_tokens": 1369,
+            "cost_usd": 0.00014,
+            "retry_attempts": 1,
+            "status": "success",
+            "error": null
+          },
+          "scope_classification": {
+            "latency_ms": 827.63,
+            "input_tokens": 2362,
+            "output_tokens": 26,
+            "total_tokens": 2388,
+            "cost_usd": 0.000185,
+            "retry_attempts": 1,
+            "status": "success",
+            "error": null
+          }
+        }
+      },
+      {
+        "url": "https://www.jablotron.com/file/edee/iso/2026/iso_27001_en_cert.pdf",
+        "status": "OK",
+        "total_latency_ms": 21652.69,
+        "download_latency_ms": 779.36,
+        "overhead_ms": 0.63,
+        "total_input_tokens": 4507,
+        "total_output_tokens": 291,
+        "total_tokens": 4798,
+        "total_cost_usd": 0.000425,
+        "error": null,
+        "steps": {
+          "screening": {
+            "latency_ms": 11010.71,
+            "input_tokens": 942,
+            "output_tokens": 93,
+            "total_tokens": 1035,
+            "cost_usd": 9.9e-05,
+            "retry_attempts": 1,
+            "status": "success",
+            "error": null
+          },
+          "extraction": {
+            "latency_ms": 8550.91,
+            "input_tokens": 1204,
+            "output_tokens": 177,
+            "total_tokens": 1381,
+            "cost_usd": 0.000143,
+            "retry_attempts": 1,
+            "status": "success",
+            "error": null
+          },
+          "scope_classification": {
+            "latency_ms": 1311.08,
+            "input_tokens": 2361,
+            "output_tokens": 21,
+            "total_tokens": 2382,
+            "cost_usd": 0.000183,
+            "retry_attempts": 1,
+            "status": "success",
+            "error": null
+          }
+        }
+      },
+      {
+        "url": "https://www.sxfuding.com/uploads/46620/page/p20260427135437adbe3.jpg?size=600x0",
+        "status": "OK",
+        "total_latency_ms": 13645.95,
+        "download_latency_ms": 1732.45,
+        "overhead_ms": 0.56,
+        "total_input_tokens": 4523,
+        "total_output_tokens": 399,
+        "total_tokens": 4922,
+        "total_cost_usd": 0.000459,
+        "error": null,
+        "steps": {
+          "screening": {
+            "latency_ms": 6983.13,
+            "input_tokens": 942,
+            "output_tokens": 122,
+            "total_tokens": 1064,
+            "cost_usd": 0.000107,
+            "retry_attempts": 1,
+            "status": "success",
+            "error": null
+          },
+          "extraction": {
+            "latency_ms": 3769.54,
+            "input_tokens": 1204,
+            "output_tokens": 255,
+            "total_tokens": 1459,
+            "cost_usd": 0.000167,
+            "retry_attempts": 1,
+            "status": "success",
+            "error": null
+          },
+          "scope_classification": {
+            "latency_ms": 1160.27,
+            "input_tokens": 2377,
+            "output_tokens": 22,
+            "total_tokens": 2399,
+            "cost_usd": 0.000185,
+            "retry_attempts": 1,
+            "status": "success",
+            "error": null
+          }
+        }
+      },
+      {
+        "url": "https://acq.nl/wp-content/uploads/ISO-9001-2015-certificate-400x284.png",
+        "status": "Partial: missing Issued Date, Expiration Date",
+        "total_latency_ms": 5979.38,
+        "download_latency_ms": 623.71,
+        "overhead_ms": 0.41,
+        "total_input_tokens": 4543,
+        "total_output_tokens": 281,
+        "total_tokens": 4824,
+        "total_cost_usd": 0.000424,
+        "error": null,
+        "steps": {
+          "screening": {
+            "latency_ms": 2488.42,
+            "input_tokens": 942,
+            "output_tokens": 89,
+            "total_tokens": 1031,
+            "cost_usd": 9.7e-05,
+            "retry_attempts": 1,
+            "status": "success",
+            "error": null
+          },
+          "extraction": {
+            "latency_ms": 1637.52,
+            "input_tokens": 1204,
+            "output_tokens": 160,
+            "total_tokens": 1364,
+            "cost_usd": 0.000138,
+            "retry_attempts": 1,
+            "status": "success",
+            "error": null
+          },
+          "scope_classification": {
+            "latency_ms": 1229.32,
+            "input_tokens": 2397,
+            "output_tokens": 32,
+            "total_tokens": 2429,
+            "cost_usd": 0.000189,
+            "retry_attempts": 1,
+            "status": "success",
+            "error": null
+          }
+        }
+      },
+      {
+        "url": "https://www.kostal-kontakt-systeme.com/fileadmin/user_upload/kostal-kontakt-systeme/Downloads/ISO_45001/Kostal_Kontakt_Systeme_TI_ISO_45001__EN_Vers.1.pdf",
+        "status": "OK",
+        "total_latency_ms": 52864.79,
+        "download_latency_ms": 19819.12,
+        "overhead_ms": 3.3,
+        "total_input_tokens": 4508,
+        "total_output_tokens": 299,
+        "total_tokens": 4807,
+        "total_cost_usd": 0.000428,
+        "error": null,
+        "steps": {
+          "screening": {
+            "latency_ms": 18360.57,
+            "input_tokens": 942,
+            "output_tokens": 108,
+            "total_tokens": 1050,
+            "cost_usd": 0.000103,
+            "retry_attempts": 1,
+            "status": "success",
+            "error": null
+          },
+          "extraction": {
+            "latency_ms": 13352.71,
+            "input_tokens": 1204,
+            "output_tokens": 165,
+            "total_tokens": 1369,
+            "cost_usd": 0.00014,
+            "retry_attempts": 1,
+            "status": "success",
+            "error": null
+          },
+          "scope_classification": {
+            "latency_ms": 1329.09,
+            "input_tokens": 2362,
+            "output_tokens": 26,
+            "total_tokens": 2388,
+            "cost_usd": 0.000185,
+            "retry_attempts": 1,
+            "status": "success",
+            "error": null
+          }
+        }
+      },
+      {
+        "url": "https://acq.nl/wp-content/uploads/ISO-9001-2015-certificate.png",
+        "status": "OK",
+        "total_latency_ms": 9300.5,
+        "download_latency_ms": 945.33,
+        "overhead_ms": 0.74,
+        "total_input_tokens": 4544,
+        "total_output_tokens": 313,
+        "total_tokens": 4857,
+        "total_cost_usd": 0.000435,
+        "error": null,
+        "steps": {
+          "screening": {
+            "latency_ms": 3913.62,
+            "input_tokens": 942,
+            "output_tokens": 90,
+            "total_tokens": 1032,
+            "cost_usd": 9.8e-05,
+            "retry_attempts": 1,
+            "status": "success",
+            "error": null
+          },
+          "extraction": {
+            "latency_ms": 3650.48,
+            "input_tokens": 1204,
+            "output_tokens": 191,
+            "total_tokens": 1395,
+            "cost_usd": 0.000148,
+            "retry_attempts": 1,
+            "status": "success",
+            "error": null
+          },
+          "scope_classification": {
+            "latency_ms": 790.33,
+            "input_tokens": 2398,
+            "output_tokens": 32,
+            "total_tokens": 2430,
+            "cost_usd": 0.000189,
+            "retry_attempts": 1,
+            "status": "success",
+            "error": null
+          }
+        }
+      },
+      {
+        "url": "https://koenigscale.com/wp-content/uploads/2024/12/KoenigScaleCertScope-V007.pdf",
+        "status": "Not an ISO/IATF certificate",
+        "total_latency_ms": 24869.97,
+        "download_latency_ms": 3568.52,
+        "overhead_ms": 0.14,
+        "total_input_tokens": 942,
+        "total_output_tokens": 83,
+        "total_tokens": 1025,
+        "total_cost_usd": 9.6e-05,
+        "error": null,
+        "steps": {
+          "screening": {
+            "latency_ms": 21301.31,
+            "input_tokens": 942,
+            "output_tokens": 83,
+            "total_tokens": 1025,
+            "cost_usd": 9.6e-05,
+            "retry_attempts": 1,
+            "status": "success",
+            "error": null
+          },
+          "extraction": null,
+          "scope_classification": null
+        }
+      },
+      {
+        "url": "https://metrotecegypt.com/websiteenglish/data/ISO-Certificate-2024-2027-8731d6b7.jpg",
+        "status": "OK",
+        "total_latency_ms": 15687.97,
+        "download_latency_ms": 973.36,
+        "overhead_ms": 0.36,
+        "total_input_tokens": 4518,
+        "total_output_tokens": 314,
+        "total_tokens": 4832,
+        "total_cost_usd": 0.000433,
+        "error": null,
+        "steps": {
+          "screening": {
+            "latency_ms": 5696.65,
+            "input_tokens": 942,
+            "output_tokens": 96,
+            "total_tokens": 1038,
+            "cost_usd": 9.9e-05,
+            "retry_attempts": 1,
+            "status": "success",
+            "error": null
+          },
+          "extraction": {
+            "latency_ms": 7706.13,
+            "input_tokens": 1204,
+            "output_tokens": 194,
+            "total_tokens": 1398,
+            "cost_usd": 0.000149,
+            "retry_attempts": 1,
+            "status": "success",
+            "error": null
+          },
+          "scope_classification": {
+            "latency_ms": 1311.47,
+            "input_tokens": 2372,
+            "output_tokens": 24,
+            "total_tokens": 2396,
+            "cost_usd": 0.000185,
+            "retry_attempts": 1,
+            "status": "success",
+            "error": null
+          }
+        }
+      },
+      {
+        "url": "https://janyutech.com/wp-content/uploads/2025/06/TUVRheinland-certificate.png",
+        "status": "OK",
+        "total_latency_ms": 14221.68,
+        "download_latency_ms": 4116.11,
+        "overhead_ms": 0.69,
+        "total_input_tokens": 4504,
+        "total_output_tokens": 276,
+        "total_tokens": 4780,
+        "total_cost_usd": 0.000421,
+        "error": null,
+        "steps": {
+          "screening": {
+            "latency_ms": 4782.63,
+            "input_tokens": 942,
+            "output_tokens": 80,
+            "total_tokens": 1022,
+            "cost_usd": 9.5e-05,
+            "retry_attempts": 1,
+            "status": "success",
+            "error": null
+          },
+          "extraction": {
+            "latency_ms": 3317.32,
+            "input_tokens": 1204,
+            "output_tokens": 177,
+            "total_tokens": 1381,
+            "cost_usd": 0.000143,
+            "retry_attempts": 1,
+            "status": "success",
+            "error": null
+          },
+          "scope_classification": {
+            "latency_ms": 2004.93,
+            "input_tokens": 2358,
+            "output_tokens": 19,
+            "total_tokens": 2377,
+            "cost_usd": 0.000183,
+            "retry_attempts": 1,
+            "status": "success",
+            "error": null
+          }
+        }
+      },
+      {
+        "url": "https://gabler-thermoform.com/wp-content/plugins/sitepress-multilingual-cms/res/flags/de.png",
+        "status": "Not a certificate",
+        "total_latency_ms": 1462.83,
+        "download_latency_ms": 681.36,
+        "overhead_ms": 0.18,
+        "total_input_tokens": 942,
+        "total_output_tokens": 63,
+        "total_tokens": 1005,
+        "total_cost_usd": 9e-05,
+        "error": null,
+        "steps": {
+          "screening": {
+            "latency_ms": 781.29,
+            "input_tokens": 942,
+            "output_tokens": 63,
+            "total_tokens": 1005,
+            "cost_usd": 9e-05,
+            "retry_attempts": 1,
+            "status": "success",
+            "error": null
+          },
+          "extraction": null,
+          "scope_classification": null
+        }
+      },
+      {
+        "url": "https://gabler-thermoform.com/wp-content/plugins/sitepress-multilingual-cms/res/flags/en.png",
+        "status": "Not a certificate",
+        "total_latency_ms": 2258.6,
+        "download_latency_ms": 1324.99,
+        "overhead_ms": 0.12,
+        "total_input_tokens": 942,
+        "total_output_tokens": 64,
+        "total_tokens": 1006,
+        "total_cost_usd": 9e-05,
+        "error": null,
+        "steps": {
+          "screening": {
+            "latency_ms": 933.49,
+            "input_tokens": 942,
+            "output_tokens": 64,
+            "total_tokens": 1006,
+            "cost_usd": 9e-05,
+            "retry_attempts": 1,
+            "status": "success",
+            "error": null
+          },
+          "extraction": null,
+          "scope_classification": null
+        }
+      },
+      {
+        "url": "https://www.irondevice.com/images/3513_(%EC%A3%BC)%EC%95%84%EC%9D%B4%EC%96%B8%EB%94%94%EB%B0%94%EC%9D%B4%EC%8A%A4_CPG_14001_EMS_Initial_Cert_En.jpg",
+        "status": "OK",
+        "total_latency_ms": 60162.14,
+        "download_latency_ms": 3636.24,
+        "overhead_ms": 2.06,
+        "total_input_tokens": 4505,
+        "total_output_tokens": 270,
+        "total_tokens": 4775,
+        "total_cost_usd": 0.000419,
+        "error": null,
+        "steps": {
+          "screening": {
+            "latency_ms": 20970.82,
+            "input_tokens": 942,
+            "output_tokens": 88,
+            "total_tokens": 1030,
+            "cost_usd": 9.7e-05,
+            "retry_attempts": 1,
+            "status": "success",
+            "error": null
+          },
+          "extraction": {
+            "latency_ms": 34748.32,
+            "input_tokens": 1204,
+            "output_tokens": 161,
+            "total_tokens": 1365,
+            "cost_usd": 0.000139,
+            "retry_attempts": 1,
+            "status": "success",
+            "error": null
+          },
+          "scope_classification": {
+            "latency_ms": 804.7,
+            "input_tokens": 2359,
+            "output_tokens": 21,
+            "total_tokens": 2380,
+            "cost_usd": 0.000183,
+            "retry_attempts": 1,
+            "status": "success",
+            "error": null
+          }
+        }
+      },
+      {
+        "url": "https://trimblecombustion.com/wp-content/uploads/2019/12/slide-1-1-scaled.jpg",
+        "status": "Not a certificate",
+        "total_latency_ms": 12435.02,
+        "download_latency_ms": 1246.99,
+        "overhead_ms": 0.22,
+        "total_input_tokens": 942,
+        "total_output_tokens": 54,
+        "total_tokens": 996,
+        "total_cost_usd": 8.7e-05,
+        "error": null,
+        "steps": {
+          "screening": {
+            "latency_ms": 11187.81,
+            "input_tokens": 942,
+            "output_tokens": 54,
+            "total_tokens": 996,
+            "cost_usd": 8.7e-05,
+            "retry_attempts": 1,
+            "status": "success",
+            "error": null
+          },
+          "extraction": null,
+          "scope_classification": null
+        }
+      },
+      {
+        "url": "https://www.iem.eu/wp-content/uploads/iem_produkte_atex-kohlezuteiler_002.jpg",
+        "status": "Not a certificate",
+        "total_latency_ms": 4216.43,
+        "download_latency_ms": 718.64,
+        "overhead_ms": 0.1,
+        "total_input_tokens": 942,
+        "total_output_tokens": 60,
+        "total_tokens": 1002,
+        "total_cost_usd": 8.9e-05,
+        "error": null,
+        "steps": {
+          "screening": {
+            "latency_ms": 3497.69,
+            "input_tokens": 942,
+            "output_tokens": 60,
+            "total_tokens": 1002,
+            "cost_usd": 8.9e-05,
+            "retry_attempts": 1,
+            "status": "success",
+            "error": null
+          },
+          "extraction": null,
+          "scope_classification": null
+        }
+      },
+      {
+        "url": "https://www.syatec.it/data/files/original/53/24.03.07__iqnet.pdf",
+        "status": "OK",
+        "total_latency_ms": 38165.58,
+        "download_latency_ms": 1453.24,
+        "overhead_ms": 0.47,
+        "total_input_tokens": 4511,
+        "total_output_tokens": 289,
+        "total_tokens": 4800,
+        "total_cost_usd": 0.000425,
+        "error": null,
+        "steps": {
+          "screening": {
+            "latency_ms": 18658.69,
+            "input_tokens": 942,
+            "output_tokens": 89,
+            "total_tokens": 1031,
+            "cost_usd": 9.7e-05,
+            "retry_attempts": 1,
+            "status": "success",
+            "error": null
+          },
+          "extraction": {
+            "latency_ms": 17386.65,
+            "input_tokens": 1204,
+            "output_tokens": 175,
+            "total_tokens": 1379,
+            "cost_usd": 0.000143,
+            "retry_attempts": 1,
+            "status": "success",
+            "error": null
+          },
+          "scope_classification": {
+            "latency_ms": 666.53,
+            "input_tokens": 2365,
+            "output_tokens": 25,
+            "total_tokens": 2390,
+            "cost_usd": 0.000185,
+            "retry_attempts": 1,
+            "status": "success",
+            "error": null
+          }
+        }
+      },
+      {
+        "url": "https://morrison-chs.com/wp-content/uploads/2024/10/1200px-Flag_of_France.svg.webp",
+        "status": "Not a certificate",
+        "total_latency_ms": 1228.09,
+        "download_latency_ms": 407.04,
+        "overhead_ms": 0.07,
+        "total_input_tokens": 942,
+        "total_output_tokens": 55,
+        "total_tokens": 997,
+        "total_cost_usd": 8.7e-05,
+        "error": null,
+        "steps": {
+          "screening": {
+            "latency_ms": 820.98,
+            "input_tokens": 942,
+            "output_tokens": 55,
+            "total_tokens": 997,
+            "cost_usd": 8.7e-05,
+            "retry_attempts": 1,
+            "status": "success",
+            "error": null
+          },
+          "extraction": null,
+          "scope_classification": null
+        }
+      },
+      {
+        "url": "https://morrison-chs.com/wp-content/uploads/2024/10/change-parts-thumbnail.webp",
+        "status": "Not a certificate",
+        "total_latency_ms": 1910.81,
+        "download_latency_ms": 325.44,
+        "overhead_ms": 0.19,
+        "total_input_tokens": 942,
+        "total_output_tokens": 65,
+        "total_tokens": 1007,
+        "total_cost_usd": 9e-05,
+        "error": null,
+        "steps": {
+          "screening": {
+            "latency_ms": 1585.18,
+            "input_tokens": 942,
+            "output_tokens": 65,
+            "total_tokens": 1007,
+            "cost_usd": 9e-05,
+            "retry_attempts": 1,
+            "status": "success",
+            "error": null
+          },
+          "extraction": null,
+          "scope_classification": null
+        }
+      },
+      {
+        "url": "https://morrison-chs.com/wp-content/uploads/2026/03/Case-study-graphic-Morrison-Rapid-Response-Timeline-300x300.webp",
+        "status": "Not a certificate",
+        "total_latency_ms": 2391.87,
+        "download_latency_ms": 930.79,
+        "overhead_ms": 0.24,
+        "total_input_tokens": 942,
+        "total_output_tokens": 63,
+        "total_tokens": 1005,
+        "total_cost_usd": 9e-05,
+        "error": null,
+        "steps": {
+          "screening": {
+            "latency_ms": 1460.84,
+            "input_tokens": 942,
+            "output_tokens": 63,
+            "total_tokens": 1005,
+            "cost_usd": 9e-05,
+            "retry_attempts": 1,
+            "status": "success",
+            "error": null
+          },
+          "extraction": null,
+          "scope_classification": null
+        }
+      },
+      {
+        "url": "https://www.iem.eu/wp-content/uploads/DJI_0327-e1620311663937-1000x666.jpg",
+        "status": "Not a certificate",
+        "total_latency_ms": 11703.64,
+        "download_latency_ms": 1228.88,
+        "overhead_ms": 0.16,
+        "total_input_tokens": 942,
+        "total_output_tokens": 54,
+        "total_tokens": 996,
+        "total_cost_usd": 8.7e-05,
+        "error": null,
+        "steps": {
+          "screening": {
+            "latency_ms": 10474.6,
+            "input_tokens": 942,
+            "output_tokens": 54,
+            "total_tokens": 996,
+            "cost_usd": 8.7e-05,
+            "retry_attempts": 1,
+            "status": "success",
+            "error": null
+          },
+          "extraction": null,
+          "scope_classification": null
+        }
+      },
+      {
+        "url": "https://www.rhopointinstruments.com/wp-content/uploads/2022/02/iq-flex-20-calibration-certificate.gif",
+        "status": "Not an ISO/IATF certificate",
+        "total_latency_ms": 4938.07,
+        "download_latency_ms": 1598.2,
+        "overhead_ms": 0.3,
+        "total_input_tokens": 942,
+        "total_output_tokens": 71,
+        "total_tokens": 1013,
+        "total_cost_usd": 9.2e-05,
+        "error": null,
+        "steps": {
+          "screening": {
+            "latency_ms": 3339.57,
+            "input_tokens": 942,
+            "output_tokens": 71,
+            "total_tokens": 1013,
+            "cost_usd": 9.2e-05,
+            "retry_attempts": 1,
+            "status": "success",
+            "error": null
+          },
+          "extraction": null,
+          "scope_classification": null
+        }
+      },
+      {
+        "url": "https://www.italdiamant.com/wp-content/uploads/2026/10/Information-GDPR-suppliers-Italdiamant-ENG-2026.pdf",
+        "status": "Not a certificate",
+        "total_latency_ms": 29820.19,
+        "download_latency_ms": 1171.21,
+        "overhead_ms": 0.26,
+        "total_input_tokens": 942,
+        "total_output_tokens": 56,
+        "total_tokens": 998,
+        "total_cost_usd": 8.7e-05,
+        "error": null,
+        "steps": {
+          "screening": {
+            "latency_ms": 28648.72,
+            "input_tokens": 942,
+            "output_tokens": 56,
+            "total_tokens": 998,
+            "cost_usd": 8.7e-05,
+            "retry_attempts": 1,
+            "status": "success",
+            "error": null
+          },
+          "extraction": null,
+          "scope_classification": null
+        }
+      },
+      {
+        "url": "https://adwatec.com/wp-content/uploads/DNV-Certificate.pdf",
+        "status": "Not an ISO/IATF certificate",
+        "total_latency_ms": 5932.75,
+        "download_latency_ms": 1268.59,
+        "overhead_ms": 0.1,
+        "total_input_tokens": 942,
+        "total_output_tokens": 75,
+        "total_tokens": 1017,
+        "total_cost_usd": 9.3e-05,
+        "error": null,
+        "steps": {
+          "screening": {
+            "latency_ms": 4664.06,
+            "input_tokens": 942,
+            "output_tokens": 75,
+            "total_tokens": 1017,
+            "cost_usd": 9.3e-05,
+            "retry_attempts": 1,
+            "status": "success",
+            "error": null
+          },
+          "extraction": null,
+          "scope_classification": null
+        }
+      },
+      {
+        "url": "https://www.tilemachinery.com/wp-content/uploads/2021/06/certificate-200k.png",
+        "status": "Not an ISO/IATF certificate",
+        "total_latency_ms": 10556.14,
+        "download_latency_ms": 2496.93,
+        "overhead_ms": 0.32,
+        "total_input_tokens": 942,
+        "total_output_tokens": 75,
+        "total_tokens": 1017,
+        "total_cost_usd": 9.3e-05,
+        "error": null,
+        "steps": {
+          "screening": {
+            "latency_ms": 8058.89,
+            "input_tokens": 942,
+            "output_tokens": 75,
+            "total_tokens": 1017,
+            "cost_usd": 9.3e-05,
+            "retry_attempts": 1,
+            "status": "success",
+            "error": null
+          },
+          "extraction": null,
+          "scope_classification": null
+        }
+      },
+      {
+        "url": "https://www.saautomation.com/wp-content/uploads/2025/03/iso-9001-2015.png",
+        "status": "OK",
+        "total_latency_ms": 60301.89,
+        "download_latency_ms": 6112.68,
+        "overhead_ms": 1.79,
+        "total_input_tokens": 4516,
+        "total_output_tokens": 303,
+        "total_tokens": 4819,
+        "total_cost_usd": 0.000429,
+        "error": null,
+        "steps": {
+          "screening": {
+            "latency_ms": 27762.54,
+            "input_tokens": 942,
+            "output_tokens": 79,
+            "total_tokens": 1021,
+            "cost_usd": 9.4e-05,
+            "retry_attempts": 1,
+            "status": "success",
+            "error": null
+          },
+          "extraction": {
+            "latency_ms": 25522.79,
+            "input_tokens": 1204,
+            "output_tokens": 199,
+            "total_tokens": 1403,
+            "cost_usd": 0.00015,
+            "retry_attempts": 1,
+            "status": "success",
+            "error": null
+          },
+          "scope_classification": {
+            "latency_ms": 902.09,
+            "input_tokens": 2370,
+            "output_tokens": 25,
+            "total_tokens": 2395,
+            "cost_usd": 0.000185,
+            "retry_attempts": 1,
+            "status": "success",
+            "error": null
+          }
+        }
+      },
+      {
+        "url": "https://www.jungeblodt.de/wp-content/uploads/2023/12/ABS_CERTIFICATE-T2479789.pdf",
+        "status": "Not an ISO/IATF certificate",
+        "total_latency_ms": 31965.64,
+        "download_latency_ms": 3441.87,
+        "overhead_ms": 0.25,
+        "total_input_tokens": 942,
+        "total_output_tokens": 82,
+        "total_tokens": 1024,
+        "total_cost_usd": 9.5e-05,
+        "error": null,
+        "steps": {
+          "screening": {
+            "latency_ms": 28523.52,
+            "input_tokens": 942,
+            "output_tokens": 82,
+            "total_tokens": 1024,
+            "cost_usd": 9.5e-05,
+            "retry_attempts": 1,
+            "status": "success",
+            "error": null
+          },
+          "extraction": null,
+          "scope_classification": null
+        }
+      },
+      {
+        "url": "https://valtaromotori.com/en/certificate/10_CERTIFICATO_C_UR_US_VM_MOTORIAUTOFRENANTI_EN.pdf",
+        "status": "Not an ISO/IATF certificate",
+        "total_latency_ms": 28971.72,
+        "download_latency_ms": 2532.13,
+        "overhead_ms": 0.15,
+        "total_input_tokens": 942,
+        "total_output_tokens": 76,
+        "total_tokens": 1018,
+        "total_cost_usd": 9.3e-05,
+        "error": null,
+        "steps": {
+          "screening": {
+            "latency_ms": 26439.44,
+            "input_tokens": 942,
+            "output_tokens": 76,
+            "total_tokens": 1018,
+            "cost_usd": 9.3e-05,
+            "retry_attempts": 1,
+            "status": "success",
+            "error": null
+          },
+          "extraction": null,
+          "scope_classification": null
+        }
+      },
+      {
+        "url": "https://valtaromotori.com/en/certificate/11_E251310-20180724-CertificateofCompliance%20M_MM_MDP%20en.pdf",
+        "status": "Not an ISO/IATF certificate",
+        "total_latency_ms": 21306.94,
+        "download_latency_ms": 1438.77,
+        "overhead_ms": 0.11,
+        "total_input_tokens": 942,
+        "total_output_tokens": 73,
+        "total_tokens": 1015,
+        "total_cost_usd": 9.3e-05,
+        "error": null,
+        "steps": {
+          "screening": {
+            "latency_ms": 19868.06,
+            "input_tokens": 942,
+            "output_tokens": 73,
+            "total_tokens": 1015,
+            "cost_usd": 9.3e-05,
+            "retry_attempts": 1,
+            "status": "success",
+            "error": null
+          },
+          "extraction": null,
+          "scope_classification": null
+        }
+      },
+      {
+        "url": "https://terasman.ee/wp-content/uploads/2024/11/Welding-Cert_Terasman-OU_2024-1-pdf.jpg",
+        "status": "Not an ISO/IATF certificate",
+        "total_latency_ms": 6015.67,
+        "download_latency_ms": 1480.42,
+        "overhead_ms": 0.15,
+        "total_input_tokens": 942,
+        "total_output_tokens": 75,
+        "total_tokens": 1017,
+        "total_cost_usd": 9.3e-05,
+        "error": null,
+        "steps": {
+          "screening": {
+            "latency_ms": 4535.1,
+            "input_tokens": 942,
+            "output_tokens": 75,
+            "total_tokens": 1017,
+            "cost_usd": 9.3e-05,
+            "retry_attempts": 1,
+            "status": "success",
+            "error": null
+          },
+          "extraction": null,
+          "scope_classification": null
+        }
+      },
+      {
+        "url": "https://www.austromex.com.mx/austromex/media/certifications/AUSTROMEX_oSa_2026.pdf",
+        "status": "Not an ISO/IATF certificate",
+        "total_latency_ms": 16827.94,
+        "download_latency_ms": 2352.9,
+        "overhead_ms": 0.12,
+        "total_input_tokens": 942,
+        "total_output_tokens": 75,
+        "total_tokens": 1017,
+        "total_cost_usd": 9.3e-05,
+        "error": null,
+        "steps": {
+          "screening": {
+            "latency_ms": 14474.92,
+            "input_tokens": 942,
+            "output_tokens": 75,
+            "total_tokens": 1017,
+            "cost_usd": 9.3e-05,
+            "retry_attempts": 1,
+            "status": "success",
+            "error": null
+          },
+          "extraction": null,
+          "scope_classification": null
+        }
+      },
+      {
+        "url": "https://www.kemtec.nl/wp-content/uploads/sites/38/2026/05/Certificaat_K-0210454-2_VCA_KEMTEC-B.V.pdf",
+        "status": "Not an ISO/IATF certificate",
+        "total_latency_ms": 18427.71,
+        "download_latency_ms": 1973.1,
+        "overhead_ms": 0.08,
+        "total_input_tokens": 942,
+        "total_output_tokens": 82,
+        "total_tokens": 1024,
+        "total_cost_usd": 9.5e-05,
+        "error": null,
+        "steps": {
+          "screening": {
+            "latency_ms": 16454.53,
+            "input_tokens": 942,
+            "output_tokens": 82,
+            "total_tokens": 1024,
+            "cost_usd": 9.5e-05,
+            "retry_attempts": 1,
+            "status": "success",
+            "error": null
+          },
+          "extraction": null,
+          "scope_classification": null
+        }
+      },
+      {
+        "url": "https://terasman.ee/wp-content/uploads/2024/11/Welding-Cert_Terasman-OU_2024-1.pdf",
+        "status": "Not an ISO/IATF certificate",
+        "total_latency_ms": 35458.17,
+        "download_latency_ms": 3001.09,
+        "overhead_ms": 0.71,
+        "total_input_tokens": 942,
+        "total_output_tokens": 80,
+        "total_tokens": 1022,
+        "total_cost_usd": 9.5e-05,
+        "error": null,
+        "steps": {
+          "screening": {
+            "latency_ms": 32456.37,
+            "input_tokens": 942,
+            "output_tokens": 80,
+            "total_tokens": 1022,
+            "cost_usd": 9.5e-05,
+            "retry_attempts": 1,
+            "status": "success",
+            "error": null
+          },
+          "extraction": null,
+          "scope_classification": null
+        }
+      },
+      {
+        "url": "https://www.iem.eu/wp-content/uploads/IEM-Kastl-2.png",
+        "status": "Not a certificate",
+        "total_latency_ms": 74820.75,
+        "download_latency_ms": 4565.03,
+        "overhead_ms": 0.49,
+        "total_input_tokens": 942,
+        "total_output_tokens": 56,
+        "total_tokens": 998,
+        "total_cost_usd": 8.7e-05,
+        "error": null,
+        "steps": {
+          "screening": {
+            "latency_ms": 70255.23,
+            "input_tokens": 942,
+            "output_tokens": 56,
+            "total_tokens": 998,
+            "cost_usd": 8.7e-05,
+            "retry_attempts": 1,
+            "status": "success",
+            "error": null
+          },
+          "extraction": null,
+          "scope_classification": null
+        }
+      },
+      {
+        "url": "https://jc-valves.com/wp-content/uploads/2026/03/ISO-14001-JC_eng_2026_29.pdf",
+        "status": "OK",
+        "total_latency_ms": 202119.53,
+        "download_latency_ms": 9297.81,
+        "overhead_ms": 0.73,
+        "total_input_tokens": 4521,
+        "total_output_tokens": 317,
+        "total_tokens": 4838,
+        "total_cost_usd": 0.000434,
+        "error": null,
+        "steps": {
+          "screening": {
+            "latency_ms": 61923.75,
+            "input_tokens": 942,
+            "output_tokens": 81,
+            "total_tokens": 1023,
+            "cost_usd": 9.5e-05,
+            "retry_attempts": 1,
+            "status": "success",
+            "error": null
+          },
+          "extraction": {
+            "latency_ms": 129690.08,
+            "input_tokens": 1204,
+            "output_tokens": 203,
+            "total_tokens": 1407,
+            "cost_usd": 0.000151,
+            "retry_attempts": 1,
+            "status": "success",
+            "error": null
+          },
+          "scope_classification": {
+            "latency_ms": 1207.16,
+            "input_tokens": 2375,
+            "output_tokens": 33,
+            "total_tokens": 2408,
+            "cost_usd": 0.000188,
+            "retry_attempts": 1,
+            "status": "success",
+            "error": null
+          }
+        }
+      },
+      {
+        "url": "https://www.kpc.co.in/wp-content/uploads/2025/01/BIS-Certificate-IS-16172-2023.webp",
+        "status": "Not an ISO/IATF certificate",
+        "total_latency_ms": 57684.73,
+        "download_latency_ms": 2874.06,
+        "overhead_ms": 0.14,
+        "total_input_tokens": 942,
+        "total_output_tokens": 75,
+        "total_tokens": 1017,
+        "total_cost_usd": 9.3e-05,
+        "error": null,
+        "steps": {
+          "screening": {
+            "latency_ms": 54810.53,
+            "input_tokens": 942,
+            "output_tokens": 75,
+            "total_tokens": 1017,
+            "cost_usd": 9.3e-05,
+            "retry_attempts": 1,
+            "status": "success",
+            "error": null
+          },
+          "extraction": null,
+          "scope_classification": null
+        }
+      },
+      {
+        "url": "https://www.kustec.at/media/kustec_r_eng_45001_25.pdf",
+        "status": "OK",
+        "total_latency_ms": 100818.91,
+        "download_latency_ms": 3892.53,
+        "overhead_ms": 1.5,
+        "total_input_tokens": 2146,
+        "total_output_tokens": 271,
+        "total_tokens": 2417,
+        "total_cost_usd": 0.000242,
+        "error": null,
+        "steps": {
+          "screening": {
+            "latency_ms": 54820.8,
+            "input_tokens": 942,
+            "output_tokens": 101,
+            "total_tokens": 1043,
+            "cost_usd": 0.000101,
+            "retry_attempts": 1,
+            "status": "success",
+            "error": null
+          },
+          "extraction": {
+            "latency_ms": 39491.78,
+            "input_tokens": 1204,
+            "output_tokens": 170,
+            "total_tokens": 1374,
+            "cost_usd": 0.000141,
+            "retry_attempts": 1,
+            "status": "success",
+            "error": null
+          },
+          "scope_classification": {
+            "latency_ms": 2612.3,
+            "input_tokens": 0,
+            "output_tokens": 0,
+            "total_tokens": 0,
+            "cost_usd": 0.0,
+            "retry_attempts": 3,
+            "status": "error",
+            "error": null
+          }
+        }
+      },
+      {
+        "url": "https://www.irondevice.com/images/3513_(%EC%A3%BC)%EC%95%84%EC%9D%B4%EC%96%B8%EB%94%94%EB%B0%94%EC%9D%B4%EC%8A%A4_CPG_9001_QMS_ReCert_En.jpg",
+        "status": "OK",
+        "total_latency_ms": 152332.59,
+        "download_latency_ms": 21949.96,
+        "overhead_ms": 2.04,
+        "total_input_tokens": 4505,
+        "total_output_tokens": 272,
+        "total_tokens": 4777,
+        "total_cost_usd": 0.000419,
+        "error": null,
+        "steps": {
+          "screening": {
+            "latency_ms": 104353.05,
+            "input_tokens": 942,
+            "output_tokens": 89,
+            "total_tokens": 1031,
+            "cost_usd": 9.7e-05,
+            "retry_attempts": 1,
+            "status": "success",
+            "error": null
+          },
+          "extraction": {
+            "latency_ms": 25243.46,
+            "input_tokens": 1204,
+            "output_tokens": 162,
+            "total_tokens": 1366,
+            "cost_usd": 0.000139,
+            "retry_attempts": 1,
+            "status": "success",
+            "error": null
+          },
+          "scope_classification": {
+            "latency_ms": 784.08,
+            "input_tokens": 2359,
+            "output_tokens": 21,
+            "total_tokens": 2380,
+            "cost_usd": 0.000183,
+            "retry_attempts": 1,
+            "status": "success",
+            "error": null
+          }
+        }
+      },
+      {
+        "url": "https://www.kustec.at/media/kustec_r_eng_qm_25.pdf",
+        "status": "OK",
+        "total_latency_ms": 115106.41,
+        "download_latency_ms": 7308.49,
+        "overhead_ms": 0.78,
+        "total_input_tokens": 2146,
+        "total_output_tokens": 256,
+        "total_tokens": 2402,
+        "total_cost_usd": 0.000237,
+        "error": null,
+        "steps": {
+          "screening": {
+            "latency_ms": 79443.96,
+            "input_tokens": 942,
+            "output_tokens": 86,
+            "total_tokens": 1028,
+            "cost_usd": 9.6e-05,
+            "retry_attempts": 1,
+            "status": "success",
+            "error": null
+          },
+          "extraction": {
+            "latency_ms": 26435.59,
+            "input_tokens": 1204,
+            "output_tokens": 170,
+            "total_tokens": 1374,
+            "cost_usd": 0.000141,
+            "retry_attempts": 1,
+            "status": "success",
+            "error": null
+          },
+          "scope_classification": {
+            "latency_ms": 1917.59,
+            "input_tokens": 0,
+            "output_tokens": 0,
+            "total_tokens": 0,
+            "cost_usd": 0.0,
+            "retry_attempts": 3,
+            "status": "error",
+            "error": null
+          }
+        }
+      },
+      {
+        "url": "https://www.beekaycorp.com/images/ucertificate.pdf",
+        "status": "Not an ISO/IATF certificate",
+        "total_latency_ms": 81211.31,
+        "download_latency_ms": 69290.45,
+        "overhead_ms": 0.3,
+        "total_input_tokens": 942,
+        "total_output_tokens": 77,
+        "total_tokens": 1019,
+        "total_cost_usd": 9.4e-05,
+        "error": null,
+        "steps": {
+          "screening": {
+            "latency_ms": 11920.56,
+            "input_tokens": 942,
+            "output_tokens": 77,
+            "total_tokens": 1019,
+            "cost_usd": 9.4e-05,
+            "retry_attempts": 1,
+            "status": "success",
+            "error": null
+          },
+          "extraction": null,
+          "scope_classification": null
+        }
+      }
+    ],
+    "verification_summary": {
+      "total_cases": 70,
+      "approved_cases": 17,
+      "need_review_cases": 6,
+      "rejected_cases": 47,
+      "approval_rate_percent": 24.29,
+      "avg_score": 32.21,
+      "rule_violation_counts": {
+        "Rule 1": 47,
+        "Rule 3": 46,
+        "Rule 5": 44,
+        "Rule 7": 189,
+        "Rule 4": 3,
+        "Rule 2": 5
+      }
+    }
+  },
+  "run 2": {
+    "run_timestamp": "2026-10-25 10:24:05",
+    "model": "gemini-2.5-flash-lite",
+    "summary": {
+      "total_urls": 70,
+      "successful_urls": 25,
+      "failed_urls": 45,
+      "total_latency_ms": 4373439.59,
+      "total_latency_seconds": 4373.44,
+      "avg_latency_per_url_ms": 62477.71,
+      "total_input_tokens": 154794,
+      "total_output_tokens": 10824,
+      "total_tokens": 165618,
+      "total_cost_usd": 0.014856,
+      "steps_breakdown": {
+        "download": {
+          "count": 70,
+          "total_latency_ms": 469648.84,
+          "avg_latency_ms": 6709.27
+        },
+        "screening": {
+          "count": 67,
+          "total_latency_ms": 3036530.52,
+          "avg_latency_ms": 45321.35,
+          "total_input_tokens": 63114,
+          "total_output_tokens": 5303,
+          "total_tokens": 68417,
+          "total_cost_usd": 0.006323
+        },
+        "extraction": {
+          "count": 27,
+          "total_latency_ms": 750217.86,
+          "avg_latency_ms": 27785.85,
+          "total_input_tokens": 32508,
+          "total_output_tokens": 4907,
+          "total_tokens": 37415,
+          "total_cost_usd": 0.003911
+        },
+        "scope_classification": {
+          "count": 27,
+          "total_latency_ms": 116943.04,
+          "avg_latency_ms": 4331.22,
+          "total_input_tokens": 59172,
+          "total_output_tokens": 614,
+          "total_tokens": 59786,
+          "total_cost_usd": 0.004622
+        }
+      }
+    },
+    "per_url_details": [
+      {
+        "url": "https://www.western.it/wp-content/uploads/2019/05/Certificato-EN-1090-1.pdf",
+        "status": "did not open need review",
+        "total_latency_ms": 847.44,
+        "download_latency_ms": 847.42,
+        "overhead_ms": 0.02,
+        "total_input_tokens": 0,
+        "total_output_tokens": 0,
+        "total_tokens": 0,
+        "total_cost_usd": 0,
+        "error": "did not open need review",
+        "steps": {
+          "screening": null,
+          "extraction": null,
+          "scope_classification": null
+        }
+      },
+      {
+        "url": "https://www.western.it/wp-content/uploads/2019/07/g16-1-150x150.png",
+        "status": "did not open need review",
+        "total_latency_ms": 874.01,
+        "download_latency_ms": 873.99,
+        "overhead_ms": 0.02,
+        "total_input_tokens": 0,
+        "total_output_tokens": 0,
+        "total_tokens": 0,
+        "total_cost_usd": 0,
+        "error": "did not open need review",
+        "steps": {
+          "screening": null,
+          "extraction": null,
+          "scope_classification": null
+        }
+      },
+      {
+        "url": "http://www.lcd.com.tw/uploadfiles/2020/09/202009021345224522.jpg",
+        "status": "did not open need review",
+        "total_latency_ms": 3416.49,
+        "download_latency_ms": 3416.48,
+        "overhead_ms": 0.01,
+        "total_input_tokens": 0,
+        "total_output_tokens": 0,
+        "total_tokens": 0,
+        "total_cost_usd": 0,
+        "error": "did not open need review",
+        "steps": {
+          "screening": null,
+          "extraction": null,
+          "scope_classification": null
+        }
+      },
+      {
+        "url": "https://static.wixstatic.com/media/789e0a_e259347628c242a59192b60b20a4425b~mv2.png/v1/fill/w_49,h_4,al_c,q_85,usm_0.66_1.00_0.01,blur_2,enc_avif,quality_auto/02a%20ISO%20Pending%20Main.png",
+        "status": "Not a certificate",
+        "total_latency_ms": 24932.6,
+        "download_latency_ms": 2122.69,
+        "overhead_ms": 0.55,
+        "total_input_tokens": 942,
+        "total_output_tokens": 69,
+        "total_tokens": 1011,
+        "total_cost_usd": 9.1e-05,
+        "error": null,
+        "steps": {
+          "screening": {
+            "latency_ms": 22809.36,
+            "input_tokens": 942,
+            "output_tokens": 69,
+            "total_tokens": 1011,
+            "cost_usd": 9.1e-05,
+            "retry_attempts": 1,
+            "status": "success",
+            "error": null
+          },
+          "extraction": null,
+          "scope_classification": null
+        }
+      },
+      {
+        "url": "https://static.wixstatic.com/media/789e0a_61967671dca14c2c801b2ff9f59589dd~mv2.png/v1/fill/w_49,h_4,al_c,q_85,usm_0.66_1.00_0.01,blur_2,enc_avif,quality_auto/02b%20ISO%20Pending%20Hover.png",
+        "status": "Not a certificate",
+        "total_latency_ms": 25104.17,
+        "download_latency_ms": 1457.79,
+        "overhead_ms": 0.11,
+        "total_input_tokens": 942,
+        "total_output_tokens": 61,
+        "total_tokens": 1003,
+        "total_cost_usd": 8.9e-05,
+        "error": null,
+        "steps": {
+          "screening": {
+            "latency_ms": 23646.27,
+            "input_tokens": 942,
+            "output_tokens": 61,
+            "total_tokens": 1003,
+            "cost_usd": 8.9e-05,
+            "retry_attempts": 1,
+            "status": "success",
+            "error": null
+          },
+          "extraction": null,
+          "scope_classification": null
+        }
+      },
+      {
+        "url": "https://www.bearpwr.com/wp-content/uploads/2022/12/CB_Certificate_Medical.pdf",
+        "status": "Not an ISO/IATF certificate",
+        "total_latency_ms": 26814.8,
+        "download_latency_ms": 2965.98,
+        "overhead_ms": 0.26,
+        "total_input_tokens": 942,
+        "total_output_tokens": 87,
+        "total_tokens": 1029,
+        "total_cost_usd": 9.7e-05,
+        "error": null,
+        "steps": {
+          "screening": {
+            "latency_ms": 23848.56,
+            "input_tokens": 942,
+            "output_tokens": 87,
+            "total_tokens": 1029,
+            "cost_usd": 9.7e-05,
+            "retry_attempts": 1,
+            "status": "success",
+            "error": null
+          },
+          "extraction": null,
+          "scope_classification": null
+        }
+      },
+      {
+        "url": "http://www.cilinc.com/docs/HUBZONE%20Certification%20Approval%20lookup.pdf",
+        "status": "Not an ISO/IATF certificate",
+        "total_latency_ms": 26807.81,
+        "download_latency_ms": 3364.88,
+        "overhead_ms": 0.14,
+        "total_input_tokens": 942,
+        "total_output_tokens": 68,
+        "total_tokens": 1010,
+        "total_cost_usd": 9.1e-05,
+        "error": null,
+        "steps": {
+          "screening": {
+            "latency_ms": 23442.79,
+            "input_tokens": 942,
+            "output_tokens": 68,
+            "total_tokens": 1010,
+            "cost_usd": 9.1e-05,
+            "retry_attempts": 1,
+            "status": "success",
+            "error": null
+          },
+          "extraction": null,
+          "scope_classification": null
+        }
+      },
+      {
+        "url": "https://www.nexcopy.com/wp-content/uploads/web_2026/nexcopy-incorporated-document-seal.webp",
+        "status": "Not an ISO/IATF certificate",
+        "total_latency_ms": 29045.47,
+        "download_latency_ms": 2952.13,
+        "overhead_ms": 0.21,
+        "total_input_tokens": 942,
+        "total_output_tokens": 72,
+        "total_tokens": 1014,
+        "total_cost_usd": 9.2e-05,
+        "error": null,
+        "steps": {
+          "screening": {
+            "latency_ms": 26093.13,
+            "input_tokens": 942,
+            "output_tokens": 72,
+            "total_tokens": 1014,
+            "cost_usd": 9.2e-05,
+            "retry_attempts": 1,
+            "status": "success",
+            "error": null
+          },
+          "extraction": null,
+          "scope_classification": null
+        }
+      },
+      {
+        "url": "https://www.canningconveyor.co.uk/files/document/8/1552669690_WELDINGCERTIFICATE.pdf",
+        "status": "Not an ISO/IATF certificate",
+        "total_latency_ms": 6860.84,
+        "download_latency_ms": 3122.83,
+        "overhead_ms": 0.21,
+        "total_input_tokens": 942,
+        "total_output_tokens": 69,
+        "total_tokens": 1011,
+        "total_cost_usd": 9.1e-05,
+        "error": null,
+        "steps": {
+          "screening": {
+            "latency_ms": 3737.8,
+            "input_tokens": 942,
+            "output_tokens": 69,
+            "total_tokens": 1011,
+            "cost_usd": 9.1e-05,
+            "retry_attempts": 1,
+            "status": "success",
+            "error": null
+          },
+          "extraction": null,
+          "scope_classification": null
+        }
+      },
+      {
+        "url": "https://www.bearpwr.com/wp-content/uploads/2022/12/NTRL_Certificate_Medical.pdf",
+        "status": "Not an ISO/IATF certificate",
+        "total_latency_ms": 33014.8,
+        "download_latency_ms": 2424.42,
+        "overhead_ms": 0.42,
+        "total_input_tokens": 942,
+        "total_output_tokens": 113,
+        "total_tokens": 1055,
+        "total_cost_usd": 0.000105,
+        "error": null,
+        "steps": {
+          "screening": {
+            "latency_ms": 30589.96,
+            "input_tokens": 942,
+            "output_tokens": 113,
+            "total_tokens": 1055,
+            "cost_usd": 0.000105,
+            "retry_attempts": 1,
+            "status": "success",
+            "error": null
+          },
+          "extraction": null,
+          "scope_classification": null
+        }
+      },
+      {
+        "url": "https://www.italdiamant.com/wp-content/uploads/2023/06/white-net-world.png",
+        "status": "Not a certificate",
+        "total_latency_ms": 32642.91,
+        "download_latency_ms": 2296.06,
+        "overhead_ms": 0.13,
+        "total_input_tokens": 942,
+        "total_output_tokens": 62,
+        "total_tokens": 1004,
+        "total_cost_usd": 8.9e-05,
+        "error": null,
+        "steps": {
+          "screening": {
+            "latency_ms": 30346.72,
+            "input_tokens": 942,
+            "output_tokens": 62,
+            "total_tokens": 1004,
+            "cost_usd": 8.9e-05,
+            "retry_attempts": 1,
+            "status": "success",
+            "error": null
+          },
+          "extraction": null,
+          "scope_classification": null
+        }
+      },
+      {
+        "url": "https://www.cnc-koebler.de/wp-content/uploads/2025/05/SCR-20250527-jolf-725x1024.jpg",
+        "status": "OK",
+        "total_latency_ms": 8533.88,
+        "download_latency_ms": 1707.59,
+        "overhead_ms": 1.69,
+        "total_input_tokens": 4521,
+        "total_output_tokens": 310,
+        "total_tokens": 4831,
+        "total_cost_usd": 0.000432,
+        "error": null,
+        "steps": {
+          "screening": {
+            "latency_ms": 3611.45,
+            "input_tokens": 942,
+            "output_tokens": 94,
+            "total_tokens": 1036,
+            "cost_usd": 9.9e-05,
+            "retry_attempts": 1,
+            "status": "success",
+            "error": null
+          },
+          "extraction": {
+            "latency_ms": 2353.25,
+            "input_tokens": 1204,
+            "output_tokens": 196,
+            "total_tokens": 1400,
+            "cost_usd": 0.000149,
+            "retry_attempts": 1,
+            "status": "success",
+            "error": null
+          },
+          "scope_classification": {
+            "latency_ms": 859.9,
+            "input_tokens": 2375,
+            "output_tokens": 20,
+            "total_tokens": 2395,
+            "cost_usd": 0.000184,
+            "retry_attempts": 1,
+            "status": "success",
+            "error": null
+          }
+        }
+      },
+      {
+        "url": "https://www.bearpwr.com/wp-content/uploads/2022/12/UK_Certificate_Industrial.pdf",
+        "status": "Not an ISO/IATF certificate",
+        "total_latency_ms": 39832.64,
+        "download_latency_ms": 2674.91,
+        "overhead_ms": 0.24,
+        "total_input_tokens": 942,
+        "total_output_tokens": 73,
+        "total_tokens": 1015,
+        "total_cost_usd": 9.3e-05,
+        "error": null,
+        "steps": {
+          "screening": {
+            "latency_ms": 37157.49,
+            "input_tokens": 942,
+            "output_tokens": 73,
+            "total_tokens": 1015,
+            "cost_usd": 9.3e-05,
+            "retry_attempts": 1,
+            "status": "success",
+            "error": null
+          },
+          "extraction": null,
+          "scope_classification": null
+        }
+      },
+      {
+        "url": "http://www.cilinc.com/docs/400-Canal-St-2023_Certificate_Nadcap_Aerospace_Quality_System_audit.pdf",
+        "status": "Not an ISO/IATF certificate",
+        "total_latency_ms": 44494.29,
+        "download_latency_ms": 4578.39,
+        "overhead_ms": 0.31,
+        "total_input_tokens": 942,
+        "total_output_tokens": 78,
+        "total_tokens": 1020,
+        "total_cost_usd": 9.4e-05,
+        "error": null,
+        "steps": {
+          "screening": {
+            "latency_ms": 39915.59,
+            "input_tokens": 942,
+            "output_tokens": 78,
+            "total_tokens": 1020,
+            "cost_usd": 9.4e-05,
+            "retry_attempts": 1,
+            "status": "success",
+            "error": null
+          },
+          "extraction": null,
+          "scope_classification": null
+        }
+      },
+      {
+        "url": "https://www.teleste.com/wp-content/uploads/2024/06/certificates-card-960x540.jpg",
+        "status": "Not a certificate",
+        "total_latency_ms": 52301.72,
+        "download_latency_ms": 22445.36,
+        "overhead_ms": 0.2,
+        "total_input_tokens": 942,
+        "total_output_tokens": 65,
+        "total_tokens": 1007,
+        "total_cost_usd": 9e-05,
+        "error": null,
+        "steps": {
+          "screening": {
+            "latency_ms": 29856.16,
+            "input_tokens": 942,
+            "output_tokens": 65,
+            "total_tokens": 1007,
+            "cost_usd": 9e-05,
+            "retry_attempts": 1,
+            "status": "success",
+            "error": null
+          },
+          "extraction": null,
+          "scope_classification": null
+        }
+      },
+      {
+        "url": "https://www.canningconveyor.co.uk/files/document/203/1777463891_AVETTATEnureAnniversaryCertificate2025CanningConveyorCoLtd.pdf",
+        "status": "Not an ISO/IATF certificate",
+        "total_latency_ms": 27652.34,
+        "download_latency_ms": 12558.73,
+        "overhead_ms": 0.25,
+        "total_input_tokens": 942,
+        "total_output_tokens": 76,
+        "total_tokens": 1018,
+        "total_cost_usd": 9.3e-05,
+        "error": null,
+        "steps": {
+          "screening": {
+            "latency_ms": 15093.36,
+            "input_tokens": 942,
+            "output_tokens": 76,
+            "total_tokens": 1018,
+            "cost_usd": 9.3e-05,
+            "retry_attempts": 1,
+            "status": "success",
+            "error": null
+          },
+          "extraction": null,
+          "scope_classification": null
+        }
+      },
+      {
+        "url": "https://sotekengineering.com/wp-content/uploads/2025/11/Cert-250709-9001.pdf",
+        "status": "OK",
+        "total_latency_ms": 26962.29,
+        "download_latency_ms": 1470.63,
+        "overhead_ms": 3.74,
+        "total_input_tokens": 4500,
+        "total_output_tokens": 271,
+        "total_tokens": 4771,
+        "total_cost_usd": 0.000419,
+        "error": null,
+        "steps": {
+          "screening": {
+            "latency_ms": 7382.94,
+            "input_tokens": 942,
+            "output_tokens": 88,
+            "total_tokens": 1030,
+            "cost_usd": 9.7e-05,
+            "retry_attempts": 1,
+            "status": "success",
+            "error": null
+          },
+          "extraction": {
+            "latency_ms": 17365.55,
+            "input_tokens": 1204,
+            "output_tokens": 163,
+            "total_tokens": 1367,
+            "cost_usd": 0.000139,
+            "retry_attempts": 1,
+            "status": "success",
+            "error": null
+          },
+          "scope_classification": {
+            "latency_ms": 739.43,
+            "input_tokens": 2354,
+            "output_tokens": 20,
+            "total_tokens": 2374,
+            "cost_usd": 0.000183,
+            "retry_attempts": 1,
+            "status": "success",
+            "error": null
+          }
+        }
+      },
+      {
+        "url": "https://www.dekielectronics.com/storage/common-section/ul-certificate-070224031441.pdf",
+        "status": "Not an ISO/IATF certificate",
+        "total_latency_ms": 62281.87,
+        "download_latency_ms": 3371.15,
+        "overhead_ms": 0.16,
+        "total_input_tokens": 942,
+        "total_output_tokens": 94,
+        "total_tokens": 1036,
+        "total_cost_usd": 9.9e-05,
+        "error": null,
+        "steps": {
+          "screening": {
+            "latency_ms": 58910.56,
+            "input_tokens": 942,
+            "output_tokens": 94,
+            "total_tokens": 1036,
+            "cost_usd": 9.9e-05,
+            "retry_attempts": 1,
+            "status": "success",
+            "error": null
+          },
+          "extraction": null,
+          "scope_classification": null
+        }
+      },
+      {
+        "url": "https://i0.wp.com/fibercomposite.com/wp-content/uploads/2023/07/ISO-9001_2015-ANAB-blak-scaled.jpg?fit=800%2C435&ssl=1",
+        "status": "Partial: missing Address, Issued Date, Expiration Date",
+        "total_latency_ms": 28557.7,
+        "download_latency_ms": 1043.02,
+        "overhead_ms": 0.51,
+        "total_input_tokens": 4501,
+        "total_output_tokens": 199,
+        "total_tokens": 4700,
+        "total_cost_usd": 0.000398,
+        "error": null,
+        "steps": {
+          "screening": {
+            "latency_ms": 1455.58,
+            "input_tokens": 942,
+            "output_tokens": 84,
+            "total_tokens": 1026,
+            "cost_usd": 9.6e-05,
+            "retry_attempts": 1,
+            "status": "success",
+            "error": null
+          },
+          "extraction": {
+            "latency_ms": 25407.84,
+            "input_tokens": 1204,
+            "output_tokens": 98,
+            "total_tokens": 1302,
+            "cost_usd": 0.00012,
+            "retry_attempts": 1,
+            "status": "success",
+            "error": null
+          },
+          "scope_classification": {
+            "latency_ms": 650.75,
+            "input_tokens": 2355,
+            "output_tokens": 17,
+            "total_tokens": 2372,
+            "cost_usd": 0.000182,
+            "retry_attempts": 1,
+            "status": "success",
+            "error": null
+          }
+        }
+      },
+      {
+        "url": "http://www.cilinc.com/docs/ITAR_cert_2024_without_code.pdf",
+        "status": "Not an ISO/IATF certificate",
+        "total_latency_ms": 64774.46,
+        "download_latency_ms": 3695.35,
+        "overhead_ms": 0.09,
+        "total_input_tokens": 942,
+        "total_output_tokens": 84,
+        "total_tokens": 1026,
+        "total_cost_usd": 9.6e-05,
+        "error": null,
+        "steps": {
+          "screening": {
+            "latency_ms": 61079.02,
+            "input_tokens": 942,
+            "output_tokens": 84,
+            "total_tokens": 1026,
+            "cost_usd": 9.6e-05,
+            "retry_attempts": 1,
+            "status": "success",
+            "error": null
+          },
+          "extraction": null,
+          "scope_classification": null
+        }
+      },
+      {
+        "url": "https://www.nexcopy.com/wp-content/uploads/2024/12/SD_Duplicators_PC.pdf",
+        "status": "Not a certificate",
+        "total_latency_ms": 70560.96,
+        "download_latency_ms": 4319.67,
+        "overhead_ms": 0.67,
+        "total_input_tokens": 942,
+        "total_output_tokens": 60,
+        "total_tokens": 1002,
+        "total_cost_usd": 8.9e-05,
+        "error": null,
+        "steps": {
+          "screening": {
+            "latency_ms": 66240.62,
+            "input_tokens": 942,
+            "output_tokens": 60,
+            "total_tokens": 1002,
+            "cost_usd": 8.9e-05,
+            "retry_attempts": 1,
+            "status": "success",
+            "error": null
+          },
+          "extraction": null,
+          "scope_classification": null
+        }
+      },
+      {
+        "url": "https://www.nexcopy.com/wp-content/uploads/2024/12/CA-Prop65_2022.pdf",
+        "status": "Not a certificate",
+        "total_latency_ms": 71131.23,
+        "download_latency_ms": 7062.57,
+        "overhead_ms": 0.28,
+        "total_input_tokens": 942,
+        "total_output_tokens": 58,
+        "total_tokens": 1000,
+        "total_cost_usd": 8.8e-05,
+        "error": null,
+        "steps": {
+          "screening": {
+            "latency_ms": 64068.38,
+            "input_tokens": 942,
+            "output_tokens": 58,
+            "total_tokens": 1000,
+            "cost_usd": 8.8e-05,
+            "retry_attempts": 1,
+            "status": "success",
+            "error": null
+          },
+          "extraction": null,
+          "scope_classification": null
+        }
+      },
+      {
+        "url": "https://kvisgaard.dk/wp-content/uploads/2022/06/ISO-9001-2015-Certifikat-2021-11-17-UK.pdf",
+        "status": "OK",
+        "total_latency_ms": 49876.91,
+        "download_latency_ms": 4588.17,
+        "overhead_ms": 0.46,
+        "total_input_tokens": 4506,
+        "total_output_tokens": 272,
+        "total_tokens": 4778,
+        "total_cost_usd": 0.00042,
+        "error": null,
+        "steps": {
+          "screening": {
+            "latency_ms": 24695.24,
+            "input_tokens": 942,
+            "output_tokens": 87,
+            "total_tokens": 1029,
+            "cost_usd": 9.7e-05,
+            "retry_attempts": 1,
+            "status": "success",
+            "error": null
+          },
+          "extraction": {
+            "latency_ms": 20071.85,
+            "input_tokens": 1204,
+            "output_tokens": 161,
+            "total_tokens": 1365,
+            "cost_usd": 0.000139,
+            "retry_attempts": 1,
+            "status": "success",
+            "error": null
+          },
+          "scope_classification": {
+            "latency_ms": 521.19,
+            "input_tokens": 2360,
+            "output_tokens": 24,
+            "total_tokens": 2384,
+            "cost_usd": 0.000184,
+            "retry_attempts": 1,
+            "status": "success",
+            "error": null
+          }
+        }
+      },
+      {
+        "url": "https://www.dekielectronics.com/storage/common-section/Deki-IATF-Digital-certificates-2-Final-_page-0001-06062404500653.jpg",
+        "status": "OK",
+        "total_latency_ms": 42076.58,
+        "download_latency_ms": 2619.37,
+        "overhead_ms": 0.64,
+        "total_input_tokens": 4505,
+        "total_output_tokens": 285,
+        "total_tokens": 4790,
+        "total_cost_usd": 0.000423,
+        "error": null,
+        "steps": {
+          "screening": {
+            "latency_ms": 20312.51,
+            "input_tokens": 942,
+            "output_tokens": 89,
+            "total_tokens": 1031,
+            "cost_usd": 9.7e-05,
+            "retry_attempts": 1,
+            "status": "success",
+            "error": null
+          },
+          "extraction": {
+            "latency_ms": 18346.95,
+            "input_tokens": 1204,
+            "output_tokens": 175,
+            "total_tokens": 1379,
+            "cost_usd": 0.000143,
+            "retry_attempts": 1,
+            "status": "success",
+            "error": null
+          },
+          "scope_classification": {
+            "latency_ms": 797.11,
+            "input_tokens": 2359,
+            "output_tokens": 21,
+            "total_tokens": 2380,
+            "cost_usd": 0.000183,
+            "retry_attempts": 1,
+            "status": "success",
+            "error": null
+          }
+        }
+      },
+      {
+        "url": "https://www.dekielectronics.com/storage/common-section/Deki-qms-RVA-Final-Certificate-2-Final_page-0001-06062404531799.jpg",
+        "status": "OK",
+        "total_latency_ms": 59559.4,
+        "download_latency_ms": 3398.7,
+        "overhead_ms": 1.69,
+        "total_input_tokens": 4506,
+        "total_output_tokens": 290,
+        "total_tokens": 4796,
+        "total_cost_usd": 0.000424,
+        "error": null,
+        "steps": {
+          "screening": {
+            "latency_ms": 30255.01,
+            "input_tokens": 942,
+            "output_tokens": 92,
+            "total_tokens": 1034,
+            "cost_usd": 9.8e-05,
+            "retry_attempts": 1,
+            "status": "success",
+            "error": null
+          },
+          "extraction": {
+            "latency_ms": 25358.42,
+            "input_tokens": 1204,
+            "output_tokens": 177,
+            "total_tokens": 1381,
+            "cost_usd": 0.000143,
+            "retry_attempts": 1,
+            "status": "success",
+            "error": null
+          },
+          "scope_classification": {
+            "latency_ms": 545.58,
+            "input_tokens": 2360,
+            "output_tokens": 21,
+            "total_tokens": 2381,
+            "cost_usd": 0.000183,
+            "retry_attempts": 1,
+            "status": "success",
+            "error": null
+          }
+        }
+      },
+      {
+        "url": "https://ledr-ingenieria.com/wp-content/uploads/2021/05/ISO-14001-284812-2019-AE-IBE-ENAC-1-en-US-20210517-20210517204324.pdf",
+        "status": "OK",
+        "total_latency_ms": 66512.78,
+        "download_latency_ms": 1883.76,
+        "overhead_ms": 0.91,
+        "total_input_tokens": 4508,
+        "total_output_tokens": 298,
+        "total_tokens": 4806,
+        "total_cost_usd": 0.000428,
+        "error": null,
+        "steps": {
+          "screening": {
+            "latency_ms": 38184.74,
+            "input_tokens": 942,
+            "output_tokens": 89,
+            "total_tokens": 1031,
+            "cost_usd": 9.7e-05,
+            "retry_attempts": 1,
+            "status": "success",
+            "error": null
+          },
+          "extraction": {
+            "latency_ms": 25766.8,
+            "input_tokens": 1204,
+            "output_tokens": 184,
+            "total_tokens": 1388,
+            "cost_usd": 0.000146,
+            "retry_attempts": 1,
+            "status": "success",
+            "error": null
+          },
+          "scope_classification": {
+            "latency_ms": 676.57,
+            "input_tokens": 2362,
+            "output_tokens": 25,
+            "total_tokens": 2387,
+            "cost_usd": 0.000185,
+            "retry_attempts": 1,
+            "status": "success",
+            "error": null
+          }
+        }
+      },
+      {
+        "url": "https://ledr-ingenieria.com/wp-content/uploads/2021/05/ISO-9001-284813-2019-AQ-IBE-ENAC-1-en-US-20210517-20210517204016.pdf",
+        "status": "OK",
+        "total_latency_ms": 64830.13,
+        "download_latency_ms": 1423.98,
+        "overhead_ms": 1.59,
+        "total_input_tokens": 4508,
+        "total_output_tokens": 295,
+        "total_tokens": 4803,
+        "total_cost_usd": 0.000427,
+        "error": null,
+        "steps": {
+          "screening": {
+            "latency_ms": 39335.47,
+            "input_tokens": 942,
+            "output_tokens": 87,
+            "total_tokens": 1029,
+            "cost_usd": 9.7e-05,
+            "retry_attempts": 1,
+            "status": "success",
+            "error": null
+          },
+          "extraction": {
+            "latency_ms": 23444.39,
+            "input_tokens": 1204,
+            "output_tokens": 183,
+            "total_tokens": 1387,
+            "cost_usd": 0.000145,
+            "retry_attempts": 1,
+            "status": "success",
+            "error": null
+          },
+          "scope_classification": {
+            "latency_ms": 624.7,
+            "input_tokens": 2362,
+            "output_tokens": 25,
+            "total_tokens": 2387,
+            "cost_usd": 0.000185,
+            "retry_attempts": 1,
+            "status": "success",
+            "error": null
+          }
+        }
+      },
+      {
+        "url": "https://www.kostal-kontakt-systeme.com/fileadmin/user_upload/kostal-kontakt-systeme/Downloads/DIN_EN_ISO_14001/KOSTAL_Kontakt_Systeme_Dresden_ISO_14001_EN.pdf",
+        "status": "OK",
+        "total_latency_ms": 42901.79,
+        "download_latency_ms": 11646.5,
+        "overhead_ms": 0.68,
+        "total_input_tokens": 4508,
+        "total_output_tokens": 299,
+        "total_tokens": 4807,
+        "total_cost_usd": 0.000428,
+        "error": null,
+        "steps": {
+          "screening": {
+            "latency_ms": 9617.52,
+            "input_tokens": 942,
+            "output_tokens": 90,
+            "total_tokens": 1032,
+            "cost_usd": 9.8e-05,
+            "retry_attempts": 1,
+            "status": "success",
+            "error": null
+          },
+          "extraction": {
+            "latency_ms": 20893.84,
+            "input_tokens": 1204,
+            "output_tokens": 183,
+            "total_tokens": 1387,
+            "cost_usd": 0.000145,
+            "retry_attempts": 1,
+            "status": "success",
+            "error": null
+          },
+          "scope_classification": {
+            "latency_ms": 743.25,
+            "input_tokens": 2362,
+            "output_tokens": 26,
+            "total_tokens": 2388,
+            "cost_usd": 0.000185,
+            "retry_attempts": 1,
+            "status": "success",
+            "error": null
+          }
+        }
+      },
+      {
+        "url": "https://www.dekielectronics.com/storage/common-section/ZED-Gold-Certificate-240225104300.pdf",
+        "status": "Not an ISO/IATF certificate",
+        "total_latency_ms": 110409.94,
+        "download_latency_ms": 7390.44,
+        "overhead_ms": 0.48,
+        "total_input_tokens": 942,
+        "total_output_tokens": 82,
+        "total_tokens": 1024,
+        "total_cost_usd": 9.5e-05,
+        "error": null,
+        "steps": {
+          "screening": {
+            "latency_ms": 103019.02,
+            "input_tokens": 942,
+            "output_tokens": 82,
+            "total_tokens": 1024,
+            "cost_usd": 9.5e-05,
+            "retry_attempts": 1,
+            "status": "success",
+            "error": null
+          },
+          "extraction": null,
+          "scope_classification": null
+        }
+      },
+      {
+        "url": "https://www.kostal-kontakt-systeme.com/fileadmin/user_upload/kostal-kontakt-systeme/Downloads/DIN_EN_ISO_14001/KOSTAL_Kontakt_Systeme_TI_ISO_14001_EN.pdf",
+        "status": "OK",
+        "total_latency_ms": 51545.59,
+        "download_latency_ms": 5955.94,
+        "overhead_ms": 1.3,
+        "total_input_tokens": 4508,
+        "total_output_tokens": 282,
+        "total_tokens": 4790,
+        "total_cost_usd": 0.000423,
+        "error": null,
+        "steps": {
+          "screening": {
+            "latency_ms": 23392.96,
+            "input_tokens": 942,
+            "output_tokens": 91,
+            "total_tokens": 1033,
+            "cost_usd": 9.8e-05,
+            "retry_attempts": 1,
+            "status": "success",
+            "error": null
+          },
+          "extraction": {
+            "latency_ms": 21207.52,
+            "input_tokens": 1204,
+            "output_tokens": 165,
+            "total_tokens": 1369,
+            "cost_usd": 0.00014,
+            "retry_attempts": 1,
+            "status": "success",
+            "error": null
+          },
+          "scope_classification": {
+            "latency_ms": 987.87,
+            "input_tokens": 2362,
+            "output_tokens": 26,
+            "total_tokens": 2388,
+            "cost_usd": 0.000185,
+            "retry_attempts": 1,
+            "status": "success",
+            "error": null
+          }
+        }
+      },
+      {
+        "url": "https://jc-valves.com/wp-content/uploads/2026/03/ISO-9001-JC_eng_2026_29.pdf",
+        "status": "OK",
+        "total_latency_ms": 84898.91,
+        "download_latency_ms": 11383.36,
+        "overhead_ms": 5.1,
+        "total_input_tokens": 4521,
+        "total_output_tokens": 320,
+        "total_tokens": 4841,
+        "total_cost_usd": 0.000435,
+        "error": null,
+        "steps": {
+          "screening": {
+            "latency_ms": 41091.36,
+            "input_tokens": 942,
+            "output_tokens": 85,
+            "total_tokens": 1027,
+            "cost_usd": 9.6e-05,
+            "retry_attempts": 1,
+            "status": "success",
+            "error": null
+          },
+          "extraction": {
+            "latency_ms": 31873.6,
+            "input_tokens": 1204,
+            "output_tokens": 202,
+            "total_tokens": 1406,
+            "cost_usd": 0.000151,
+            "retry_attempts": 1,
+            "status": "success",
+            "error": null
+          },
+          "scope_classification": {
+            "latency_ms": 545.49,
+            "input_tokens": 2375,
+            "output_tokens": 33,
+            "total_tokens": 2408,
+            "cost_usd": 0.000188,
+            "retry_attempts": 1,
+            "status": "success",
+            "error": null
+          }
+        }
+      },
+      {
+        "url": "https://www.jablotron.com/file/edee/iso/2026/iso_27001_en_cert.pdf",
+        "status": "OK",
+        "total_latency_ms": 30243.39,
+        "download_latency_ms": 3073.41,
+        "overhead_ms": 3.5,
+        "total_input_tokens": 4507,
+        "total_output_tokens": 291,
+        "total_tokens": 4798,
+        "total_cost_usd": 0.000425,
+        "error": null,
+        "steps": {
+          "screening": {
+            "latency_ms": 7927.27,
+            "input_tokens": 942,
+            "output_tokens": 93,
+            "total_tokens": 1035,
+            "cost_usd": 9.9e-05,
+            "retry_attempts": 1,
+            "status": "success",
+            "error": null
+          },
+          "extraction": {
+            "latency_ms": 18498.68,
+            "input_tokens": 1204,
+            "output_tokens": 177,
+            "total_tokens": 1381,
+            "cost_usd": 0.000143,
+            "retry_attempts": 1,
+            "status": "success",
+            "error": null
+          },
+          "scope_classification": {
+            "latency_ms": 740.53,
+            "input_tokens": 2361,
+            "output_tokens": 21,
+            "total_tokens": 2382,
+            "cost_usd": 0.000183,
+            "retry_attempts": 1,
+            "status": "success",
+            "error": null
+          }
+        }
+      },
+      {
+        "url": "https://acq.nl/wp-content/uploads/ISO-9001-2015-certificate-400x284.png",
+        "status": "Partial: missing Issued Date, Expiration Date",
+        "total_latency_ms": 15213.42,
+        "download_latency_ms": 9386.28,
+        "overhead_ms": 1.01,
+        "total_input_tokens": 4543,
+        "total_output_tokens": 281,
+        "total_tokens": 4824,
+        "total_cost_usd": 0.000424,
+        "error": null,
+        "steps": {
+          "screening": {
+            "latency_ms": 1587.85,
+            "input_tokens": 942,
+            "output_tokens": 89,
+            "total_tokens": 1031,
+            "cost_usd": 9.7e-05,
+            "retry_attempts": 1,
+            "status": "success",
+            "error": null
+          },
+          "extraction": {
+            "latency_ms": 3300.59,
+            "input_tokens": 1204,
+            "output_tokens": 160,
+            "total_tokens": 1364,
+            "cost_usd": 0.000138,
+            "retry_attempts": 1,
+            "status": "success",
+            "error": null
+          },
+          "scope_classification": {
+            "latency_ms": 937.69,
+            "input_tokens": 2397,
+            "output_tokens": 32,
+            "total_tokens": 2429,
+            "cost_usd": 0.000189,
+            "retry_attempts": 1,
+            "status": "success",
+            "error": null
+          }
+        }
+      },
+      {
+        "url": "https://acq.nl/wp-content/uploads/ISO-9001-2015-certificate.png",
+        "status": "OK",
+        "total_latency_ms": 46959.07,
+        "download_latency_ms": 11550.21,
+        "overhead_ms": 1.1,
+        "total_input_tokens": 4544,
+        "total_output_tokens": 313,
+        "total_tokens": 4857,
+        "total_cost_usd": 0.000435,
+        "error": null,
+        "steps": {
+          "screening": {
+            "latency_ms": 8577.0,
+            "input_tokens": 942,
+            "output_tokens": 90,
+            "total_tokens": 1032,
+            "cost_usd": 9.8e-05,
+            "retry_attempts": 1,
+            "status": "success",
+            "error": null
+          },
+          "extraction": {
+            "latency_ms": 15979.92,
+            "input_tokens": 1204,
+            "output_tokens": 191,
+            "total_tokens": 1395,
+            "cost_usd": 0.000148,
+            "retry_attempts": 1,
+            "status": "success",
+            "error": null
+          },
+          "scope_classification": {
+            "latency_ms": 10850.84,
+            "input_tokens": 2398,
+            "output_tokens": 32,
+            "total_tokens": 2430,
+            "cost_usd": 0.000189,
+            "retry_attempts": 1,
+            "status": "success",
+            "error": null
+          }
+        }
+      },
+      {
+        "url": "https://janyutech.com/wp-content/uploads/2025/06/TUVRheinland-certificate.png",
+        "status": "OK",
+        "total_latency_ms": 65160.56,
+        "download_latency_ms": 6885.6,
+        "overhead_ms": 10.62,
+        "total_input_tokens": 4504,
+        "total_output_tokens": 276,
+        "total_tokens": 4780,
+        "total_cost_usd": 0.000421,
+        "error": null,
+        "steps": {
+          "screening": {
+            "latency_ms": 48918.8,
+            "input_tokens": 942,
+            "output_tokens": 80,
+            "total_tokens": 1022,
+            "cost_usd": 9.5e-05,
+            "retry_attempts": 1,
+            "status": "success",
+            "error": null
+          },
+          "extraction": {
+            "latency_ms": 7778.72,
+            "input_tokens": 1204,
+            "output_tokens": 177,
+            "total_tokens": 1381,
+            "cost_usd": 0.000143,
+            "retry_attempts": 1,
+            "status": "success",
+            "error": null
+          },
+          "scope_classification": {
+            "latency_ms": 1566.82,
+            "input_tokens": 2358,
+            "output_tokens": 19,
+            "total_tokens": 2377,
+            "cost_usd": 0.000183,
+            "retry_attempts": 1,
+            "status": "success",
+            "error": null
+          }
+        }
+      },
+      {
+        "url": "https://www.italdiamant.com/wp-content/uploads/2026/10/Information-GDPR-suppliers-Italdiamant-ENG-2026.pdf",
+        "status": "Not a certificate",
+        "total_latency_ms": 55314.81,
+        "download_latency_ms": 17460.51,
+        "overhead_ms": 0.29,
+        "total_input_tokens": 942,
+        "total_output_tokens": 56,
+        "total_tokens": 998,
+        "total_cost_usd": 8.7e-05,
+        "error": null,
+        "steps": {
+          "screening": {
+            "latency_ms": 37854.01,
+            "input_tokens": 942,
+            "output_tokens": 56,
+            "total_tokens": 998,
+            "cost_usd": 8.7e-05,
+            "retry_attempts": 1,
+            "status": "success",
+            "error": null
+          },
+          "extraction": null,
+          "scope_classification": null
+        }
+      },
+      {
+        "url": "https://gabler-thermoform.com/wp-content/plugins/sitepress-multilingual-cms/res/flags/de.png",
+        "status": "Not a certificate",
+        "total_latency_ms": 2452.19,
+        "download_latency_ms": 1600.87,
+        "overhead_ms": 0.31,
+        "total_input_tokens": 942,
+        "total_output_tokens": 63,
+        "total_tokens": 1005,
+        "total_cost_usd": 9e-05,
+        "error": null,
+        "steps": {
+          "screening": {
+            "latency_ms": 851.01,
+            "input_tokens": 942,
+            "output_tokens": 63,
+            "total_tokens": 1005,
+            "cost_usd": 9e-05,
+            "retry_attempts": 1,
+            "status": "success",
+            "error": null
+          },
+          "extraction": null,
+          "scope_classification": null
+        }
+      },
+      {
+        "url": "https://gabler-thermoform.com/wp-content/plugins/sitepress-multilingual-cms/res/flags/en.png",
+        "status": "Not a certificate",
+        "total_latency_ms": 1736.68,
+        "download_latency_ms": 726.52,
+        "overhead_ms": 0.13,
+        "total_input_tokens": 942,
+        "total_output_tokens": 64,
+        "total_tokens": 1006,
+        "total_cost_usd": 9e-05,
+        "error": null,
+        "steps": {
+          "screening": {
+            "latency_ms": 1010.03,
+            "input_tokens": 942,
+            "output_tokens": 64,
+            "total_tokens": 1006,
+            "cost_usd": 9e-05,
+            "retry_attempts": 1,
+            "status": "success",
+            "error": null
+          },
+          "extraction": null,
+          "scope_classification": null
+        }
+      },
+      {
+        "url": "https://www.kostal-kontakt-systeme.com/fileadmin/user_upload/kostal-kontakt-systeme/Downloads/ISO_45001/Kostal_Kontakt_Systeme_TI_ISO_45001__EN_Vers.1.pdf",
+        "status": "OK",
+        "total_latency_ms": 148416.53,
+        "download_latency_ms": 26992.06,
+        "overhead_ms": 1.23,
+        "total_input_tokens": 4508,
+        "total_output_tokens": 299,
+        "total_tokens": 4807,
+        "total_cost_usd": 0.000428,
+        "error": null,
+        "steps": {
+          "screening": {
+            "latency_ms": 36144.63,
+            "input_tokens": 942,
+            "output_tokens": 108,
+            "total_tokens": 1050,
+            "cost_usd": 0.000103,
+            "retry_attempts": 1,
+            "status": "success",
+            "error": null
+          },
+          "extraction": {
+            "latency_ms": 82594.25,
+            "input_tokens": 1204,
+            "output_tokens": 165,
+            "total_tokens": 1369,
+            "cost_usd": 0.00014,
+            "retry_attempts": 1,
+            "status": "success",
+            "error": null
+          },
+          "scope_classification": {
+            "latency_ms": 2684.36,
+            "input_tokens": 2362,
+            "output_tokens": 26,
+            "total_tokens": 2388,
+            "cost_usd": 0.000185,
+            "retry_attempts": 1,
+            "status": "success",
+            "error": null
+          }
+        }
+      },
+      {
+        "url": "https://trimblecombustion.com/wp-content/uploads/2019/12/slide-1-1-scaled.jpg",
+        "status": "Not a certificate",
+        "total_latency_ms": 33843.31,
+        "download_latency_ms": 4286.8,
+        "overhead_ms": 0.16,
+        "total_input_tokens": 942,
+        "total_output_tokens": 54,
+        "total_tokens": 996,
+        "total_cost_usd": 8.7e-05,
+        "error": null,
+        "steps": {
+          "screening": {
+            "latency_ms": 29556.35,
+            "input_tokens": 942,
+            "output_tokens": 54,
+            "total_tokens": 996,
+            "cost_usd": 8.7e-05,
+            "retry_attempts": 1,
+            "status": "success",
+            "error": null
+          },
+          "extraction": null,
+          "scope_classification": null
+        }
+      },
+      {
+        "url": "https://www.irondevice.com/images/3513_(%EC%A3%BC)%EC%95%84%EC%9D%B4%EC%96%B8%EB%94%94%EB%B0%94%EC%9D%B4%EC%8A%A4_CPG_14001_EMS_Initial_Cert_En.jpg",
+        "status": "OK",
+        "total_latency_ms": 155482.57,
+        "download_latency_ms": 19468.01,
+        "overhead_ms": 31.44,
+        "total_input_tokens": 4505,
+        "total_output_tokens": 270,
+        "total_tokens": 4775,
+        "total_cost_usd": 0.000419,
+        "error": null,
+        "steps": {
+          "screening": {
+            "latency_ms": 111521.17,
+            "input_tokens": 942,
+            "output_tokens": 88,
+            "total_tokens": 1030,
+            "cost_usd": 9.7e-05,
+            "retry_attempts": 1,
+            "status": "success",
+            "error": null
+          },
+          "extraction": {
+            "latency_ms": 23745.64,
+            "input_tokens": 1204,
+            "output_tokens": 161,
+            "total_tokens": 1365,
+            "cost_usd": 0.000139,
+            "retry_attempts": 1,
+            "status": "success",
+            "error": null
+          },
+          "scope_classification": {
+            "latency_ms": 716.31,
+            "input_tokens": 2359,
+            "output_tokens": 21,
+            "total_tokens": 2380,
+            "cost_usd": 0.000183,
+            "retry_attempts": 1,
+            "status": "success",
+            "error": null
+          }
+        }
+      },
+      {
+        "url": "https://morrison-chs.com/wp-content/uploads/2024/10/1200px-Flag_of_France.svg.webp",
+        "status": "Not a certificate",
+        "total_latency_ms": 1129.23,
+        "download_latency_ms": 324.5,
+        "overhead_ms": 0.25,
+        "total_input_tokens": 942,
+        "total_output_tokens": 55,
+        "total_tokens": 997,
+        "total_cost_usd": 8.7e-05,
+        "error": null,
+        "steps": {
+          "screening": {
+            "latency_ms": 804.48,
+            "input_tokens": 942,
+            "output_tokens": 55,
+            "total_tokens": 997,
+            "cost_usd": 8.7e-05,
+            "retry_attempts": 1,
+            "status": "success",
+            "error": null
+          },
+          "extraction": null,
+          "scope_classification": null
+        }
+      },
+      {
+        "url": "https://metrotecegypt.com/websiteenglish/data/ISO-Certificate-2024-2027-8731d6b7.jpg",
+        "status": "OK",
+        "total_latency_ms": 116278.63,
+        "download_latency_ms": 16910.12,
+        "overhead_ms": 1.08,
+        "total_input_tokens": 4518,
+        "total_output_tokens": 314,
+        "total_tokens": 4832,
+        "total_cost_usd": 0.000433,
+        "error": null,
+        "steps": {
+          "screening": {
+            "latency_ms": 83802.74,
+            "input_tokens": 942,
+            "output_tokens": 96,
+            "total_tokens": 1038,
+            "cost_usd": 9.9e-05,
+            "retry_attempts": 1,
+            "status": "success",
+            "error": null
+          },
+          "extraction": {
+            "latency_ms": 15016.19,
+            "input_tokens": 1204,
+            "output_tokens": 194,
+            "total_tokens": 1398,
+            "cost_usd": 0.000149,
+            "retry_attempts": 1,
+            "status": "success",
+            "error": null
+          },
+          "scope_classification": {
+            "latency_ms": 548.5,
+            "input_tokens": 2372,
+            "output_tokens": 24,
+            "total_tokens": 2396,
+            "cost_usd": 0.000185,
+            "retry_attempts": 1,
+            "status": "success",
+            "error": null
+          }
+        }
+      },
+      {
+        "url": "https://morrison-chs.com/wp-content/uploads/2024/10/change-parts-thumbnail.webp",
+        "status": "Not a certificate",
+        "total_latency_ms": 1813.77,
+        "download_latency_ms": 672.92,
+        "overhead_ms": 0.08,
+        "total_input_tokens": 942,
+        "total_output_tokens": 65,
+        "total_tokens": 1007,
+        "total_cost_usd": 9e-05,
+        "error": null,
+        "steps": {
+          "screening": {
+            "latency_ms": 1140.77,
+            "input_tokens": 942,
+            "output_tokens": 65,
+            "total_tokens": 1007,
+            "cost_usd": 9e-05,
+            "retry_attempts": 1,
+            "status": "success",
+            "error": null
+          },
+          "extraction": null,
+          "scope_classification": null
+        }
+      },
+      {
+        "url": "https://morrison-chs.com/wp-content/uploads/2026/03/Case-study-graphic-Morrison-Rapid-Response-Timeline-300x300.webp",
+        "status": "Not a certificate",
+        "total_latency_ms": 1686.92,
+        "download_latency_ms": 771.61,
+        "overhead_ms": 0.24,
+        "total_input_tokens": 942,
+        "total_output_tokens": 63,
+        "total_tokens": 1005,
+        "total_cost_usd": 9e-05,
+        "error": null,
+        "steps": {
+          "screening": {
+            "latency_ms": 915.07,
+            "input_tokens": 942,
+            "output_tokens": 63,
+            "total_tokens": 1005,
+            "cost_usd": 9e-05,
+            "retry_attempts": 1,
+            "status": "success",
+            "error": null
+          },
+          "extraction": null,
+          "scope_classification": null
+        }
+      },
+      {
+        "url": "https://www.kostal-kontakt-systeme.com/fileadmin/user_upload/kostal-kontakt-systeme/Downloads/DIN_EN_ISO_14001/KOSTAL_Kontakt_Systeme_CHI_ISO_14001_EN.pdf",
+        "status": "OK",
+        "total_latency_ms": 168502.95,
+        "download_latency_ms": 18222.9,
+        "overhead_ms": 1.08,
+        "total_input_tokens": 4508,
+        "total_output_tokens": 325,
+        "total_tokens": 4833,
+        "total_cost_usd": 0.000436,
+        "error": null,
+        "steps": {
+          "screening": {
+            "latency_ms": 33633.27,
+            "input_tokens": 942,
+            "output_tokens": 90,
+            "total_tokens": 1032,
+            "cost_usd": 9.8e-05,
+            "retry_attempts": 1,
+            "status": "success",
+            "error": null
+          },
+          "extraction": {
+            "latency_ms": 115995.26,
+            "input_tokens": 1204,
+            "output_tokens": 209,
+            "total_tokens": 1413,
+            "cost_usd": 0.000153,
+            "retry_attempts": 1,
+            "status": "success",
+            "error": null
+          },
+          "scope_classification": {
+            "latency_ms": 650.44,
+            "input_tokens": 2362,
+            "output_tokens": 26,
+            "total_tokens": 2388,
+            "cost_usd": 0.000185,
+            "retry_attempts": 1,
+            "status": "success",
+            "error": null
+          }
+        }
+      },
+      {
+        "url": "https://www.rhopointinstruments.com/wp-content/uploads/2022/02/iq-flex-20-calibration-certificate.gif",
+        "status": "Not an ISO/IATF certificate",
+        "total_latency_ms": 4642.26,
+        "download_latency_ms": 1277.12,
+        "overhead_ms": 0.29,
+        "total_input_tokens": 942,
+        "total_output_tokens": 71,
+        "total_tokens": 1013,
+        "total_cost_usd": 9.2e-05,
+        "error": null,
+        "steps": {
+          "screening": {
+            "latency_ms": 3364.85,
+            "input_tokens": 942,
+            "output_tokens": 71,
+            "total_tokens": 1013,
+            "cost_usd": 9.2e-05,
+            "retry_attempts": 1,
+            "status": "success",
+            "error": null
+          },
+          "extraction": null,
+          "scope_classification": null
+        }
+      },
+      {
+        "url": "https://www.tilemachinery.com/wp-content/uploads/2021/06/certificate-200k.png",
+        "status": "Not an ISO/IATF certificate",
+        "total_latency_ms": 5840.11,
+        "download_latency_ms": 1757.36,
+        "overhead_ms": 0.23,
+        "total_input_tokens": 942,
+        "total_output_tokens": 75,
+        "total_tokens": 1017,
+        "total_cost_usd": 9.3e-05,
+        "error": null,
+        "steps": {
+          "screening": {
+            "latency_ms": 4082.52,
+            "input_tokens": 942,
+            "output_tokens": 75,
+            "total_tokens": 1017,
+            "cost_usd": 9.3e-05,
+            "retry_attempts": 1,
+            "status": "success",
+            "error": null
+          },
+          "extraction": null,
+          "scope_classification": null
+        }
+      },
+      {
+        "url": "https://www.iem.eu/wp-content/uploads/DJI_0327-e1620311663937-1000x666.jpg",
+        "status": "Not a certificate",
+        "total_latency_ms": 27255.41,
+        "download_latency_ms": 5166.06,
+        "overhead_ms": 0.13,
+        "total_input_tokens": 942,
+        "total_output_tokens": 54,
+        "total_tokens": 996,
+        "total_cost_usd": 8.7e-05,
+        "error": null,
+        "steps": {
+          "screening": {
+            "latency_ms": 22089.22,
+            "input_tokens": 942,
+            "output_tokens": 54,
+            "total_tokens": 996,
+            "cost_usd": 8.7e-05,
+            "retry_attempts": 1,
+            "status": "success",
+            "error": null
+          },
+          "extraction": null,
+          "scope_classification": null
+        }
+      },
+      {
+        "url": "https://adwatec.com/wp-content/uploads/DNV-Certificate.pdf",
+        "status": "Not an ISO/IATF certificate",
+        "total_latency_ms": 11122.51,
+        "download_latency_ms": 1070.2,
+        "overhead_ms": 0.08,
+        "total_input_tokens": 942,
+        "total_output_tokens": 75,
+        "total_tokens": 1017,
+        "total_cost_usd": 9.3e-05,
+        "error": null,
+        "steps": {
+          "screening": {
+            "latency_ms": 10052.23,
+            "input_tokens": 942,
+            "output_tokens": 75,
+            "total_tokens": 1017,
+            "cost_usd": 9.3e-05,
+            "retry_attempts": 1,
+            "status": "success",
+            "error": null
+          },
+          "extraction": null,
+          "scope_classification": null
+        }
+      },
+      {
+        "url": "https://www.iem.eu/wp-content/uploads/iem_produkte_atex-kohlezuteiler_002.jpg",
+        "status": "Not a certificate",
+        "total_latency_ms": 26495.13,
+        "download_latency_ms": 3118.26,
+        "overhead_ms": 0.19,
+        "total_input_tokens": 942,
+        "total_output_tokens": 60,
+        "total_tokens": 1002,
+        "total_cost_usd": 8.9e-05,
+        "error": null,
+        "steps": {
+          "screening": {
+            "latency_ms": 23376.68,
+            "input_tokens": 942,
+            "output_tokens": 60,
+            "total_tokens": 1002,
+            "cost_usd": 8.9e-05,
+            "retry_attempts": 1,
+            "status": "success",
+            "error": null
+          },
+          "extraction": null,
+          "scope_classification": null
+        }
+      },
+      {
+        "url": "https://www.jablotron.com/file/edee/iso/2026/cert_13485_eniqnet_2025.pdf",
+        "status": "OK",
+        "total_latency_ms": 192339.3,
+        "download_latency_ms": 3991.83,
+        "overhead_ms": 6.13,
+        "total_input_tokens": 4517,
+        "total_output_tokens": 367,
+        "total_tokens": 4884,
+        "total_cost_usd": 0.000449,
+        "error": null,
+        "steps": {
+          "screening": {
+            "latency_ms": 147999.0,
+            "input_tokens": 942,
+            "output_tokens": 86,
+            "total_tokens": 1028,
+            "cost_usd": 9.6e-05,
+            "retry_attempts": 1,
+            "status": "success",
+            "error": null
+          },
+          "extraction": {
+            "latency_ms": 39741.85,
+            "input_tokens": 1204,
+            "output_tokens": 252,
+            "total_tokens": 1456,
+            "cost_usd": 0.000166,
+            "retry_attempts": 1,
+            "status": "success",
+            "error": null
+          },
+          "scope_classification": {
+            "latency_ms": 600.49,
+            "input_tokens": 2371,
+            "output_tokens": 29,
+            "total_tokens": 2400,
+            "cost_usd": 0.000187,
+            "retry_attempts": 1,
+            "status": "success",
+            "error": null
+          }
+        }
+      },
+      {
+        "url": "https://jc-valves.com/wp-content/uploads/2026/03/ISO-14001-JC_eng_2026_29.pdf",
+        "status": "OK",
+        "total_latency_ms": 219247.93,
+        "download_latency_ms": 13775.23,
+        "overhead_ms": 1.57,
+        "total_input_tokens": 4521,
+        "total_output_tokens": 317,
+        "total_tokens": 4838,
+        "total_cost_usd": 0.000434,
+        "error": null,
+        "steps": {
+          "screening": {
+            "latency_ms": 159357.26,
+            "input_tokens": 942,
+            "output_tokens": 81,
+            "total_tokens": 1023,
+            "cost_usd": 9.5e-05,
+            "retry_attempts": 1,
+            "status": "success",
+            "error": null
+          },
+          "extraction": {
+            "latency_ms": 45483.9,
+            "input_tokens": 1204,
+            "output_tokens": 203,
+            "total_tokens": 1407,
+            "cost_usd": 0.000151,
+            "retry_attempts": 1,
+            "status": "success",
+            "error": null
+          },
+          "scope_classification": {
+            "latency_ms": 629.97,
+            "input_tokens": 2375,
+            "output_tokens": 33,
+            "total_tokens": 2408,
+            "cost_usd": 0.000188,
+            "retry_attempts": 1,
+            "status": "success",
+            "error": null
+          }
+        }
+      },
+      {
+        "url": "https://terasman.ee/wp-content/uploads/2024/11/Welding-Cert_Terasman-OU_2024-1-pdf.jpg",
+        "status": "Not an ISO/IATF certificate",
+        "total_latency_ms": 12594.58,
+        "download_latency_ms": 1158.91,
+        "overhead_ms": 0.24,
+        "total_input_tokens": 942,
+        "total_output_tokens": 75,
+        "total_tokens": 1017,
+        "total_cost_usd": 9.3e-05,
+        "error": null,
+        "steps": {
+          "screening": {
+            "latency_ms": 11435.43,
+            "input_tokens": 942,
+            "output_tokens": 75,
+            "total_tokens": 1017,
+            "cost_usd": 9.3e-05,
+            "retry_attempts": 1,
+            "status": "success",
+            "error": null
+          },
+          "extraction": null,
+          "scope_classification": null
+        }
+      },
+      {
+        "url": "https://www.sxfuding.com/uploads/46620/page/p20260427135437adbe3.jpg?size=600x0",
+        "status": "OK",
+        "total_latency_ms": 167697.48,
+        "download_latency_ms": 8283.95,
+        "overhead_ms": 1.84,
+        "total_input_tokens": 4523,
+        "total_output_tokens": 399,
+        "total_tokens": 4922,
+        "total_cost_usd": 0.000459,
+        "error": null,
+        "steps": {
+          "screening": {
+            "latency_ms": 23989.95,
+            "input_tokens": 942,
+            "output_tokens": 122,
+            "total_tokens": 1064,
+            "cost_usd": 0.000107,
+            "retry_attempts": 1,
+            "status": "success",
+            "error": null
+          },
+          "extraction": {
+            "latency_ms": 51442.06,
+            "input_tokens": 1204,
+            "output_tokens": 255,
+            "total_tokens": 1459,
+            "cost_usd": 0.000167,
+            "retry_attempts": 1,
+            "status": "success",
+            "error": null
+          },
+          "scope_classification": {
+            "latency_ms": 83979.68,
+            "input_tokens": 2377,
+            "output_tokens": 22,
+            "total_tokens": 2399,
+            "cost_usd": 0.000185,
+            "retry_attempts": 1,
+            "status": "success",
+            "error": null
+          }
+        }
+      },
+      {
+        "url": "https://valtaromotori.com/en/certificate/10_CERTIFICATO_C_UR_US_VM_MOTORIAUTOFRENANTI_EN.pdf",
+        "status": "Not an ISO/IATF certificate",
+        "total_latency_ms": 26581.94,
+        "download_latency_ms": 1757.24,
+        "overhead_ms": 0.33,
+        "total_input_tokens": 942,
+        "total_output_tokens": 76,
+        "total_tokens": 1018,
+        "total_cost_usd": 9.3e-05,
+        "error": null,
+        "steps": {
+          "screening": {
+            "latency_ms": 24824.37,
+            "input_tokens": 942,
+            "output_tokens": 76,
+            "total_tokens": 1018,
+            "cost_usd": 9.3e-05,
+            "retry_attempts": 1,
+            "status": "success",
+            "error": null
+          },
+          "extraction": null,
+          "scope_classification": null
+        }
+      },
+      {
+        "url": "https://www.syatec.it/data/files/original/53/24.03.07__iqnet.pdf",
+        "status": "OK",
+        "total_latency_ms": 165068.52,
+        "download_latency_ms": 11251.84,
+        "overhead_ms": 1.59,
+        "total_input_tokens": 4511,
+        "total_output_tokens": 289,
+        "total_tokens": 4800,
+        "total_cost_usd": 0.000425,
+        "error": null,
+        "steps": {
+          "screening": {
+            "latency_ms": 140643.81,
+            "input_tokens": 942,
+            "output_tokens": 89,
+            "total_tokens": 1031,
+            "cost_usd": 9.7e-05,
+            "retry_attempts": 1,
+            "status": "success",
+            "error": null
+          },
+          "extraction": {
+            "latency_ms": 12524.23,
+            "input_tokens": 1204,
+            "output_tokens": 175,
+            "total_tokens": 1379,
+            "cost_usd": 0.000143,
+            "retry_attempts": 1,
+            "status": "success",
+            "error": null
+          },
+          "scope_classification": {
+            "latency_ms": 647.05,
+            "input_tokens": 2365,
+            "output_tokens": 25,
+            "total_tokens": 2390,
+            "cost_usd": 0.000185,
+            "retry_attempts": 1,
+            "status": "success",
+            "error": null
+          }
+        }
+      },
+      {
+        "url": "https://www.kemtec.nl/wp-content/uploads/sites/38/2026/05/Certificaat_K-0210454-2_VCA_KEMTEC-B.V.pdf",
+        "status": "Not an ISO/IATF certificate",
+        "total_latency_ms": 14605.23,
+        "download_latency_ms": 895.17,
+        "overhead_ms": 0.29,
+        "total_input_tokens": 942,
+        "total_output_tokens": 82,
+        "total_tokens": 1024,
+        "total_cost_usd": 9.5e-05,
+        "error": null,
+        "steps": {
+          "screening": {
+            "latency_ms": 13709.77,
+            "input_tokens": 942,
+            "output_tokens": 82,
+            "total_tokens": 1024,
+            "cost_usd": 9.5e-05,
+            "retry_attempts": 1,
+            "status": "success",
+            "error": null
+          },
+          "extraction": null,
+          "scope_classification": null
+        }
+      },
+      {
+        "url": "https://valtaromotori.com/en/certificate/11_E251310-20180724-CertificateofCompliance%20M_MM_MDP%20en.pdf",
+        "status": "Not an ISO/IATF certificate",
+        "total_latency_ms": 30950.59,
+        "download_latency_ms": 2274.81,
+        "overhead_ms": 2.0,
+        "total_input_tokens": 942,
+        "total_output_tokens": 73,
+        "total_tokens": 1015,
+        "total_cost_usd": 9.3e-05,
+        "error": null,
+        "steps": {
+          "screening": {
+            "latency_ms": 28673.78,
+            "input_tokens": 942,
+            "output_tokens": 73,
+            "total_tokens": 1015,
+            "cost_usd": 9.3e-05,
+            "retry_attempts": 1,
+            "status": "success",
+            "error": null
+          },
+          "extraction": null,
+          "scope_classification": null
+        }
+      },
+      {
+        "url": "https://www.kpc.co.in/wp-content/uploads/2025/01/BIS-Certificate-IS-16172-2023.webp",
+        "status": "Not an ISO/IATF certificate",
+        "total_latency_ms": 33976.74,
+        "download_latency_ms": 2762.44,
+        "overhead_ms": 0.31,
+        "total_input_tokens": 942,
+        "total_output_tokens": 75,
+        "total_tokens": 1017,
+        "total_cost_usd": 9.3e-05,
+        "error": null,
+        "steps": {
+          "screening": {
+            "latency_ms": 31213.99,
+            "input_tokens": 942,
+            "output_tokens": 75,
+            "total_tokens": 1017,
+            "cost_usd": 9.3e-05,
+            "retry_attempts": 1,
+            "status": "success",
+            "error": null
+          },
+          "extraction": null,
+          "scope_classification": null
+        }
+      },
+      {
+        "url": "https://www.austromex.com.mx/austromex/media/certifications/AUSTROMEX_oSa_2026.pdf",
+        "status": "Not an ISO/IATF certificate",
+        "total_latency_ms": 38087.17,
+        "download_latency_ms": 2080.71,
+        "overhead_ms": 1.36,
+        "total_input_tokens": 942,
+        "total_output_tokens": 75,
+        "total_tokens": 1017,
+        "total_cost_usd": 9.3e-05,
+        "error": null,
+        "steps": {
+          "screening": {
+            "latency_ms": 36005.1,
+            "input_tokens": 942,
+            "output_tokens": 75,
+            "total_tokens": 1017,
+            "cost_usd": 9.3e-05,
+            "retry_attempts": 1,
+            "status": "success",
+            "error": null
+          },
+          "extraction": null,
+          "scope_classification": null
+        }
+      },
+      {
+        "url": "https://www.jungeblodt.de/wp-content/uploads/2023/12/ABS_CERTIFICATE-T2479789.pdf",
+        "status": "Not an ISO/IATF certificate",
+        "total_latency_ms": 52372.5,
+        "download_latency_ms": 2629.17,
+        "overhead_ms": 0.23,
+        "total_input_tokens": 942,
+        "total_output_tokens": 82,
+        "total_tokens": 1024,
+        "total_cost_usd": 9.5e-05,
+        "error": null,
+        "steps": {
+          "screening": {
+            "latency_ms": 49743.1,
+            "input_tokens": 942,
+            "output_tokens": 82,
+            "total_tokens": 1024,
+            "cost_usd": 9.5e-05,
+            "retry_attempts": 1,
+            "status": "success",
+            "error": null
+          },
+          "extraction": null,
+          "scope_classification": null
+        }
+      },
+      {
+        "url": "https://terasman.ee/wp-content/uploads/2024/11/Welding-Cert_Terasman-OU_2024-1.pdf",
+        "status": "Not an ISO/IATF certificate",
+        "total_latency_ms": 41911.73,
+        "download_latency_ms": 1633.43,
+        "overhead_ms": 0.26,
+        "total_input_tokens": 942,
+        "total_output_tokens": 80,
+        "total_tokens": 1022,
+        "total_cost_usd": 9.5e-05,
+        "error": null,
+        "steps": {
+          "screening": {
+            "latency_ms": 40278.04,
+            "input_tokens": 942,
+            "output_tokens": 80,
+            "total_tokens": 1022,
+            "cost_usd": 9.5e-05,
+            "retry_attempts": 1,
+            "status": "success",
+            "error": null
+          },
+          "extraction": null,
+          "scope_classification": null
+        }
+      },
+      {
+        "url": "https://koenigscale.com/wp-content/uploads/2024/12/KoenigScaleCertScope-V007.pdf",
+        "status": "Not an ISO/IATF certificate",
+        "total_latency_ms": 193390.89,
+        "download_latency_ms": 18394.02,
+        "overhead_ms": 0.13,
+        "total_input_tokens": 942,
+        "total_output_tokens": 83,
+        "total_tokens": 1025,
+        "total_cost_usd": 9.6e-05,
+        "error": null,
+        "steps": {
+          "screening": {
+            "latency_ms": 174996.74,
+            "input_tokens": 942,
+            "output_tokens": 83,
+            "total_tokens": 1025,
+            "cost_usd": 9.6e-05,
+            "retry_attempts": 1,
+            "status": "success",
+            "error": null
+          },
+          "extraction": null,
+          "scope_classification": null
+        }
+      },
+      {
+        "url": "https://www.iem.eu/wp-content/uploads/IEM-Kastl-2.png",
+        "status": "Not a certificate",
+        "total_latency_ms": 89023.37,
+        "download_latency_ms": 10922.19,
+        "overhead_ms": 0.17,
+        "total_input_tokens": 942,
+        "total_output_tokens": 56,
+        "total_tokens": 998,
+        "total_cost_usd": 8.7e-05,
+        "error": null,
+        "steps": {
+          "screening": {
+            "latency_ms": 78101.01,
+            "input_tokens": 942,
+            "output_tokens": 56,
+            "total_tokens": 998,
+            "cost_usd": 8.7e-05,
+            "retry_attempts": 1,
+            "status": "success",
+            "error": null
+          },
+          "extraction": null,
+          "scope_classification": null
+        }
+      },
+      {
+        "url": "https://www.saautomation.com/wp-content/uploads/2025/03/iso-9001-2015.png",
+        "status": "OK",
+        "total_latency_ms": 189744.0,
+        "download_latency_ms": 14953.53,
+        "overhead_ms": 1.18,
+        "total_input_tokens": 4516,
+        "total_output_tokens": 303,
+        "total_tokens": 4819,
+        "total_cost_usd": 0.000429,
+        "error": null,
+        "steps": {
+          "screening": {
+            "latency_ms": 132585.27,
+            "input_tokens": 942,
+            "output_tokens": 79,
+            "total_tokens": 1021,
+            "cost_usd": 9.4e-05,
+            "retry_attempts": 1,
+            "status": "success",
+            "error": null
+          },
+          "extraction": {
+            "latency_ms": 41644.31,
+            "input_tokens": 1204,
+            "output_tokens": 199,
+            "total_tokens": 1403,
+            "cost_usd": 0.00015,
+            "retry_attempts": 1,
+            "status": "success",
+            "error": null
+          },
+          "scope_classification": {
+            "latency_ms": 559.71,
+            "input_tokens": 2370,
+            "output_tokens": 25,
+            "total_tokens": 2395,
+            "cost_usd": 0.000185,
+            "retry_attempts": 1,
+            "status": "success",
+            "error": null
+          }
+        }
+      },
+      {
+        "url": "https://www.kustec.at/media/kustec_r_eng_qm_25.pdf",
+        "status": "OK",
+        "total_latency_ms": 191154.71,
+        "download_latency_ms": 26623.07,
+        "overhead_ms": 1.2,
+        "total_input_tokens": 2146,
+        "total_output_tokens": 256,
+        "total_tokens": 2402,
+        "total_cost_usd": 0.000237,
+        "error": null,
+        "steps": {
+          "screening": {
+            "latency_ms": 141689.09,
+            "input_tokens": 942,
+            "output_tokens": 86,
+            "total_tokens": 1028,
+            "cost_usd": 9.6e-05,
+            "retry_attempts": 1,
+            "status": "success",
+            "error": null
+          },
+          "extraction": {
+            "latency_ms": 21005.06,
+            "input_tokens": 1204,
+            "output_tokens": 170,
+            "total_tokens": 1374,
+            "cost_usd": 0.000141,
+            "retry_attempts": 1,
+            "status": "success",
+            "error": null
+          },
+          "scope_classification": {
+            "latency_ms": 1836.29,
+            "input_tokens": 0,
+            "output_tokens": 0,
+            "total_tokens": 0,
+            "cost_usd": 0.0,
+            "retry_attempts": 3,
+            "status": "error",
+            "error": null
+          }
+        }
+      },
+      {
+        "url": "https://www.beekaycorp.com/images/ucertificate.pdf",
+        "status": "Not an ISO/IATF certificate",
+        "total_latency_ms": 40948.26,
+        "download_latency_ms": 2980.38,
+        "overhead_ms": 0.19,
+        "total_input_tokens": 942,
+        "total_output_tokens": 77,
+        "total_tokens": 1019,
+        "total_cost_usd": 9.4e-05,
+        "error": null,
+        "steps": {
+          "screening": {
+            "latency_ms": 37967.69,
+            "input_tokens": 942,
+            "output_tokens": 77,
+            "total_tokens": 1019,
+            "cost_usd": 9.4e-05,
+            "retry_attempts": 1,
+            "status": "success",
+            "error": null
+          },
+          "extraction": null,
+          "scope_classification": null
+        }
+      },
+      {
+        "url": "https://www.kustec.at/media/kustec_r_eng_45001_25.pdf",
+        "status": "OK",
+        "total_latency_ms": 215112.34,
+        "download_latency_ms": 14455.6,
+        "overhead_ms": 1.84,
+        "total_input_tokens": 2146,
+        "total_output_tokens": 271,
+        "total_tokens": 2417,
+        "total_cost_usd": 0.000242,
+        "error": null,
+        "steps": {
+          "screening": {
+            "latency_ms": 185248.78,
+            "input_tokens": 942,
+            "output_tokens": 101,
+            "total_tokens": 1043,
+            "cost_usd": 0.000101,
+            "retry_attempts": 1,
+            "status": "success",
+            "error": null
+          },
+          "extraction": {
+            "latency_ms": 13698.73,
+            "input_tokens": 1204,
+            "output_tokens": 170,
+            "total_tokens": 1374,
+            "cost_usd": 0.000141,
+            "retry_attempts": 1,
+            "status": "success",
+            "error": null
+          },
+          "scope_classification": {
+            "latency_ms": 1707.39,
+            "input_tokens": 0,
+            "output_tokens": 0,
+            "total_tokens": 0,
+            "cost_usd": 0.0,
+            "retry_attempts": 3,
+            "status": "error",
+            "error": null
+          }
+        }
+      },
+      {
+        "url": "https://www.irondevice.com/images/3513_(%EC%A3%BC)%EC%95%84%EC%9D%B4%EC%96%B8%EB%94%94%EB%B0%94%EC%9D%B4%EC%8A%A4_CPG_9001_QMS_ReCert_En.jpg",
+        "status": "OK",
+        "total_latency_ms": 258986.11,
+        "download_latency_ms": 37041.73,
+        "overhead_ms": 1.97,
+        "total_input_tokens": 4505,
+        "total_output_tokens": 272,
+        "total_tokens": 4777,
+        "total_cost_usd": 0.000419,
+        "error": null,
+        "steps": {
+          "screening": {
+            "latency_ms": 211668.82,
+            "input_tokens": 942,
+            "output_tokens": 89,
+            "total_tokens": 1031,
+            "cost_usd": 9.7e-05,
+            "retry_attempts": 1,
+            "status": "success",
+            "error": null
+          },
+          "extraction": {
+            "latency_ms": 9678.46,
+            "input_tokens": 1204,
+            "output_tokens": 162,
+            "total_tokens": 1366,
+            "cost_usd": 0.000139,
+            "retry_attempts": 1,
+            "status": "success",
+            "error": null
+          },
+          "scope_classification": {
+            "latency_ms": 595.13,
+            "input_tokens": 2359,
+            "output_tokens": 21,
+            "total_tokens": 2380,
+            "cost_usd": 0.000183,
+            "retry_attempts": 1,
+            "status": "success",
+            "error": null
+          }
+        }
+      }
+    ],
+    "verification_summary": {
+      "total_cases": 70,
+      "approved_cases": 57,
+      "need_review_cases": 10,
+      "rejected_cases": 3,
+      "approval_rate_percent": 81.43,
+      "avg_score": 92.71,
+      "rule_violation_counts": {
+        "Status": 3,
+        "Rule 2": 6,
+        "Rule 1": 3,
+        "Rule 7": 5,
+        "Rule 3": 2
+      }
+    }
+  }
+}

@@ -12,7 +12,7 @@ import json
 import os
 import re
 from datetime import datetime as _dt
-from typing import Optional, Tuple, List
+from typing import Optional, Tuple, List, Dict, Any
 from urllib.parse import urlparse
 
 import fitz  # PyMuPDF
@@ -129,15 +129,24 @@ def prepare_images_for_cert_url(
     url: str,
     work_dir: str,
     dpi: int = 200,
-    max_pages: int = 4
-) -> Tuple[List[Tuple[str, str]], Optional[str]]:
+    max_pages: int = 4,
+    return_meta: bool = False,
+) -> Any:
     """
     Downloads URL and converts it into a list of (image_path, mime_type) tuples.
-    Returns (images_list, error_reason).
-    If error_reason is not None, images_list will be empty.
+    If return_meta=False (default): returns (images_list, error_reason).
+    If return_meta=True: returns (images_list, error_reason, meta_dict).
+    meta_dict contains: {"doc_type": "pdf"|"image"|"unknown", "page_count": int}
     """
+    meta: Dict[str, Any] = {"doc_type": "unknown", "page_count": 0}
+
+    def _ret(images_list: List[Tuple[str, str]], err: Optional[str]):
+        if return_meta:
+            return images_list, err, meta
+        return images_list, err
+
     if not url or not str(url).strip():
-        return [], "Empty URL"
+        return _ret([], "Empty URL")
 
     url_type = get_url_type(url)
     url_hash = hashlib.md5(url.encode("utf-8")).hexdigest()[:10]
@@ -146,51 +155,65 @@ def prepare_images_for_cert_url(
 
     # 1) If detected as image
     if url_type == "image":
+        meta["doc_type"] = "image"
+        meta["page_count"] = 1
         ext = os.path.splitext(url.split("?")[0].lower())[1] or ".jpg"
         img_path = os.path.join(cert_dir, f"direct_image{ext}")
         if not download_cert_file(url, img_path):
-            return [], "did not open need review"
-        return [(img_path, get_mime_type(img_path))], None
+            return _ret([], "did not open need review")
+        return _ret([(img_path, get_mime_type(img_path))], None)
 
     # 2) If detected as PDF
     elif url_type == "pdf":
+        meta["doc_type"] = "pdf"
         pdf_path = os.path.join(cert_dir, "cert.pdf")
         if not download_cert_file(url, pdf_path):
-            return [], "did not open need review"
+            return _ret([], "did not open need review")
         try:
+            doc = fitz.open(pdf_path)
+            meta["page_count"] = len(doc)
+            doc.close()
+
             img_paths = pdf_to_images(pdf_path, cert_dir, dpi=dpi, max_pages=max_pages)
             if not img_paths:
-                return [], "did not open need review"
-            return [(p, "image/png") for p in img_paths], None
+                return _ret([], "did not open need review")
+            return _ret([(p, "image/png") for p in img_paths], None)
         except Exception:
-            return [], "did not open need review"
+            return _ret([], "did not open need review")
 
     # 3) Unknown extension: try downloading as generic file and inspect bytes
     else:
         generic_path = os.path.join(cert_dir, "downloaded_file.bin")
         if not download_cert_file(url, generic_path):
-            return [], "did not open need review"
+            return _ret([], "did not open need review")
 
         # Check magic bytes for PDF (%PDF)
         with open(generic_path, "rb") as f:
             header = f.read(10)
         if header.startswith(b"%PDF"):
+            meta["doc_type"] = "pdf"
             pdf_path = os.path.join(cert_dir, "cert.pdf")
             os.replace(generic_path, pdf_path)
             try:
+                doc = fitz.open(pdf_path)
+                meta["page_count"] = len(doc)
+                doc.close()
+
                 img_paths = pdf_to_images(pdf_path, cert_dir, dpi=dpi, max_pages=max_pages)
-                return [(p, "image/png") for p in img_paths], None
+                return _ret([(p, "image/png") for p in img_paths], None)
             except Exception:
-                return [], "did not open need review"
+                return _ret([], "did not open need review")
 
         # Check if it's an image
         if header.startswith(b"\xff\xd8\xff") or header.startswith(b"\x89PNG") or header.startswith(b"GIF"):
+            meta["doc_type"] = "image"
+            meta["page_count"] = 1
             ext = ".jpg" if header.startswith(b"\xff\xd8\xff") else ".png"
             img_path = os.path.join(cert_dir, f"direct_image{ext}")
             os.replace(generic_path, img_path)
-            return [(img_path, get_mime_type(img_path))], None
+            return _ret([(img_path, get_mime_type(img_path))], None)
 
-        return [], "did not open need review"
+        return _ret([], "did not open need review")
 
 
 def clean_json_markdown(raw: str) -> str:

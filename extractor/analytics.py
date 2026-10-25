@@ -258,12 +258,15 @@ class RunAnalytics:
     def save_to_json(
         self,
         analytics_dir: str = "analytics",
-        filename: str = "analytics.json"
-    ) -> str:
+        filename: str = "analytics.json",
+        aggregated_filename: str = "analytics_aggregated.json",
+        verification_summary: Optional[Dict[str, Any]] = None,
+    ) -> Tuple[str, str]:
         """
         Saves the run analytics to a JSON file inside analytics_dir.
         Finds existing runs ('run 1', 'run 2', ...) and appends the new run.
-        Returns the absolute path to the saved file and run key name.
+        Also automatically maintains and updates analytics_aggregated.json.
+        Returns the absolute path to the detailed analytics file and run key name.
         """
         out_dir = Path(analytics_dir)
         out_dir.mkdir(parents=True, exist_ok=True)
@@ -289,9 +292,117 @@ class RunAnalytics:
         next_run_num = (max(existing_numbers) + 1) if existing_numbers else 1
         run_key = f"run {next_run_num}"
 
-        data[run_key] = self.generate_summary()
+        run_summary = self.generate_summary()
+        if verification_summary is not None:
+            run_summary["verification_summary"] = verification_summary
+
+        data[run_key] = run_summary
 
         with open(file_path, "w", encoding="utf-8") as f:
             json.dump(data, f, indent=2, ensure_ascii=False)
 
+        # Update aggregated analytics file
+        self._update_aggregated_json(
+            out_dir=out_dir,
+            aggregated_filename=aggregated_filename,
+            run_key=run_key,
+            run_summary=run_summary,
+            verification_summary=verification_summary,
+        )
+
         return str(file_path.resolve()), run_key
+
+    def _update_aggregated_json(
+        self,
+        out_dir: Path,
+        aggregated_filename: str,
+        run_key: str,
+        run_summary: Dict[str, Any],
+        verification_summary: Optional[Dict[str, Any]] = None,
+    ) -> str:
+        """
+        Maintains an aggregated runs summary file (analytics_aggregated.json)
+        recording key metrics per run (run 1, 2, ...) and overall cumulative totals.
+        """
+        agg_path = out_dir / aggregated_filename
+        agg_data: Dict[str, Any] = {"runs": {}, "overall_aggregated": {}}
+
+        if agg_path.exists():
+            try:
+                with open(agg_path, "r", encoding="utf-8") as f:
+                    content = f.read().strip()
+                    if content:
+                        loaded = json.loads(content)
+                        if isinstance(loaded, dict) and "runs" in loaded:
+                            agg_data = loaded
+            except Exception:
+                pass
+
+        summary_metrics = run_summary.get("summary", {})
+        agg_data["runs"][run_key] = {
+            "timestamp": run_summary.get("run_timestamp"),
+            "model": run_summary.get("model"),
+            "total_urls": summary_metrics.get("total_urls", 0),
+            "successful_urls": summary_metrics.get("successful_urls", 0),
+            "failed_urls": summary_metrics.get("failed_urls", 0),
+            "total_latency_seconds": summary_metrics.get("total_latency_seconds", 0.0),
+            "avg_latency_per_url_ms": summary_metrics.get("avg_latency_per_url_ms", 0.0),
+            "total_tokens": summary_metrics.get("total_tokens", 0),
+            "total_input_tokens": summary_metrics.get("total_input_tokens", 0),
+            "total_output_tokens": summary_metrics.get("total_output_tokens", 0),
+            "total_cost_usd": summary_metrics.get("total_cost_usd", 0.0),
+            "verification": verification_summary,
+        }
+
+        # Calculate cumulative totals across all recorded runs
+        runs_dict = agg_data["runs"]
+        total_runs_count = len(runs_dict)
+        tot_urls = sum(r.get("total_urls", 0) for r in runs_dict.values())
+        tot_success = sum(r.get("successful_urls", 0) for r in runs_dict.values())
+        tot_failed = sum(r.get("failed_urls", 0) for r in runs_dict.values())
+        tot_latency_sec = round(sum(r.get("total_latency_seconds", 0.0) for r in runs_dict.values()), 2)
+        tot_tokens = sum(r.get("total_tokens", 0) for r in runs_dict.values())
+        tot_in_tokens = sum(r.get("total_input_tokens", 0) for r in runs_dict.values())
+        tot_out_tokens = sum(r.get("total_output_tokens", 0) for r in runs_dict.values())
+        tot_cost = round(sum(r.get("total_cost_usd", 0.0) for r in runs_dict.values()), 6)
+        avg_lat_ms = round((tot_latency_sec * 1000.0 / tot_urls), 2) if tot_urls > 0 else 0.0
+
+        # Verification aggregation if present
+        v_runs = [r["verification"] for r in runs_dict.values() if r.get("verification")]
+        overall_verif = None
+        if v_runs:
+            tot_eval = sum(v.get("total_cases", 0) for v in v_runs)
+            tot_approved = sum(v.get("approved_cases", 0) for v in v_runs)
+            tot_review = sum(v.get("need_review_cases", 0) for v in v_runs)
+            tot_rejected = sum(v.get("rejected_cases", 0) for v in v_runs)
+            pass_rate = round((tot_approved / tot_eval * 100.0), 2) if tot_eval > 0 else 0.0
+            sum_scores = sum(v.get("avg_score", 0.0) * v.get("total_cases", 0) for v in v_runs)
+            avg_score = round((sum_scores / tot_eval), 2) if tot_eval > 0 else 0.0
+            overall_verif = {
+                "runs_with_verification": len(v_runs),
+                "total_evaluated": tot_eval,
+                "approved_cases": tot_approved,
+                "need_review_cases": tot_review,
+                "rejected_cases": tot_rejected,
+                "approval_rate_percent": pass_rate,
+                "overall_avg_score": avg_score,
+            }
+
+        agg_data["overall_aggregated"] = {
+            "total_runs": total_runs_count,
+            "total_urls_processed": tot_urls,
+            "total_successful_urls": tot_success,
+            "total_failed_urls": tot_failed,
+            "overall_latency_seconds": tot_latency_sec,
+            "overall_avg_latency_per_url_ms": avg_lat_ms,
+            "overall_total_tokens": tot_tokens,
+            "overall_total_input_tokens": tot_in_tokens,
+            "overall_total_output_tokens": tot_out_tokens,
+            "overall_total_cost_usd": tot_cost,
+            "overall_verification": overall_verif,
+        }
+
+        with open(agg_path, "w", encoding="utf-8") as f:
+            json.dump(agg_data, f, indent=2, ensure_ascii=False)
+
+        return str(agg_path.resolve())

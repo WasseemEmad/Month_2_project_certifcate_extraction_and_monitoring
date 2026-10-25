@@ -7,6 +7,7 @@ and rule-based golden dataset validation with baseline regression tracking.
 Modes:
   [1] Run Extraction (Process Excel containing URLs)
   [2] Dataset Validation (Extract golden dataset URLs & compare with baseline)
+  [3] Production Pipeline (Extraction + Rule-Based Verification & Scoring)
 """
 
 from __future__ import annotations
@@ -26,6 +27,7 @@ from openpyxl.utils import get_column_letter
 
 from extractor import ISOExtractor, RunAnalytics, URLMetrics
 from dataset_validation import DatasetValidator
+from verifier import CertificateVerifier
 
 # ── Logging Configuration ─────────────────────────────────────────────────────
 logging.basicConfig(
@@ -109,7 +111,7 @@ def load_input_urls(excel_path: str) -> List[str]:
 
 
 def format_excel_output(excel_path: str) -> None:
-    """Applies professional styling to the output Excel workbook."""
+    """Applies professional styling to the output Excel workbook, including verification badges."""
     try:
         from openpyxl import load_workbook
         wb = load_workbook(excel_path)
@@ -126,17 +128,56 @@ def format_excel_output(excel_path: str) -> None:
             bottom=Side(style="thin", color="D9D9D9"),
         )
         align_left = Alignment(horizontal="left", vertical="center", wrap_text=True)
+        align_center = Alignment(horizontal="center", vertical="center")
+
+        # Status badge styles
+        fill_approved = PatternFill(start_color="E2EFDA", end_color="E2EFDA", fill_type="solid")
+        font_approved = Font(name="Calibri", size=11, bold=True, color="276A3C")
+
+        fill_review = PatternFill(start_color="FFF2CC", end_color="FFF2CC", fill_type="solid")
+        font_review = Font(name="Calibri", size=11, bold=True, color="8C6B00")
+
+        fill_reject = PatternFill(start_color="FCE4D6", end_color="FCE4D6", fill_type="solid")
+        font_reject = Font(name="Calibri", size=11, bold=True, color="C00000")
+
+        font_score = Font(name="Calibri", size=11, bold=True)
+
+        verif_col_idx = None
+        score_col_idx = None
 
         for col_idx in range(1, ws.max_column + 1):
             cell = ws.cell(row=1, column=col_idx)
             cell.font = header_font
             cell.fill = header_fill
-            cell.alignment = Alignment(horizontal="center", vertical="center")
+            cell.alignment = align_center
+
+            header_text = str(cell.value or "").strip().lower()
+            if header_text == "verification_status":
+                verif_col_idx = col_idx
+            elif header_text == "confidence_score":
+                score_col_idx = col_idx
 
         for row in ws.iter_rows(min_row=2, max_row=ws.max_row, min_col=1, max_col=ws.max_column):
             for cell in row:
                 cell.border = thin_border
                 cell.alignment = align_left
+
+                if verif_col_idx and cell.column == verif_col_idx:
+                    val_str = str(cell.value or "").strip()
+                    cell.alignment = align_center
+                    if val_str == "Approved":
+                        cell.fill = fill_approved
+                        cell.font = font_approved
+                    elif val_str == "Need Review":
+                        cell.fill = fill_review
+                        cell.font = font_review
+                    elif val_str == "Reject":
+                        cell.fill = fill_reject
+                        cell.font = font_reject
+
+                if score_col_idx and cell.column == score_col_idx:
+                    cell.alignment = align_center
+                    cell.font = font_score
 
         for col in ws.columns:
             max_len = 0
@@ -159,8 +200,9 @@ def execute_extraction(
     workers: int = 4,
     output_path: Optional[str] = None,
     save_analytics: bool = True,
+    verifier: Optional[CertificateVerifier] = None,
 ) -> pd.DataFrame:
-    """Runs multithreaded extraction on a list of certificate URLs."""
+    """Runs multithreaded extraction on a list of certificate URLs, with optional verifier."""
     extractor = ISOExtractor(api_key=api_key, model_name=model_name)
     run_analytics = RunAnalytics(model_name=model_name)
 
@@ -218,9 +260,18 @@ def execute_extraction(
 
     df_out = pd.DataFrame(valid_results)
 
+    # ── Optional Verification ──────────────────────────────────────────────────
+    verif_summary = None
+    if verifier is not None:
+        print("\nExecuting rule-based verification and confidence scoring...")
+        df_out, verif_summary = verifier.verify_dataframe(df_out)
+
     ordered_columns = [
         "url",
         "status",
+        "verification_status",
+        "confidence_score",
+        "verification_reviews",
         "is_certificate",
         "is_iso_iatf",
         "cert_type",
@@ -234,6 +285,8 @@ def execute_extraction(
         "site_iso_type",
         "iso_product",
         "site_iso_type_status",
+        "doc_type",
+        "page_count",
         "latency_ms",
         "cost_usd",
         "total_tokens",
@@ -253,6 +306,7 @@ def execute_extraction(
         analytics_file, run_key = run_analytics.save_to_json(
             analytics_dir="analytics",
             filename="analytics.json",
+            verification_summary=verif_summary,
         )
         summary_data = run_analytics.generate_summary()["summary"]
         print("-" * 65)
@@ -264,7 +318,26 @@ def execute_extraction(
         print(f"  Avg Latency per URL  : {summary_data['avg_latency_per_url_ms']} ms")
         print(f"  Total Tokens         : {summary_data['total_tokens']:,} (Input: {summary_data['total_input_tokens']:,}, Output: {summary_data['total_output_tokens']:,})")
         print(f"  Estimated Cost       : ${summary_data['total_cost_usd']:.5f} USD")
-        print(f"  Analytics Saved to   : {analytics_file}")
+        print(f"  Detailed Analytics   : {analytics_file}")
+        print(f"  Aggregated Analytics : analytics/analytics_aggregated.json")
+
+    if verif_summary is not None:
+        print("\n" + "=" * 65)
+        print("                 VERIFICATION RESULTS SUMMARY")
+        print("=" * 65)
+        print(f"  Total Cases Evaluated : {verif_summary['total_cases']}")
+        print(f"  Approved (Score >= 90): {verif_summary['approved_cases']} ({verif_summary['approval_rate_percent']}%)")
+        print(f"  Need Review (50 - 89) : {verif_summary['need_review_cases']}")
+        print(f"  Rejected (Score < 50) : {verif_summary['rejected_cases']}")
+        print(f"  Average Confidence    : {verif_summary['avg_score']} / 100")
+        print("-" * 65)
+        if verif_summary.get("rule_violation_counts"):
+            print("RULE VIOLATIONS DETECTED:")
+            for rule_k, count_v in verif_summary["rule_violation_counts"].items():
+                print(f"  • {rule_k:<24}: {count_v} case(s)")
+        else:
+            print("  All cases fully passed verification rules!")
+        print("=" * 65)
 
     return df_out
 
@@ -446,27 +519,88 @@ def run_mode_validation():
     print("=" * 70)
 
 
+def run_mode_production():
+    """Mode 3: Production Pipeline (Extraction + Rule-Based Verification & Scoring)."""
+    print("\n--- Mode 3: Production Pipeline (Extraction + Verification & Scoring) ---")
+    input_path = prompt_with_default("Enter path to input Excel file: ")
+    if not input_path:
+        print("Error: Input file path cannot be empty.")
+        sys.exit(1)
+
+    output_path = prompt_with_default(
+        "Enter path for verified output Excel file (default: production_output.xlsx): ",
+        default="production_output.xlsx",
+    )
+    if not output_path.lower().endswith(".xlsx"):
+        output_path += ".xlsx"
+
+    model_name = prompt_with_default(
+        "Enter Gemini model [default: gemini-2.5-flash-lite]: ",
+        default="gemini-2.5-flash-lite",
+    )
+    threads_input = prompt_with_default(
+        "Enter number of worker threads [default: 4]: ",
+        default="4",
+    )
+    try:
+        workers = int(threads_input) if threads_input else 4
+        if workers < 1:
+            workers = 1
+    except ValueError:
+        workers = 4
+
+    try:
+        api_key = load_api_key("gemini.txt")
+    except Exception as e:
+        logger.error(f"Failed to load API key: {e}")
+        sys.exit(1)
+
+    try:
+        urls = load_input_urls(input_path)
+        logger.info(f"Loaded {len(urls)} URL(s) from '{input_path}'")
+    except Exception as e:
+        logger.error(f"Failed to load input URLs: {e}")
+        sys.exit(1)
+
+    verifier = CertificateVerifier(initial_score=100)
+
+    execute_extraction(
+        urls=urls,
+        api_key=api_key,
+        model_name=model_name,
+        workers=workers,
+        output_path=output_path,
+        save_analytics=True,
+        verifier=verifier,
+    )
+
+
 def main():
     print("=" * 65)
     print("      ISO / IATF Certificate Extraction & Validation")
     print("=" * 65)
 
     mode_choice = None
-    if len(sys.argv) > 1 and sys.argv[1].strip() in ("1", "2"):
+    valid_modes = ("1", "2", "3", "production", "prod")
+    if len(sys.argv) > 1 and sys.argv[1].strip() in valid_modes:
         mode_choice = sys.argv[1].strip()
-    elif os.environ.get("RUN_MODE") in ("1", "2"):
+    elif os.environ.get("RUN_MODE") in valid_modes:
         mode_choice = os.environ.get("RUN_MODE")
     else:
         print("Select Mode:")
         print("  [1] Run Extraction (Process Excel containing URLs)")
         print("  [2] Dataset Validation (Extract golden dataset & compare with baseline)")
-        mode_choice = prompt_with_default("Choose mode [1 or 2, default: 1]: ", default="1")
+        print("  [3] Production Pipeline (Extraction + Rule-Based Verification & Scoring)")
+        mode_choice = prompt_with_default("Choose mode [1, 2, or 3, default: 3]: ", default="3")
 
     if mode_choice == "2":
         run_mode_validation()
+    elif mode_choice in ("3", "production", "prod"):
+        run_mode_production()
     else:
         run_mode_extraction()
 
 
 if __name__ == "__main__":
     main()
+

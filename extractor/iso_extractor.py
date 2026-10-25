@@ -352,6 +352,8 @@ class ISOExtractor:
             "site_iso_type": None,
             "iso_product": None,
             "site_iso_type_status": None,
+            "doc_type": "unknown",
+            "page_count": 0,
             "latency_ms": 0.0,
             "cost_usd": 0.0,
             "total_tokens": 0,
@@ -359,8 +361,10 @@ class ISOExtractor:
 
         # ── Step 1: Download & convert ──────────────────────────────────────
         dl_start = time.perf_counter()
-        images, dl_err = prepare_images_for_cert_url(cert_url, temp_base_dir)
+        images, dl_err, meta = prepare_images_for_cert_url(cert_url, temp_base_dir, return_meta=True)
         url_metrics.download_latency_ms = (time.perf_counter() - dl_start) * 1000
+        result_record["doc_type"] = meta.get("doc_type", "unknown")
+        result_record["page_count"] = meta.get("page_count", 0)
 
         if dl_err or not images:
             result_record["status"] = "did not open need review"

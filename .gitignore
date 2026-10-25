@@ -4,3 +4,5 @@ __pycache__/
 *.pyo
 venv/
 .env
+notes
+Certificate_Verification_Project_Plan.docx
