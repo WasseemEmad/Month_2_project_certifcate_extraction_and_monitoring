@@ -1,10 +1,29 @@
 {
-  "validation_timestamp": "2026-10-24 11:30:44",
+  "validation_timestamp": "2026-10-25 11:03:29",
   "golden_file": "golden_dataset_regression.xlsx",
   "total_cases": 40,
   "passed_cases": 35,
   "failed_cases": 5,
   "pass_rate_percent": 87.5,
+  "false_pass_cases": 2,
+  "false_pass_rate_total_percent": 5,
+  "false_pass_rate_failed_percent": 40.0,
+  "false_pass_urls": [
+    {
+      "index": 18,
+      "url": "https://janyutech.com/wp-content/uploads/2025/06/TUVRheinland-certificate.png",
+      "confidence_score": 100,
+      "total_score": 9,
+      "verification_reviews": "Passed all verification rules"
+    },
+    {
+      "index": 12,
+      "url": "https://janyutech.com/wp-content/uploads/2025/06/TUVRheinland-certificate.png",
+      "confidence_score": 100,
+      "total_score": 9,
+      "verification_reviews": "Passed all verification rules"
+    }
+  ],
   "average_total_score": 9.8,
   "average_row_score": 0.98,
   "feature_scores": {

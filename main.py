@@ -428,9 +428,10 @@ def run_mode_validation():
         logger.error(f"Failed to load API key: {e}")
         sys.exit(1)
 
-    # Directly run extraction on the golden dataset URLs
+    # Directly run extraction on the golden dataset URLs with Verifier enabled
     urls = load_input_urls(golden_path)
     raw_output_path = "dataset_validation/golden_extracted_output.xlsx"
+    verifier = CertificateVerifier(initial_score=100)
     predicted_df = execute_extraction(
         urls=urls,
         api_key=api_key,
@@ -438,6 +439,7 @@ def run_mode_validation():
         workers=workers,
         output_path=raw_output_path,
         save_analytics=True,
+        verifier=verifier,
     )
 
     if predicted_df is None or predicted_df.empty:
@@ -477,6 +479,14 @@ def run_mode_validation():
     print(f"Pass Rate (%)         : {summary['pass_rate_percent']}%")
     print(f"Avg Total Score       : {summary['average_total_score']} / 10 pts")
     print(f"Avg Row Score         : {summary['average_row_score']} (scale: 0.0 - 1.0)")
+    print("-" * 70)
+    print("FALSE PASS METRICS (Verifier Approved vs Validator Failed):")
+    print(f"  • False Pass Cases    : {summary.get('false_pass_cases', 0)} / {summary['total_cases']} ({summary.get('false_pass_rate_total_percent', 0.0)}% of total)")
+    print(f"  • Rate of Failed Cases: {summary.get('false_pass_rate_failed_percent', 0.0)}% of failed cases")
+    if summary.get("false_pass_urls"):
+        print("  • False Pass URLs:")
+        for fp in summary["false_pass_urls"]:
+            print(f"    - Row #{fp['index']}: {fp['url']} (Confidence: {fp['confidence_score']})")
     print("-" * 70)
     print("FEATURE SCORES (AVERAGE PER COLUMN):")
     for feat_name, score_val in summary["feature_scores"].items():

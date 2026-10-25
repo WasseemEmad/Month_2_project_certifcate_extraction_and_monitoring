@@ -1,82 +1,52 @@
 {
   "runs": {
     "run 1": {
-      "timestamp": "2026-10-24 21:39:18",
+      "timestamp": "2026-10-25 11:00:57",
       "model": "gemini-2.5-flash-lite",
-      "total_urls": 70,
-      "successful_urls": 24,
-      "failed_urls": 46,
-      "total_latency_seconds": 2243.58,
-      "avg_latency_per_url_ms": 32051.21,
-      "total_tokens": 160847,
-      "total_input_tokens": 150294,
-      "total_output_tokens": 10553,
-      "total_cost_usd": 0.014437,
+      "total_urls": 40,
+      "successful_urls": 16,
+      "failed_urls": 24,
+      "total_latency_seconds": 1891.21,
+      "avg_latency_per_url_ms": 47280.29,
+      "total_tokens": 100379,
+      "total_input_tokens": 93683,
+      "total_output_tokens": 6696,
+      "total_cost_usd": 0.009034,
       "verification": {
-        "total_cases": 70,
-        "approved_cases": 17,
-        "need_review_cases": 6,
-        "rejected_cases": 47,
-        "approval_rate_percent": 24.29,
-        "avg_score": 32.21,
+        "total_cases": 40,
+        "approved_cases": 34,
+        "need_review_cases": 4,
+        "rejected_cases": 2,
+        "approval_rate_percent": 85.0,
+        "avg_score": 94.38,
         "rule_violation_counts": {
-          "Rule 1": 47,
-          "Rule 3": 46,
-          "Rule 5": 44,
-          "Rule 7": 189,
-          "Rule 4": 3,
-          "Rule 2": 5
-        }
-      }
-    },
-    "run 2": {
-      "timestamp": "2026-10-25 10:24:05",
-      "model": "gemini-2.5-flash-lite",
-      "total_urls": 70,
-      "successful_urls": 25,
-      "failed_urls": 45,
-      "total_latency_seconds": 4373.44,
-      "avg_latency_per_url_ms": 62477.71,
-      "total_tokens": 165618,
-      "total_input_tokens": 154794,
-      "total_output_tokens": 10824,
-      "total_cost_usd": 0.014856,
-      "verification": {
-        "total_cases": 70,
-        "approved_cases": 57,
-        "need_review_cases": 10,
-        "rejected_cases": 3,
-        "approval_rate_percent": 81.43,
-        "avg_score": 92.71,
-        "rule_violation_counts": {
-          "Status": 3,
-          "Rule 2": 6,
-          "Rule 1": 3,
-          "Rule 7": 5,
+          "Rule 1": 2,
+          "Rule 2": 3,
+          "Rule 7": 2,
           "Rule 3": 2
         }
       }
     }
   },
   "overall_aggregated": {
-    "total_runs": 2,
-    "total_urls_processed": 140,
-    "total_successful_urls": 49,
-    "total_failed_urls": 91,
-    "overall_latency_seconds": 6617.02,
-    "overall_avg_latency_per_url_ms": 47264.43,
-    "overall_total_tokens": 326465,
-    "overall_total_input_tokens": 305088,
-    "overall_total_output_tokens": 21377,
-    "overall_total_cost_usd": 0.029293,
+    "total_runs": 1,
+    "total_urls_processed": 40,
+    "total_successful_urls": 16,
+    "total_failed_urls": 24,
+    "overall_latency_seconds": 1891.21,
+    "overall_avg_latency_per_url_ms": 47280.25,
+    "overall_total_tokens": 100379,
+    "overall_total_input_tokens": 93683,
+    "overall_total_output_tokens": 6696,
+    "overall_total_cost_usd": 0.009034,
     "overall_verification": {
-      "runs_with_verification": 2,
-      "total_evaluated": 140,
-      "approved_cases": 74,
-      "need_review_cases": 16,
-      "rejected_cases": 50,
-      "approval_rate_percent": 52.86,
-      "overall_avg_score": 62.46
+      "runs_with_verification": 1,
+      "total_evaluated": 40,
+      "approved_cases": 34,
+      "need_review_cases": 4,
+      "rejected_cases": 2,
+      "approval_rate_percent": 85.0,
+      "overall_avg_score": 94.38
     }
   }
 }

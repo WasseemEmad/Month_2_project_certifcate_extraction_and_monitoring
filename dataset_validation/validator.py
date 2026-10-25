@@ -33,6 +33,7 @@ from .rules import (
     normalize_text,
     normalize_bool,
 )
+from verifier import CertificateVerifier
 
 EVALUATED_COLUMNS = [
     "is_certificate",
@@ -87,13 +88,18 @@ class RowEvaluation:
         self.total_score = 0
         self.avg_score = 0.0
         self.columns: Dict[str, ColumnEvaluation] = {}
+        self.verifier_status: Optional[str] = None
+        self.confidence_score: Optional[int] = None
+        self.verification_reviews: Optional[str] = None
+        self.is_false_pass: bool = False
 
     def add_column_result(self, col_eval: ColumnEvaluation):
         self.columns[col_eval.column_name] = col_eval
 
     def finalize(self):
         """
-        Computes row total score, avg score, and overall pass/fail status.
+        Computes row total score, avg score, overall pass/fail status,
+        and false pass detection (verifier Approved vs validator Failed).
         Date tolerance: If all columns are correct except exactly 1 date column
         (either issued_date or expiration_date), the row PASSES.
         """
@@ -116,12 +122,19 @@ class RowEvaluation:
             self.overall_passed = False
             self.date_tolerance_applied = False
 
+        # False Pass: verifier says Approved, but validator evaluated overall_passed as False
+        self.is_false_pass = bool(self.verifier_status == "Approved" and not self.overall_passed)
+
     def to_dict(self) -> Dict[str, Any]:
         return {
             "index": self.index,
             "url": self.url,
             "overall_passed": self.overall_passed,
             "date_tolerance_applied": self.date_tolerance_applied,
+            "verifier_status": self.verifier_status,
+            "confidence_score": self.confidence_score,
+            "verification_reviews": self.verification_reviews,
+            "is_false_pass": self.is_false_pass,
             "total_score": self.total_score,
             "avg_score": self.avg_score,
             "column_scores": {k: v.score for k, v in self.columns.items()},
@@ -187,6 +200,25 @@ class DatasetValidator:
         predicted: Any,
     ) -> RowEvaluation:
         row_eval = RowEvaluation(url=url, index=row_idx)
+
+        # ── Step 0: Extract or evaluate verification metadata ────────────────
+        pred_dict = (
+            predicted if isinstance(predicted, dict)
+            else (predicted.to_dict() if hasattr(predicted, "to_dict") else {})
+        )
+        v_status = pred_dict.get("verification_status")
+        c_score = pred_dict.get("confidence_score")
+        v_reviews = pred_dict.get("verification_reviews")
+
+        if not v_status and pred_dict:
+            verif_res = CertificateVerifier().verify_row(pred_dict)
+            v_status = verif_res.status
+            c_score = verif_res.score
+            v_reviews = verif_res.reviews
+
+        row_eval.verifier_status = v_status
+        row_eval.confidence_score = c_score
+        row_eval.verification_reviews = v_reviews
 
         # ── Step 1: Rule 1 - is_certificate ──────────────────────────────────
         exp_is_cert = normalize_bool(expected.get("is_certificate"))
@@ -354,6 +386,13 @@ class DatasetValidator:
         failed_rows = total_rows - passed_rows
         pass_rate = round((passed_rows / total_rows * 100), 2) if total_rows > 0 else 0.0
 
+        # False Pass calculation:
+        # Rows where verifier approved the certificate (confidence >= 90) but validator evaluated overall_passed as False
+        false_pass_rows = [r for r in row_evaluations if r.is_false_pass]
+        false_pass_cases = len(false_pass_rows)
+        false_pass_rate_total = round((false_pass_cases / total_rows * 100), 2) if total_rows > 0 else 0.0
+        false_pass_rate_failed = round((false_pass_cases / failed_rows * 100), 2) if failed_rows > 0 else 0.0
+
         total_row_scores = [r.total_score for r in row_evaluations]
         avg_row_scores = [r.avg_score for r in row_evaluations]
 
@@ -387,6 +426,19 @@ class DatasetValidator:
             "passed_cases": passed_rows,
             "failed_cases": failed_rows,
             "pass_rate_percent": pass_rate,
+            "false_pass_cases": false_pass_cases,
+            "false_pass_rate_total_percent": false_pass_rate_total,
+            "false_pass_rate_failed_percent": false_pass_rate_failed,
+            "false_pass_urls": [
+                {
+                    "index": r.index,
+                    "url": r.url,
+                    "confidence_score": r.confidence_score,
+                    "total_score": r.total_score,
+                    "verification_reviews": r.verification_reviews,
+                }
+                for r in false_pass_rows
+            ],
             "average_total_score": avg_total_score,
             "average_row_score": overall_avg_row_score,
             "feature_scores": feature_scores,
@@ -406,6 +458,10 @@ class DatasetValidator:
           - If a feature has improved -> +1
           - If a feature has decreased -> -1
           - If the same -> +0
+          - False Pass Rate:
+            If decreased (fewer false passes) -> +1 (Improved)
+            If increased (more false passes)   -> -1 (Decreased / Regressed)
+            If the same                        -> +0 (Same)
         If total improvement delta is positive (> 0), saves current run to analytics/new_baseline.json.
         """
         dir_path = Path(analytics_dir)
@@ -458,6 +514,33 @@ class DatasetValidator:
                 "delta": delta,
                 "status": status,
             }
+
+        # Compare False Pass Rate as a feature
+        # If false_pass_rate decreases -> +1 (Improvement)
+        # If false_pass_rate increases -> -1 (Regression)
+        # If false_pass_rate is same   -> +0 (Same)
+        base_fp_rate = float(baseline_data.get("false_pass_rate_total_percent", 0.0))
+        curr_fp_rate = float(current_summary.get("false_pass_rate_total_percent", 0.0))
+        diff_fp = round(curr_fp_rate - base_fp_rate, 2)
+
+        if diff_fp < 0:
+            fp_delta = 1
+            fp_status = "+1 (Improved - fewer false passes)"
+        elif diff_fp > 0:
+            fp_delta = -1
+            fp_status = "-1 (Decreased - more false passes)"
+        else:
+            fp_delta = 0
+            fp_status = "+0 (Same)"
+
+        total_delta += fp_delta
+        feature_comparisons["false_pass_rate"] = {
+            "baseline": base_fp_rate,
+            "new": curr_fp_rate,
+            "difference": diff_fp,
+            "delta": fp_delta,
+            "status": fp_status,
+        }
 
         saved_new_baseline = False
         if total_delta > 0:
@@ -537,6 +620,9 @@ class DatasetValidator:
             ("Passed Cases", summary["passed_cases"]),
             ("Failed Cases", summary["failed_cases"]),
             ("Pass Rate (%)", f"{summary['pass_rate_percent']}%"),
+            ("False Pass Cases (Verifier Approved vs Validator Failed)", summary.get("false_pass_cases", 0)),
+            ("False Pass Rate (of Total Cases)", f"{summary.get('false_pass_rate_total_percent', 0.0)}%"),
+            ("False Pass Rate (of Failed Cases)", f"{summary.get('false_pass_rate_failed_percent', 0.0)}%"),
             ("Average Total Score (out of 10)", f"{summary['average_total_score']} / 10"),
             ("Average Row Score (0.0 - 1.0)", f"{summary['average_row_score']}"),
         ]
@@ -598,6 +684,9 @@ class DatasetValidator:
             "Total Score (out of 10)",
             "Avg Score (0-1)",
             "Date Tolerance Applied?",
+            "Verification Status",
+            "Confidence Score",
+            "False Pass? (YES/NO)",
         ]
         for col in EVALUATED_COLUMNS:
             detail_headers.extend([
@@ -612,6 +701,10 @@ class DatasetValidator:
             cell.font = header_font
             cell.fill = blue_fill
             cell.alignment = Alignment(horizontal="center", vertical="center")
+
+        fill_review = PatternFill(start_color="FFF2CC", end_color="FFF2CC", fill_type="solid")
+        fill_false_pass = PatternFill(start_color="FFC7CE", end_color="FFC7CE", fill_type="solid")
+        font_false_pass = Font(name="Calibri", size=10, bold=True, color="9C0006")
 
         d_row = 2
         for r in rows:
@@ -628,7 +721,34 @@ class DatasetValidator:
             ws_details.cell(row=d_row, column=5, value=r.avg_score).font = bold_font
             ws_details.cell(row=d_row, column=6, value="YES" if r.date_tolerance_applied else "NO").font = normal_font
 
-            c_idx = 7
+            # Verification Status (column 7)
+            v_stat = r.verifier_status or "N/A"
+            v_cell = ws_details.cell(row=d_row, column=7, value=v_stat)
+            v_cell.font = bold_font
+            v_cell.alignment = Alignment(horizontal="center")
+            if v_stat == "Approved":
+                v_cell.fill = pass_fill
+            elif v_stat == "Need Review":
+                v_cell.fill = fill_review
+            elif v_stat == "Reject":
+                v_cell.fill = fail_fill
+
+            # Confidence Score (column 8)
+            sc_val = r.confidence_score if r.confidence_score is not None else "N/A"
+            sc_cell = ws_details.cell(row=d_row, column=8, value=sc_val)
+            sc_cell.font = bold_font
+            sc_cell.alignment = Alignment(horizontal="center")
+
+            # False Pass? (column 9)
+            fp_cell = ws_details.cell(row=d_row, column=9, value="YES (False Pass)" if r.is_false_pass else "NO")
+            fp_cell.alignment = Alignment(horizontal="center")
+            if r.is_false_pass:
+                fp_cell.fill = fill_false_pass
+                fp_cell.font = font_false_pass
+            else:
+                fp_cell.font = normal_font
+
+            c_idx = 10
             for col in EVALUATED_COLUMNS:
                 col_eval = r.columns.get(col)
                 if col_eval:

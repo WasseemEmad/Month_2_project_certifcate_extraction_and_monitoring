@@ -74,8 +74,11 @@ jobs:
                   f'| **Total Cases** | {s.get(\"total_cases\", \"N/A\")} |',
                   f'| **Passed Cases** | {s.get(\"passed_cases\", \"N/A\")} / {s.get(\"total_cases\", \"N/A\")} |',
                   f'| **Failed Cases** | {s.get(\"failed_cases\", \"N/A\")} |',
-                  f'| **Pass Rate** | {s.get(\"pass_rate_percent\", 0)}% |',
-                  f'| **Average Score** | {s.get(\"average_total_score\", 0)} / 10 |',
+                  f'| **Pass Rate** | {s.get("pass_rate_percent", 0)}% |',
+                  f'| **Average Score** | {s.get("average_total_score", 0)} / 10 |',
+                  f'| **False Pass Cases** | {s.get("false_pass_cases", 0)} |',
+                  f'| **False Pass Rate (Total)** | {s.get("false_pass_rate_total_percent", 0.0)}% |',
+                  f'| **False Pass Rate (Failed)** | {s.get("false_pass_rate_failed_percent", 0.0)}% |',
                   '',
                   '### 📊 Feature Accuracy Breakdown',
                   '',
@@ -83,8 +86,19 @@ jobs:
                   '| :--- | :--- | :--- |',
               ]
               for col, stats in s.get('column_breakdown', {}).items():
-                  lines.append(f'| \`{col}\` | {stats.get(\"avg_score\", 0):.4f} | {stats.get(\"accuracy_percent\", 0)}% |')
+                  lines.append(f'| \`{col}\` | {stats.get("avg_score", 0):.4f} | {stats.get("accuracy_percent", 0)}% |')
               
+              if s.get('false_pass_urls'):
+                  lines.extend([
+                      '',
+                      '### ⚠️ False Pass Detections (Verifier Approved vs Validator Failed)',
+                      '',
+                      '| Row # | Confidence Score | URL |',
+                      '| :--- | :--- | :--- |',
+                  ])
+                  for fp in s.get('false_pass_urls', []):
+                      lines.append(f'| #{fp.get("index")} | {fp.get("confidence_score")} | {fp.get("url")} |')
+
               baseline_file = Path('analytics/new_baseline.json')
               if baseline_file.exists():
                   lines.extend([
