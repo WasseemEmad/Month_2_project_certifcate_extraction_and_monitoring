@@ -6,3 +6,4 @@ venv/
 .env
 notes
 Certificate_Verification_Project_Plan.docx
+certificate_logs.db

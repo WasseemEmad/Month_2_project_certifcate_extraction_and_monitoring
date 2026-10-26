@@ -26,27 +26,167 @@
           "Rule 3": 2
         }
       }
+    },
+    "run 2": {
+      "timestamp": "2026-10-25 12:34:37",
+      "model": "gemini-2.5-flash-lite",
+      "total_urls": 13,
+      "successful_urls": 8,
+      "failed_urls": 5,
+      "total_latency_seconds": 396.12,
+      "avg_latency_per_url_ms": 30470.83,
+      "total_tokens": 39625,
+      "total_input_tokens": 37015,
+      "total_output_tokens": 2610,
+      "total_cost_usd": 0.00356,
+      "verification": {
+        "total_cases": 13,
+        "approved_cases": 7,
+        "need_review_cases": 6,
+        "rejected_cases": 0,
+        "approval_rate_percent": 53.85,
+        "avg_score": 80.77,
+        "rule_violation_counts": {
+          "Rule 1": 1,
+          "Status": 4,
+          "Rule 6": 1
+        }
+      },
+      "judge": {
+        "total_sampled": 2,
+        "sample_rate_percent": 15.38,
+        "passed_count": 2,
+        "failed_count": 0,
+        "avg_judge_score": 1.0,
+        "pass_rate_percent": 100.0,
+        "category_breakdown": {
+          "Approved": {
+            "sampled": 1,
+            "passed": 1,
+            "pass_rate_percent": 100.0
+          },
+          "Need Review": {
+            "sampled": 1,
+            "passed": 1,
+            "pass_rate_percent": 100.0
+          }
+        },
+        "evaluations": [
+          {
+            "request_id": "9366fa2c-b271-4187-9f14-1e12ea992f9f",
+            "url": "https://www.kostal-kontakt-systeme.com/fileadmin/user_upload/kostal-kontakt-systeme/Downloads/ISO_45001/Kostal_Kontakt_Systeme_TI_ISO_45001__EN_Vers.1.pdf",
+            "verdict": "Approved",
+            "confidence_score": 100,
+            "judge_score": 1,
+            "judge_reasoning": "The AI correctly identified the document as an ISO 45001 certificate and extracted relevant details like the site name, address, scope, and dates. The rule-based verification verdict is consistent with the extracted information, indicating a sound and coherent pipeline output.",
+            "latency_ms": 920.76
+          },
+          {
+            "request_id": "895c3ff8-0515-40ca-8bcb-079161be9061",
+            "url": "https://www.kostal-kontakt-systeme.com/fileadmin/user_upload/kostal-kontakt-systeme/Downloads/DIN_EN_ISO_50001/190786_KOSTAL_Kontakt_Systeme_GmbH__Co_KGISO_50001ENHQ.pdf",
+            "verdict": "Need Review",
+            "confidence_score": 50,
+            "judge_score": 1,
+            "judge_reasoning": "The AI correctly identified that no certificate information could be extracted because the document failed to open. The rule-based verification accurately reflects this by flagging the document for manual review with a moderate confidence score.",
+            "latency_ms": 686.32
+          }
+        ]
+      }
+    },
+    "run 3": {
+      "timestamp": "2026-10-25 12:54:08",
+      "model": "gemini-2.5-flash-lite",
+      "total_urls": 13,
+      "successful_urls": 10,
+      "failed_urls": 3,
+      "total_latency_seconds": 932.05,
+      "avg_latency_per_url_ms": 71696.31,
+      "total_tokens": 49227,
+      "total_input_tokens": 46031,
+      "total_output_tokens": 3196,
+      "total_cost_usd": 0.004413,
+      "verification": {
+        "total_cases": 13,
+        "approved_cases": 9,
+        "need_review_cases": 4,
+        "rejected_cases": 0,
+        "approval_rate_percent": 69.23,
+        "avg_score": 88.46,
+        "rule_violation_counts": {
+          "Rule 1": 1,
+          "Rule 6": 1,
+          "Status": 2
+        }
+      },
+      "judge": {
+        "total_sampled": 2,
+        "sample_rate_percent": 15.38,
+        "passed_count": 1,
+        "failed_count": 1,
+        "avg_judge_score": 0.5,
+        "pass_rate_percent": 50.0,
+        "category_breakdown": {
+          "Approved": {
+            "sampled": 1,
+            "passed": 1,
+            "pass_rate_percent": 100.0
+          },
+          "Need Review": {
+            "sampled": 1,
+            "passed": 0,
+            "pass_rate_percent": 0.0
+          }
+        },
+        "evaluations": [
+          {
+            "request_id": "0741bf92-03b3-4dbd-8ae2-29145e69bad7",
+            "url": "https://www.kostal-kontakt-systeme.com/fileadmin/user_upload/kostal-kontakt-systeme/Downloads/DIN_EN_ISO_50001/190786-001_KOSTAL_Connectors_GmbH_ISO_Jince_50001_EN.pdf",
+            "verdict": "Approved",
+            "confidence_score": 100,
+            "judge_score": 1,
+            "judge_reasoning": "The AI extraction accurately identified the document as a certificate, correctly classified it as ISO 50001:2018, and extracted all relevant fields including organization name, addresses, scope, and dates with high fidelity to the provided certificate image.",
+            "latency_ms": 4081.14
+          },
+          {
+            "request_id": "122843a0-7b83-4242-95cd-475393597338",
+            "url": "https://www.jablotron.com/file/edee/iso/2026/cert_13485_eniqnet_2025.pdf",
+            "verdict": "Need Review",
+            "confidence_score": 70,
+            "judge_score": 0,
+            "judge_reasoning": "The AI incorrectly identified the issued and expiration dates, and the site_iso_type was not present in the document.",
+            "latency_ms": 18193.46
+          }
+        ]
+      }
     }
   },
   "overall_aggregated": {
-    "total_runs": 1,
-    "total_urls_processed": 40,
-    "total_successful_urls": 16,
-    "total_failed_urls": 24,
-    "overall_latency_seconds": 1891.21,
-    "overall_avg_latency_per_url_ms": 47280.25,
-    "overall_total_tokens": 100379,
-    "overall_total_input_tokens": 93683,
-    "overall_total_output_tokens": 6696,
-    "overall_total_cost_usd": 0.009034,
+    "total_runs": 3,
+    "total_urls_processed": 66,
+    "total_successful_urls": 34,
+    "total_failed_urls": 1,
+    "overall_latency_seconds": 3219.38,
+    "overall_avg_latency_per_url_ms": 48778.48,
+    "overall_total_tokens": 189231,
+    "overall_total_input_tokens": 176729,
+    "overall_total_output_tokens": 12502,
+    "overall_total_cost_usd": 0.017007,
     "overall_verification": {
-      "runs_with_verification": 1,
-      "total_evaluated": 40,
-      "approved_cases": 34,
-      "need_review_cases": 4,
+      "runs_with_verification": 3,
+      "total_evaluated": 66,
+      "approved_cases": 50,
+      "need_review_cases": 14,
       "rejected_cases": 2,
-      "approval_rate_percent": 85.0,
-      "overall_avg_score": 94.38
+      "approval_rate_percent": 75.76,
+      "overall_avg_score": 90.53
+    },
+    "overall_judge": {
+      "runs_with_judge": 2,
+      "total_sampled": 4,
+      "passed_count": 3,
+      "failed_count": 1,
+      "avg_judge_score": 0.75,
+      "pass_rate_percent": 75.0
     }
   }
 }

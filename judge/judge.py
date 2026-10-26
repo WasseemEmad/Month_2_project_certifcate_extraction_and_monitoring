@@ -3,6 +3,9 @@ judge/judge.py
 ==============
 Post-batch LLM-as-a-Judge evaluation with stratified random sampling (~15%)
 across Approved, Need Review, and Reject verdict categories.
+Opens the actual certificate document (multimodal) and compares the extracted fields
+and verification verdict directly against the certificate content.
+Excludes failed-to-open documents from judge sampling.
 Logs scores to SQLite and outputs judge metrics for analytics.json.
 """
 
@@ -11,7 +14,10 @@ from __future__ import annotations
 import json
 import logging
 import math
+import os
 import random
+import shutil
+import tempfile
 import time
 from typing import Any, Dict, List, Optional, Tuple
 
@@ -19,17 +25,16 @@ from google import genai
 from google.genai.types import Part
 
 from database.db import DEFAULT_DB_PATH, update_judge_result
+from extractor.utils import prepare_images_for_cert_url
 from tracing.tracer import generation_llm_judge
 
 logger = logging.getLogger("cert_judge")
 
-JUDGE_PROMPT_TEMPLATE = """You are an independent quality audit judge evaluating an AI extraction and rule-based verification pipeline for ISO/IATF certificates.
+JUDGE_PROMPT_TEMPLATE = """You are an independent quality audit judge inspecting an ISO/IATF certificate document and evaluating an AI extraction pipeline's output.
 
-Document Input:
-- URL: {url}
-- Document Type: {doc_type} (Page count: {page_count})
+The actual certificate document is attached as image(s).
 
-AI Extracted Output:
+AI Extracted Output to Audit:
 - is_certificate: {is_certificate}
 - is_iso_iatf: {is_iso_iatf}
 - cert_type: {cert_type}
@@ -47,17 +52,47 @@ Rule-Based Verification Verdict:
 - Confidence Score: {confidence_score} / 100
 - Checks / Violations: {checks_passed_or_failed}
 
-Audit Task:
-Assess whether the extracted data and the verification verdict are sound, coherent, and free of critical hallucinations.
-- Score 1 (Pass): The extraction and verdict are plausible, consistent, and logically valid.
-- Score 0 (Fail): There are severe contradictions, hallucinated data, or an unreasonable verdict.
+Audit Instructions:
+Read and inspect the attached certificate image(s) carefully:
+1. Document Identification: Does the attached document match the classification (is_certificate, is_iso_iatf)?
+2. Field Verification against Document:
+   - Does site_name match the certified organization visible on the certificate?
+   - Does address match the site location shown?
+   - Does scope accurately reflect the certified scope of operations?
+   - Does iso_type / cert_type accurately match the standard (e.g. ISO 9001:2015, ISO 14001:2015, IATF 16949)?
+   - Are issued_date and expiration_date accurate to the certificate?
+   - Is site_iso_type a reasonable manufacturing category for this scope?
+3. Verdict Assessment:
+   - If the certificate is genuine and extracted accurately, is 'Approved' appropriate?
+   - If the document is NOT an ISO/IATF certificate, or has severe discrepancies, does the verdict appropriately reflect 'Need Review' or 'Reject'?
+
+Scoring Standard:
+- Score 1 (Pass): The extracted fields and verdict are faithful and accurate to the attached certificate.
+- Score 0 (Fail): There are significant hallucinations, wrong dates/names, misclassification, or an unjustified verdict.
 
 Respond ONLY with a valid JSON object matching this schema:
 {{
   "score": 1,
-  "reasoning": "<Concise 1-2 sentence justification>"
+  "reasoning": "<Concise 1-2 sentence explanation of your comparison with the actual certificate>"
 }}
 """
+
+
+def is_record_eligible_for_judge(record: Dict[str, Any]) -> bool:
+    """
+    Determines whether a certificate record is eligible for LLM judge evaluation.
+    Excludes cases where the certificate failed to open or has 0 pages.
+    """
+    status = (record.get("status") or "").lower()
+    reviews = (record.get("verification_reviews") or "").lower()
+    page_count = record.get("page_count") or 0
+    doc_type = record.get("doc_type") or "unknown"
+
+    if "did not open" in status or "did not open" in reviews:
+        return False
+    if page_count <= 0 and doc_type == "unknown":
+        return False
+    return True
 
 
 def sample_records_stratified(
@@ -66,13 +101,20 @@ def sample_records_stratified(
 ) -> List[Dict[str, Any]]:
     """
     Performs stratified random sampling covering Approved, Need Review, and Reject.
-    Samples approximately ~15% of the total dataset, ensuring representation
-    across all present verdict categories.
+    Excludes cases where the certificate failed to open (status contains 'did not open'
+    or page_count is 0), ensuring the judge only audits opened certificates.
     """
     if not records:
         return []
 
-    # Group records by verdict
+    # Filter out failed-to-open records
+    eligible_records = [r for r in records if is_record_eligible_for_judge(r)]
+
+    if not eligible_records:
+        logger.info("[judge] No eligible opened certificates found for sampling.")
+        return []
+
+    # Group eligible records by verdict
     groups: Dict[str, List[Dict[str, Any]]] = {
         "Approved": [],
         "Need Review": [],
@@ -80,7 +122,7 @@ def sample_records_stratified(
         "Other": [],
     }
 
-    for r in records:
+    for r in eligible_records:
         v = (r.get("verification_status") or r.get("verdict") or "Other").strip()
         if v in groups:
             groups[v].append(r)
@@ -88,11 +130,10 @@ def sample_records_stratified(
             groups["Other"].append(r)
 
     active_groups = {k: v for k, v in groups.items() if len(v) > 0}
-    total_records = len(records)
-    target_sample_size = max(len(active_groups), math.ceil(total_records * sample_ratio))
-    target_sample_size = min(target_sample_size, total_records)
-
-    sampled: List[Dict[str, Any]] = []
+    total_eligible = len(eligible_records)
+    # Target ~15% of total eligible records
+    target_sample_size = max(len(active_groups), math.ceil(total_eligible * sample_ratio))
+    target_sample_size = min(target_sample_size, total_eligible)
 
     # Guarantee at least 1 random pick from each active category
     remaining_budget = target_sample_size
@@ -115,6 +156,7 @@ def sample_records_stratified(
             break
 
     # Randomly pick from each category
+    sampled: List[Dict[str, Any]] = []
     for cat, count in allocated.items():
         pool = active_groups[cat]
         chosen = random.sample(pool, min(count, len(pool)))
@@ -126,6 +168,8 @@ def sample_records_stratified(
 class LLMJudge:
     """
     Evaluates a sample of processed certificates using Gemini as an independent auditor.
+    Downloads and opens the certificate to compare the actual document visually against
+    the extracted fields and rule-based verdict.
     """
 
     def __init__(self, api_key: str, model_name: str = "gemini-2.5-flash-lite"):
@@ -137,16 +181,15 @@ class LLMJudge:
 
     def evaluate_record(self, record: Dict[str, Any]) -> Tuple[int, str, float]:
         """
-        Evaluates a single certificate record with Gemini and returns (score, reasoning, latency_ms).
+        Downloads the certificate, renders pages, and passes them to Gemini
+        alongside the extracted answers and verdict.
+        Returns (score, reasoning, latency_ms).
         score is strictly 1 (Pass) or 0 (Fail).
         """
         url = record.get("url", "N/A")
         verdict = record.get("verification_status") or record.get("verdict") or "Unknown"
 
         prompt = JUDGE_PROMPT_TEMPLATE.format(
-            url=url,
-            doc_type=record.get("doc_type", "unknown"),
-            page_count=record.get("page_count", 1),
             is_certificate=record.get("is_certificate"),
             is_iso_iatf=record.get("is_iso_iatf"),
             cert_type=record.get("cert_type", "N/A"),
@@ -164,46 +207,59 @@ class LLMJudge:
         )
 
         start = time.perf_counter()
-        score = 1
-        reasoning = "Extraction is sound."
-
-        with generation_llm_judge(model=self.model_name, url=url, prompt=prompt) as gen:
-            try:
-                response = self.client.models.generate_content(
-                    model=self.model_name,
-                    contents=prompt,
-                    config={
-                        "temperature": 0.0,
-                        "response_mime_type": "application/json",
-                    },
-                )
-                raw_text = (response.text or "").strip()
-                parsed = json.loads(raw_text)
-                raw_score = parsed.get("score", 1)
-                score = 1 if int(raw_score) >= 1 else 0
-                reasoning = parsed.get("reasoning", "Valid extraction.")
+        temp_dir = tempfile.mkdtemp(prefix="judge_cert_")
+        try:
+            # 1. Download and render certificate pages
+            images, dl_err, meta = prepare_images_for_cert_url(url, temp_dir, max_pages=3, return_meta=True)
+            if dl_err or not images:
                 latency_ms = (time.perf_counter() - start) * 1000
+                logger.warning(f"[judge] Could not open certificate at {url}: {dl_err}")
+                return 0, f"Judge failed to open certificate for verification: {dl_err}", latency_ms
 
-                usage_meta = getattr(response, "usage_metadata", None)
-                usage = {
-                    "input": getattr(usage_meta, "prompt_token_count", 0) or 0,
-                    "output": getattr(usage_meta, "candidates_token_count", 0) or 0,
-                }
-                gen.update(
-                    output={"score": score, "reasoning": reasoning},
-                    usage_details=usage,
-                    metadata={"latency_ms": latency_ms, "score": score},
-                )
-            except Exception as e:
-                latency_ms = (time.perf_counter() - start) * 1000
-                logger.warning(f"[judge] LLM Judge evaluation error for {url}: {e}")
-                gen.update(level="ERROR", status_message=str(e))
-                # Fallback heuristic: if approved by verifier with score >= 90, score 1 else 0
-                conf = record.get("confidence_score") or 0
-                score = 1 if conf >= 80 else 0
-                reasoning = f"Fallback evaluation due to error ({e}): confidence={conf}"
+            # 2. Build multimodal payload (prompt + page images)
+            content_parts = [prompt]
+            for img_path, mime_type in images:
+                with open(img_path, "rb") as f:
+                    content_parts.append(Part.from_bytes(data=f.read(), mime_type=mime_type))
 
-        return score, reasoning, latency_ms
+            # 3. Call Gemini with multimodal inputs
+            with generation_llm_judge(model=self.model_name, url=url, prompt=prompt) as gen:
+                try:
+                    response = self.client.models.generate_content(
+                        model=self.model_name,
+                        contents=content_parts,
+                        config={
+                            "temperature": 0.0,
+                            "response_mime_type": "application/json",
+                        },
+                    )
+                    raw_text = (response.text or "").strip()
+                    parsed = json.loads(raw_text)
+                    raw_score = parsed.get("score", 1)
+                    score = 1 if int(raw_score) >= 1 else 0
+                    reasoning = parsed.get("reasoning", "Valid extraction.")
+                    latency_ms = (time.perf_counter() - start) * 1000
+
+                    usage_meta = getattr(response, "usage_metadata", None)
+                    usage = {
+                        "input": getattr(usage_meta, "prompt_token_count", 0) or 0,
+                        "output": getattr(usage_meta, "candidates_token_count", 0) or 0,
+                    }
+                    gen.update(
+                        output={"score": score, "reasoning": reasoning},
+                        usage_details=usage,
+                        metadata={"latency_ms": latency_ms, "score": score},
+                    )
+                    return score, reasoning, latency_ms
+
+                except Exception as e:
+                    latency_ms = (time.perf_counter() - start) * 1000
+                    logger.warning(f"[judge] LLM Judge evaluation error for {url}: {e}")
+                    gen.update(level="ERROR", status_message=str(e))
+                    return 0, f"Judge error during visual verification: {e}", latency_ms
+
+        finally:
+            shutil.rmtree(temp_dir, ignore_errors=True)
 
     def evaluate_batch(
         self,
@@ -213,12 +269,26 @@ class LLMJudge:
     ) -> Dict[str, Any]:
         """
         Stratified random sampling across Approved, Need Review, and Reject (~15%),
-        evaluates with Gemini, logs scores to SQLite, and returns summary stats.
+        evaluates with Gemini by opening the certificate document, logs scores to SQLite,
+        and returns summary stats.
         """
         sampled_records = sample_records_stratified(records, sample_ratio=sample_ratio)
         total_sampled = len(sampled_records)
 
-        print(f"\n[LLM Judge] Running stratified post-batch evaluation on {total_sampled}/{len(records)} records (~{round(total_sampled/max(1, len(records))*100, 1)}%)...")
+        if total_sampled == 0:
+            print("[LLM Judge] No eligible opened certificates available for sampling.")
+            return {
+                "total_sampled": 0,
+                "sample_rate_percent": 0.0,
+                "passed_count": 0,
+                "failed_count": 0,
+                "avg_judge_score": 1.0,
+                "pass_rate_percent": 100.0,
+                "category_breakdown": {},
+                "evaluations": [],
+            }
+
+        print(f"\n[LLM Judge] Opening certificates & running stratified visual audit on {total_sampled}/{len(records)} records (~{round(total_sampled/max(1, len(records))*100, 1)}%)...")
 
         results = []
         category_counts: Dict[str, int] = {}
