@@ -489,11 +489,16 @@ def check_quality_drift(
             page_count = r.get("page_count")
 
             is_err = False
-            if status not in ("", "OK"):
+            status_lower = status.lower()
+            doc_type = str(r.get("doc_type") or "").lower()
+
+            if err_msg and str(err_msg).strip() != "":
                 is_err = True
-            elif err_msg and str(err_msg).strip() != "":
+            elif "did not open" in checks or "did not open" in status_lower:
                 is_err = True
-            elif "did not open" in checks or (page_count is not None and page_count == 0):
+            elif "failed" in status_lower or "error" in status_lower:
+                is_err = True
+            elif doc_type == "pdf" and page_count is not None and page_count == 0:
                 is_err = True
 
             if is_err:
@@ -771,6 +776,107 @@ def append_to_json_file(file_path: Union[str, Path], item_or_items: Union[Dict[s
         json.dump(data, f, indent=2)
 
 
+def save_drift_report(file_path: Union[str, Path], report: Dict[str, Any]) -> None:
+    """
+    Saves a drift report into JSON file.
+    If a report with the same (from_index, to_index) already exists, updates it in place
+    rather than creating duplicate entries for the same data window.
+    """
+    target_path = Path(file_path)
+    target_path.parent.mkdir(parents=True, exist_ok=True)
+
+    data: List[Dict[str, Any]] = []
+    if target_path.exists() and target_path.stat().st_size > 0:
+        try:
+            with open(target_path, "r", encoding="utf-8") as f:
+                loaded = json.load(f)
+                if isinstance(loaded, list):
+                    data = loaded
+                elif isinstance(loaded, dict):
+                    data = [loaded]
+        except Exception:
+            data = []
+
+    f_idx = report.get("from_index")
+    t_idx = report.get("to_index")
+
+    matched_idx = -1
+    if f_idx is not None and t_idx is not None:
+        for idx, existing in enumerate(data):
+            if existing.get("from_index") == f_idx and existing.get("to_index") == t_idx:
+                matched_idx = idx
+                break
+
+    if matched_idx >= 0:
+        data[matched_idx] = report
+    else:
+        data.append(report)
+
+    with open(target_path, "w", encoding="utf-8") as f:
+        json.dump(data, f, indent=2)
+
+
+def save_alarms(
+    file_path: Union[str, Path],
+    new_alarms: List[Dict[str, Any]],
+    from_index: Optional[int] = None,
+    to_index: Optional[int] = None,
+) -> None:
+    """
+    Saves and deduplicates alarms in alarms.json.
+    - Prevents duplicate alarms for the same (from_index, to_index, metric).
+    - If alarms exist for the same (from_index, to_index, metric), updates them in-place with latest values.
+    - If from_index and to_index are provided, any previous alarm for that window whose metric is no
+      longer triggered (e.g. resolved error_rate or resolved drift) is removed so false/stale alarms
+      do not linger.
+    """
+    target_path = Path(file_path)
+    target_path.parent.mkdir(parents=True, exist_ok=True)
+
+    existing_alarms: List[Dict[str, Any]] = []
+    if target_path.exists() and target_path.stat().st_size > 0:
+        try:
+            with open(target_path, "r", encoding="utf-8") as f:
+                loaded = json.load(f)
+                if isinstance(loaded, list):
+                    existing_alarms = loaded
+                elif isinstance(loaded, dict):
+                    existing_alarms = [loaded]
+        except Exception:
+            existing_alarms = []
+
+    new_alarm_metrics = {a.get("metric") for a in new_alarms if a.get("metric")}
+
+    updated_list: List[Dict[str, Any]] = []
+    replaced_keys = set()
+
+    for old in existing_alarms:
+        old_f = old.get("from_index")
+        old_t = old.get("to_index")
+        old_m = old.get("metric")
+
+        # If evaluating a specific window:
+        if from_index is not None and to_index is not None and old_f == from_index and old_t == to_index:
+            # If this metric is not in new_alarms, it has been resolved or was a false alarm -> remove it
+            if old_m not in new_alarm_metrics:
+                continue
+            matching_new = next((a for a in new_alarms if a.get("metric") == old_m), None)
+            if matching_new:
+                updated_list.append(matching_new)
+                replaced_keys.add((old_f, old_t, old_m))
+            continue
+
+        updated_list.append(old)
+
+    for a in new_alarms:
+        key = (a.get("from_index"), a.get("to_index"), a.get("metric"))
+        if key not in replaced_keys:
+            updated_list.append(a)
+
+    with open(target_path, "w", encoding="utf-8") as f:
+        json.dump(updated_list, f, indent=2)
+
+
 # ==============================================================================
 # 7. Drift Master Execution & Console Dashboard
 # ==============================================================================
@@ -825,9 +931,8 @@ def execute_drift_test(
     report["alarm_count"] = len(alarms)
 
     if save_reports:
-        append_to_json_file(drift_report_path, report)
-        if alarms:
-            append_to_json_file(alarms_path, alarms)
+        save_drift_report(drift_report_path, report)
+        save_alarms(alarms_path, alarms, from_index=from_index, to_index=to_index)
 
     return report, alarms
 

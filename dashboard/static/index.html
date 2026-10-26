@@ -1,0 +1,217 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>ISO / IATF Certificate Monitor · Drift, Baselines & Human Review</title>
+  <meta name="description" content="Monitoring dashboard for the ISO / IATF certificate extraction pipeline: production health, input/output drift tests, golden dataset baselines, alarms, dynamic 30% review queue, and reviewed decisions.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="/styles.css?v=20261026_4">
+</head>
+<body>
+  <header class="topbar">
+    <div class="topbar-inner">
+      <div class="brand">
+        <div class="brand-mark" aria-hidden="true"></div>
+        <div>
+          <h1>Certificate Extraction Monitor</h1>
+          <p id="source-line">Loading…</p>
+        </div>
+      </div>
+      <nav class="tabs" role="tablist" aria-label="Dashboard sections">
+        <button class="tab active" id="tab-overview" data-view="overview" role="tab">Overview</button>
+        <button class="tab" id="tab-drift" data-view="drift" role="tab">Drift</button>
+        <button class="tab" id="tab-quality" data-view="quality" role="tab">Golden Dataset</button>
+        <button class="tab" id="tab-alerts" data-view="alerts" role="tab">Alerts <span class="pill" id="alerts-pill" hidden>0</span></button>
+        <button class="tab" id="tab-review" data-view="review" role="tab">Review Queue <span class="pill" id="review-pill" hidden>0</span></button>
+        <button class="tab" id="tab-reviewed" data-view="reviewed" role="tab">Reviewed Cases <span class="pill" id="reviewed-pill" hidden>0</span></button>
+      </nav>
+      <button class="refresh" id="refresh-btn" title="Reload data">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" aria-hidden="true"><path d="M21 12a9 9 0 1 1-3-6.7L21 8"/><path d="M21 3v5h-5"/></svg>
+      </button>
+    </div>
+  </header>
+
+  <main>
+    <!-- ================= OVERVIEW ================= -->
+    <section class="view active" id="view-overview" aria-labelledby="h-overview">
+      <div class="section-head">
+        <div>
+          <h2 id="h-overview">Overview</h2>
+          <p>Production health of the ISO / IATF certificate extraction pipeline with the frozen reference set and drift test windows side by side.</p>
+        </div>
+      </div>
+      <div id="overview-check"></div>
+      <div class="grid grid-5" id="kpis"><div class="skeleton"></div><div class="skeleton"></div><div class="skeleton"></div><div class="skeleton"></div><div class="skeleton"></div></div>
+
+      <div class="grid grid-3" style="margin-top:16px">
+        <div class="card span-2">
+          <div class="card-head">
+            <div><p class="card-title">p95 Latency over request sequence</p><p class="card-sub" id="lat-sub"></p></div>
+          </div>
+          <div class="chart" id="chart-latency"></div>
+        </div>
+        <div class="card" id="alert-status"><div class="skeleton"></div></div>
+      </div>
+
+      <h3 class="block-title">By Window / Reference Set</h3>
+      <div class="card"><div class="table-wrap" id="windows-table"></div></div>
+    </section>
+
+    <!-- ================= DRIFT ================= -->
+    <section class="view" id="view-drift" aria-labelledby="h-drift">
+      <div class="section-head">
+        <div>
+          <h2 id="h-drift">Drift</h2>
+          <p>Consecutive production test windows compared against the frozen reference set. Evaluates input, output, and quality drift with window indices (e.g. #1–#50, #51–#100).</p>
+        </div>
+      </div>
+      <div id="drift-check"></div>
+      <div id="drift-ref-note"></div>
+      <div id="drift-thr-note"></div>
+
+      <h3 class="block-title">Input Drift</h3>
+      <div class="grid grid-2" id="input-charts"></div>
+
+      <h3 class="block-title">Output Drift</h3>
+      <div class="grid grid-3" id="output-charts"></div>
+      <div class="card" style="margin-top:16px">
+        <div class="card-head">
+          <div><p class="card-title">Verdict & Classification Shares: Reference vs Recent Window</p><p class="card-sub">Purple = frozen reference, teal = selected recent window, right = percentage point shift</p></div>
+          <div class="window-picker" id="share-picker"></div>
+        </div>
+        <div class="grid grid-3" id="share-bars"></div>
+      </div>
+
+      <h3 class="block-title">Quality & Judge Drift</h3>
+      <div class="grid grid-2" id="rule-drift"></div>
+    </section>
+
+    <!-- ================= GOLDEN DATASET / QUALITY ================= -->
+    <section class="view" id="view-quality" aria-labelledby="h-quality">
+      <div class="section-head">
+        <div>
+          <h2 id="h-quality">Golden Dataset Baselines</h2>
+          <p>Compare validation runs against golden_dataset_regression.xlsx. Automatically discovers any baseline JSON in analytics/ (e.g. baseline.json as latest, old_baseline.json as older version).</p>
+        </div>
+        <div class="baseline-controls" style="display:flex;align-items:center;gap:12px;flex-wrap:wrap;">
+          <div class="form-field" style="margin:0;">
+            <label for="baseline-select" style="font-size:11.5px;font-weight:600;color:var(--text-3);text-transform:uppercase;letter-spacing:.05em;">Active Baseline</label>
+            <select id="baseline-select" style="background:hsla(226,30%,14%,0.8);color:var(--accent);font-weight:700;padding:6px 12px;border:1px solid var(--border-strong);border-radius:8px;font-family:var(--mono);cursor:pointer;"></select>
+          </div>
+          <div class="form-field" style="margin:0;">
+            <label for="compare-select" style="font-size:11.5px;font-weight:600;color:var(--text-3);text-transform:uppercase;letter-spacing:.05em;">Compare With</label>
+            <select id="compare-select" style="background:hsla(226,30%,14%,0.8);color:var(--ref);font-weight:700;padding:6px 12px;border:1px solid var(--border-strong);border-radius:8px;font-family:var(--mono);cursor:pointer;"></select>
+          </div>
+        </div>
+      </div>
+
+      <div class="grid grid-4" id="baseline-kpis" style="margin-bottom:16px;"></div>
+
+      <div class="card" style="margin-bottom:18px;">
+        <div class="card-head">
+          <div>
+            <p class="card-title">Feature Scores & Accuracy Comparison</p>
+            <p class="card-sub">Side-by-side comparison between active baseline and comparison baseline.</p>
+          </div>
+        </div>
+        <div class="table-wrap" id="feature-comparison-table"></div>
+      </div>
+
+      <div class="grid grid-2" style="margin-bottom:18px;">
+        <div class="card">
+          <div class="card-head">
+            <div><p class="card-title">Column Breakdown & Point Allocations</p><p class="card-sub">Detailed points, accuracy, and similarity percentages per extracted field.</p></div>
+          </div>
+          <div class="table-wrap" id="column-breakdown-table"></div>
+        </div>
+        <div class="card">
+          <div class="card-head">
+            <div><p class="card-title">False Pass Cases / Safety Violations</p><p class="card-sub">Documents that erroneously passed verification rules.</p></div>
+          </div>
+          <div id="false-pass-container"></div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ================= ALERTS ================= -->
+    <section class="view" id="view-alerts" aria-labelledby="h-alerts">
+      <div class="section-head">
+        <div>
+          <h2 id="h-alerts">Alerts</h2>
+          <p>Historical alarms loaded from analytics/alarms.json with sample ranges (from_index to to_index), newest first.</p>
+        </div>
+        <div class="window-picker" id="sev-filter">
+          <button class="active" data-sev="all" id="sev-all">All</button>
+          <button data-sev="critical" id="sev-critical">Critical</button>
+          <button data-sev="warning" id="sev-warning">Warning</button>
+        </div>
+      </div>
+      <div class="card"><div class="table-wrap" id="alerts-table"></div></div>
+    </section>
+
+    <!-- ================= REVIEW QUEUE ================= -->
+    <section class="view" id="view-review" aria-labelledby="h-review">
+      <div class="section-head">
+        <div>
+          <h2 id="h-review">Review Queue</h2>
+          <p>Prioritized human audit queue: dynamically maintained at <b>30% of production data</b> in SQLite (excluding reference set). Reviewing a case auto-promotes the next eligible item.</p>
+        </div>
+        <div class="window-picker" id="rq-view-picker">
+          <button class="active" id="btn-mode-single" data-mode="single">Single Case Review</button>
+          <button id="btn-mode-table" data-mode="table">Queue Table</button>
+        </div>
+      </div>
+
+      <!-- Pending and Reviewed Counters Banner -->
+      <div id="review-counters-bar"></div>
+
+      <!-- Single Case Card Container -->
+      <div id="review-single-container"></div>
+
+      <!-- All Queue Table Container -->
+      <div id="review-table-container" style="display:none;">
+        <div class="section-subhead" style="margin-bottom:12px;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:10px;">
+          <div class="dim">Active 30% pending queue ordered by operational risk: P1 Reject &rarr; P2 Need Review &rarr; P3 Low Conf &rarr; P4 Warning &rarr; P5 Audit.</div>
+          <div class="window-picker" id="review-filter">
+            <button class="active" data-filter="all" id="rq-all">All</button>
+            <button data-filter="p1" id="rq-p1">P1 Reject</button>
+            <button data-filter="p2" id="rq-p2">P2 Need Review</button>
+            <button data-filter="p3" id="rq-p3">P3 Low Conf</button>
+            <button data-filter="p4" id="rq-p4">P4 Warning</button>
+            <button data-filter="p5" id="rq-p5">P5 Audit</button>
+          </div>
+        </div>
+        <div class="card" id="review-table-card"></div>
+      </div>
+    </section>
+
+    <!-- ================= REVIEWED CASES ================= -->
+    <section class="view" id="view-reviewed" aria-labelledby="h-reviewed">
+      <div class="section-head">
+        <div>
+          <h2 id="h-reviewed">Reviewed Cases (History)</h2>
+          <p>Persistent audit trail saved in <code>reviewed/human_review.json</code>. Each review records the human verdict, field corrections, reviewer notes, and timestamp.</p>
+        </div>
+        <button class="refresh" id="refresh-reviewed-btn" title="Refresh reviewed cases" style="display:inline-flex;align-items:center;gap:6px;">
+          <span>Refresh History</span>
+        </button>
+      </div>
+
+      <div class="grid grid-4" id="reviewed-kpis" style="margin-bottom:16px;"></div>
+
+      <div class="card">
+        <div class="card-head">
+          <div><p class="card-title">Completed Human Decisions & Corrections</p><p class="card-sub">Newest reviews first. Every saved decision appends to reviewed/human_review.json.</p></div>
+        </div>
+        <div class="table-wrap" id="reviewed-table-container"></div>
+      </div>
+    </section>
+  </main>
+
+  <footer id="footer"></footer>
+  <script src="/app.js?v=20261026_4"></script>
+</body>
+</html>

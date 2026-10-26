@@ -359,6 +359,29 @@ class TestDriftDetection(unittest.TestCase):
                 self.assertEqual(d_list_2[1]["from_index"], 51)
                 self.assertEqual(d_list_2[1]["to_index"], 100)
 
+            with open(alarms_json, "r", encoding="utf-8") as f:
+                a_count_2 = len(json.load(f))
+
+            # Test rerunning on the SAME data window (51 to 100) - must NOT duplicate
+            execute_drift_test(
+                ref_records=self.ref_records,
+                recent_records=recent_records,
+                batch_index=100,
+                from_index=51,
+                to_index=100,
+                save_reports=True,
+                drift_report_path=drift_json,
+                alarms_path=alarms_json,
+            )
+
+            with open(drift_json, "r", encoding="utf-8") as f:
+                d_list_3 = json.load(f)
+                self.assertEqual(len(d_list_3), 2)  # Still 2, not 3!
+
+            with open(alarms_json, "r", encoding="utf-8") as f:
+                a_count_3 = len(json.load(f))
+                self.assertEqual(a_count_3, a_count_2)  # No duplicate alarms!
+
         finally:
             import shutil
             shutil.rmtree(temp_dir, ignore_errors=True)

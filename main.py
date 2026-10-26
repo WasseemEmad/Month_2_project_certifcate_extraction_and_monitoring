@@ -230,6 +230,7 @@ def execute_extraction(
     results: List[Dict[str, Any]] = [None] * total_urls
     metrics_by_url: Dict[str, URLMetrics] = {}
     completed_count = 0
+    last_drift_cadence_to_idx: Optional[int] = None
 
     print(f"\nProcessing {total_urls} certificates with {workers} thread(s) (traffic: {traffic_type})...")
 
@@ -315,6 +316,7 @@ def execute_extraction(
                                 drift_report_path="analytics/drift_test.json",
                                 alarms_path="analytics/alarms.json",
                             )
+                            last_drift_cadence_to_idx = to_idx
                             print_drift_dashboard(drift_rep, alarms_list)
                     except Exception as drift_err:
                         logger.warning(f"Error during intermediate drift test check: {drift_err}")
@@ -365,18 +367,21 @@ def execute_extraction(
                 total_prod = get_production_count(DEFAULT_DB_PATH)
                 to_idx = total_prod
                 from_idx = max(1, total_prod - len(recent_records) + 1)
-                print(f"\n[FINAL DRIFT CHECK] Running post-batch drift test with latest production window (Samples #{from_idx} to #{to_idx})...")
-                drift_rep, alarms_list = execute_drift_test(
-                    ref_records=ref_records,
-                    recent_records=recent_records,
-                    batch_index=completed_count,
-                    from_index=from_idx,
-                    to_index=to_idx,
-                    save_reports=True,
-                    drift_report_path="analytics/drift_test.json",
-                    alarms_path="analytics/alarms.json",
-                )
-                print_drift_dashboard(drift_rep, alarms_list)
+                if to_idx == last_drift_cadence_to_idx and judge_summary is None:
+                    logger.info(f"Skipping redundant post-batch drift check: window #{from_idx}-#{to_idx} already checked.")
+                else:
+                    print(f"\n[FINAL DRIFT CHECK] Running post-batch drift test with latest production window (Samples #{from_idx} to #{to_idx})...")
+                    drift_rep, alarms_list = execute_drift_test(
+                        ref_records=ref_records,
+                        recent_records=recent_records,
+                        batch_index=completed_count,
+                        from_index=from_idx,
+                        to_index=to_idx,
+                        save_reports=True,
+                        drift_report_path="analytics/drift_test.json",
+                        alarms_path="analytics/alarms.json",
+                    )
+                    print_drift_dashboard(drift_rep, alarms_list)
         except Exception as drift_err:
             logger.warning(f"Error during post-batch drift test check: {drift_err}")
 

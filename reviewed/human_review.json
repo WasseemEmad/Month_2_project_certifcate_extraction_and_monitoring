@@ -1,0 +1,71 @@
+[
+  {
+    "review_id": "1c737e1e-1251-4ed2-8f55-96665dd533e0",
+    "request_id": "b6af8437-956b-48cd-87e0-77f8fc01aade",
+    "timestamp": "2026-10-26 15:02:16",
+    "url": "https://i0.wp.com/fibercomposite.com/wp-content/uploads/2023/07/ISO-9001_2015-ANAB-blak-scaled.jpg?fit=800%2C435&ssl=1",
+    "doc_type": "image",
+    "page_count": 1,
+    "image_pixel_size": 195505,
+    "original_data": {
+      "verdict": "Reject",
+      "confidence_score": 20,
+      "checks_passed_or_failed": "Rule 1: Missing or unparseable issued/expiration date (-30 pts); Rule 7: Missing core field 'issued_date' (-20 pts); Rule 7: Missing core field 'expiration_date' (-20 pts); Rule 7: Missing field 'address' (-10 pts)",
+      "site_name": "intertek",
+      "address": null,
+      "scope": "MANAGEMENT SYSTEMS CERTIFICATION BODY",
+      "iso_type": "ISO 9001:2015",
+      "issued_date": null,
+      "expiration_date": null,
+      "site_iso_type": "Undefined",
+      "certificate_language": "English"
+    },
+    "decision": {
+      "reviewer_verdict": "Reject",
+      "reviewer_notes": "Not a certificate it is a badge",
+      "reviewer_id": "REV-01",
+      "corrected_fields": {
+        "site_name": "intertek",
+        "iso_type": "ISO 9001:2015",
+        "site_iso_type": "Undefined",
+        "certificate_language": "English",
+        "scope": "MANAGEMENT SYSTEMS CERTIFICATION BODY"
+      }
+    }
+  },
+  {
+    "review_id": "3a8a95f8-5c2f-4a6e-aeb1-253cbeb4c92e",
+    "request_id": "b6c44bf5-33be-425d-b60b-74c94e6deed0",
+    "timestamp": "2026-10-26 15:31:59",
+    "url": "https://acq.nl/wp-content/uploads/ISO-9001-2015-certificate-400x284.png",
+    "doc_type": "image",
+    "page_count": 1,
+    "image_pixel_size": 63900,
+    "original_data": {
+      "verdict": "Reject",
+      "confidence_score": 30,
+      "checks_passed_or_failed": "Rule 1: Missing or unparseable issued/expiration date (-30 pts); Rule 7: Missing core field 'issued_date' (-20 pts); Rule 7: Missing core field 'expiration_date' (-20 pts)",
+      "site_name": "AcQ International B.V.",
+      "address": "Alanenweg 6, 5342 PV Oss, The Netherlands",
+      "scope": "Design, development, production and delivery of hardware and software for electronic systems, power supplies, control systems and communication modules for aerospace, defense, automotive, railways and other industries. According to customer specifications and in accordance with applicable standards and legal requirements",
+      "iso_type": "ISO 9001:2015",
+      "issued_date": null,
+      "expiration_date": null,
+      "site_iso_type": "Assembly",
+      "certificate_language": "English"
+    },
+    "decision": {
+      "reviewer_verdict": "Approved",
+      "reviewer_notes": "There where no dates in the certificate so this is approved",
+      "reviewer_id": "REV-01",
+      "corrected_fields": {
+        "site_name": "AcQ International B.V.",
+        "iso_type": "ISO 9001:2015",
+        "site_iso_type": "Main Site",
+        "certificate_language": "English",
+        "address": "Alanenweg 6, 5342 PV Oss, The Netherlands",
+        "scope": "Design, development, production and delivery of hardware and software for electronic systems, power supplies, control systems and communication modules for aerospace, defense, automotive, railways and other industries. According to customer specifications and in accordance with applicable standards and legal requirements"
+      }
+    }
+  }
+]
