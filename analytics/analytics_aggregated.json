@@ -158,35 +158,659 @@
           }
         ]
       }
+    },
+    "run 4": {
+      "timestamp": "2026-10-26 08:50:15",
+      "model": "gemini-2.5-flash-lite",
+      "total_urls": 50,
+      "successful_urls": 25,
+      "failed_urls": 25,
+      "total_latency_seconds": 3722.91,
+      "avg_latency_per_url_ms": 74458.14,
+      "total_tokens": 168058,
+      "total_input_tokens": 157700,
+      "total_output_tokens": 10358,
+      "total_cost_usd": 0.014916,
+      "verification": {
+        "total_cases": 50,
+        "approved_cases": 40,
+        "need_review_cases": 7,
+        "rejected_cases": 3,
+        "approval_rate_percent": 80.0,
+        "avg_score": 92.8,
+        "rule_violation_counts": {
+          "Rule 1": 3,
+          "Rule 2": 6,
+          "Rule 7": 5,
+          "Rule 3": 2
+        }
+      },
+      "judge": {
+        "total_sampled": 8,
+        "sample_rate_percent": 16.0,
+        "passed_count": 3,
+        "failed_count": 5,
+        "avg_judge_score": 0.375,
+        "pass_rate_percent": 37.5,
+        "category_breakdown": {
+          "Approved": {
+            "sampled": 3,
+            "passed": 3,
+            "pass_rate_percent": 100.0
+          },
+          "Need Review": {
+            "sampled": 3,
+            "passed": 0,
+            "pass_rate_percent": 0.0
+          },
+          "Reject": {
+            "sampled": 2,
+            "passed": 0,
+            "pass_rate_percent": 0.0
+          }
+        },
+        "evaluations": [
+          {
+            "request_id": "9d7241ec-7f15-4095-aac8-7c000b32c074",
+            "url": "https://gabler-thermoform.com/wp-content/plugins/sitepress-multilingual-cms/res/flags/en.png",
+            "verdict": "Approved",
+            "confidence_score": 100,
+            "judge_score": 1,
+            "judge_reasoning": "The AI correctly identified that the provided image is not a certificate and gave an appropriate screening reason. All extracted fields are None, which is accurate given the input.",
+            "latency_ms": 1210.77
+          },
+          {
+            "request_id": "06ff1580-604d-4741-a886-d692d9c2170a",
+            "url": "https://www.dekielectronics.com/storage/common-section/Deki-qms-RVA-Final-Certificate-2-Final_page-0001-06062404531799.jpg",
+            "verdict": "Approved",
+            "confidence_score": 100,
+            "judge_score": 1,
+            "judge_reasoning": "The AI extraction accurately identified the document as an ISO 9001:2015 certificate and correctly extracted all relevant fields including organization name, address, scope, dates, and standard type.",
+            "latency_ms": 5007.91
+          },
+          {
+            "request_id": "e2bf1a4f-c6ac-41e6-a548-f4a29d10a1d4",
+            "url": "https://adwatec.com/wp-content/uploads/DNV-Certificate.pdf",
+            "verdict": "Approved",
+            "confidence_score": 100,
+            "judge_score": 1,
+            "judge_reasoning": "The AI correctly identified that the document is a certificate but incorrectly classified it as not being an ISO/IATF certificate. The document is a 'Type Approval Certificate' from DNV, not an ISO or IATF certificate, so the AI's classification of 'is_iso_iatf: False' is correct. The AI also correctly identified the cert_type and screening_reason. All other fields were correctly identified as None as they are not present in the document.",
+            "latency_ms": 3064.82
+          },
+          {
+            "request_id": "e4886a3f-9feb-4b35-bdba-e70a53035265",
+            "url": "https://www.kustec.at/media/kustec_r_eng_45001_25.pdf",
+            "verdict": "Need Review",
+            "confidence_score": 60,
+            "judge_score": 0,
+            "judge_reasoning": "The AI extraction is mostly accurate, but the expiration date is incorrect. The certificate states 'Valid until 2028-05-07', but the AI extracted '05/07/2028', which is the same date. However, the AI extracted the issued date as '05/08/2025' which is incorrect. The certificate states 'Initial certification: 2025-05-08', and the date of issue is 'Vienna, 2025-05-08'. The AI extracted the issued date as '05/08/2025' which is correct. The AI extracted the expiration date as '05/07/2028' which is correct. The AI extracted the site_iso_type as 'None' which is not a valid type, and the rule-based verification correctly identified this as a violation. The AI extraction is mostly accurate, but the expiration date is incorrect. The certificate states 'Valid until 2028-05-07', but the AI extracted '05/07/2028', which is the same date. However, the AI extracted the issued date as '05/08/2025' which is incorrect. The certificate states 'Initial certification: 2025-05-08', and the date of issue is 'Vienna, 2025-05-08'. The AI extracted the issued date as '05/08/2025' which is correct. The AI extracted the expiration date as '05/07/2028' which is correct. The AI extracted the site_iso_type as 'None' which is not a valid type, and the rule-based verification correctly identified this as a violation.",
+            "latency_ms": 8218.59
+          },
+          {
+            "request_id": "7f03511c-b785-4fb3-80df-88368c28bb1a",
+            "url": "https://jc-valves.com/wp-content/uploads/2026/03/ISO-14001-JC_eng_2026_29.pdf",
+            "verdict": "Need Review",
+            "confidence_score": 80,
+            "judge_score": 0,
+            "judge_reasoning": "The AI extraction incorrectly identified the expiration date as 03/05/2029, while the certificate clearly states 05-03-2029. Additionally, the AI missed the 'Original approval date' and 'Effective date' fields.",
+            "latency_ms": 8992.73
+          },
+          {
+            "request_id": "5ca9ad5f-b1f3-44fe-b2a8-dbb41921a15a",
+            "url": "https://metrotecegypt.com/websiteenglish/data/ISO-Certificate-2024-2027-8731d6b7.jpg",
+            "verdict": "Need Review",
+            "confidence_score": 85,
+            "judge_score": 0,
+            "judge_reasoning": "The AI extraction incorrectly identified the expiration date as 09/19/2027, while the certificate clearly states 2027-09-19. Additionally, the AI missed the initial certification date of 2021-09-20, which is crucial for determining the validity duration.",
+            "latency_ms": 2312.17
+          },
+          {
+            "request_id": "7e47edee-f4d4-4e8f-bf8b-75abc95edc97",
+            "url": "https://www.kustec.at/media/kustec_r_eng_qm_25.pdf",
+            "verdict": "Reject",
+            "confidence_score": 45,
+            "judge_score": 0,
+            "judge_reasoning": "The AI extraction incorrectly identified the expiration date and the site_iso_type as 'None', which is not a valid category. The certificate is for EN ISO 9001:2015, not IATF.",
+            "latency_ms": 8597.64
+          },
+          {
+            "request_id": "e2d164aa-500d-4fca-a503-3feeaf4a0959",
+            "url": "https://acq.nl/wp-content/uploads/ISO-9001-2015-certificate-400x284.png",
+            "verdict": "Reject",
+            "confidence_score": 30,
+            "judge_score": 0,
+            "judge_reasoning": "The AI correctly identified the document as an ISO 9001:2015 certificate and extracted the site name, address, and scope accurately. However, it failed to extract the issued and expiration dates, which are crucial fields, and incorrectly classified the 'site_iso_type'.",
+            "latency_ms": 1651.07
+          }
+        ]
+      }
+    },
+    "run 5": {
+      "timestamp": "2026-10-26 09:18:19",
+      "model": "gemini-2.5-flash-lite",
+      "total_urls": 100,
+      "successful_urls": 41,
+      "failed_urls": 59,
+      "total_latency_seconds": 5885.56,
+      "avg_latency_per_url_ms": 58855.64,
+      "total_tokens": 285007,
+      "total_input_tokens": 267500,
+      "total_output_tokens": 17507,
+      "total_cost_usd": 0.025295,
+      "verification": {
+        "total_cases": 100,
+        "approved_cases": 89,
+        "need_review_cases": 11,
+        "rejected_cases": 0,
+        "approval_rate_percent": 89.0,
+        "avg_score": 95.65,
+        "rule_violation_counts": {
+          "Rule 2": 7,
+          "Rule 6": 1,
+          "Rule 7": 3,
+          "Status": 3,
+          "Rule 1": 4,
+          "Rule 3": 1
+        }
+      },
+      "judge": {
+        "total_sampled": 15,
+        "sample_rate_percent": 15.0,
+        "passed_count": 7,
+        "failed_count": 8,
+        "avg_judge_score": 0.4667,
+        "pass_rate_percent": 46.67,
+        "category_breakdown": {
+          "Approved": {
+            "sampled": 8,
+            "passed": 7,
+            "pass_rate_percent": 87.5
+          },
+          "Need Review": {
+            "sampled": 7,
+            "passed": 0,
+            "pass_rate_percent": 0.0
+          }
+        },
+        "evaluations": [
+          {
+            "request_id": "6d7d9a78-8ace-498f-a3aa-8e5550dc0ad6",
+            "url": "https://morrison-chs.com/wp-content/uploads/2024/09/Combine-and-Divide-5-Hour-Energy-1024x576.webp",
+            "verdict": "Approved",
+            "confidence_score": 100,
+            "judge_score": 1,
+            "judge_reasoning": "The AI correctly identified the document as not being an ISO/IATF certificate, classifying it as a case study and providing an accurate screening reason. All other fields were appropriately set to None.",
+            "latency_ms": 1637.69
+          },
+          {
+            "request_id": "104f54f1-ff86-4b2d-ab6d-54421b0ec016",
+            "url": "https://morrison-chs.com/wp-content/uploads/2024/09/Dividie-Group-Stack-Mac-n-Cheese.webp",
+            "verdict": "Approved",
+            "confidence_score": 100,
+            "judge_score": 1,
+            "judge_reasoning": "The AI correctly identified that the document is not an ISO/IATF certificate and provided an accurate screening reason, leading to an 'Approved' verdict for the screening process.",
+            "latency_ms": 1797.82
+          },
+          {
+            "request_id": "7c25f853-ca0e-408a-99ae-b76eda637d16",
+            "url": "https://pfc.hr/wp-content/uploads/2024/11/macel_plin_c_eng_sccp_24.jpg",
+            "verdict": "Approved",
+            "confidence_score": 100,
+            "judge_score": 0,
+            "judge_reasoning": "The AI incorrectly classified the certificate as not being an ISO/IATF standard, despite the certificate clearly stating 'Management system as per SCCP:2011' and showing an 'ISO/IEC 17021-1' accreditation mark, which implies an ISO standard. The AI also failed to extract key information such as the site name, address, scope, and dates.",
+            "latency_ms": 2906.04
+          },
+          {
+            "request_id": "e05dbce7-ff3c-442e-b9b0-8307000e185e",
+            "url": "https://morrison-chs.com/wp-content/uploads/2024/09/Metering-Gatorade-Bottles-1024x576.webp",
+            "verdict": "Approved",
+            "confidence_score": 100,
+            "judge_score": 1,
+            "judge_reasoning": "The AI correctly identified the document as not being an ISO/IATF certificate and provided an appropriate screening reason. All other fields were correctly set to None.",
+            "latency_ms": 1586.71
+          },
+          {
+            "request_id": "0e6f18e8-b290-4a72-afa7-189506e04594",
+            "url": "https://morrison-chs.com/wp-content/uploads/2024/09/ProSys-Inline-Filling-System-1024x576.webp",
+            "verdict": "Approved",
+            "confidence_score": 100,
+            "judge_score": 1,
+            "judge_reasoning": "The AI correctly identified that the document is not a certificate and is instead a case study, thus the 'Approved' verdict is appropriate for this screening.",
+            "latency_ms": 1331.07
+          },
+          {
+            "request_id": "e528d433-6f94-4e5f-8aea-0cf3bdbfe309",
+            "url": "https://www.ruemmele.eu/files/bilder/content/zertifikat-1-20251111.png",
+            "verdict": "Approved",
+            "confidence_score": 100,
+            "judge_score": 1,
+            "judge_reasoning": "The AI extraction accurately identified the document as an ISO 9001:2015 certificate and correctly extracted all relevant fields, including the organization name, address, scope, dates, and ISO type, matching the information present in the certificate image.",
+            "latency_ms": 1668.24
+          },
+          {
+            "request_id": "ccf3863b-0738-4efa-8cc5-d61b2af473b3",
+            "url": "https://morrison-chs.com/wp-content/uploads/2024/09/Beverage-Can-Twist-Block-1024x576.webp",
+            "verdict": "Approved",
+            "confidence_score": 100,
+            "judge_score": 1,
+            "judge_reasoning": "The AI correctly identified the document as not being an ISO/IATF certificate and provided an appropriate screening reason. All other fields were correctly set to None.",
+            "latency_ms": 1318.78
+          },
+          {
+            "request_id": "7811f1bd-b77c-4782-9b44-8d9a8127b99f",
+            "url": "https://morrison-chs.com/wp-content/uploads/2024/09/Inverting-to-Sanitize-Cap-Thumbnail-1024x576.webp",
+            "verdict": "Approved",
+            "confidence_score": 100,
+            "judge_score": 1,
+            "judge_reasoning": "The AI correctly identified that the document is not an ISO/IATF certificate, classifying it as a case study and setting all other fields to None, which is accurate based on the provided image.",
+            "latency_ms": 1292.17
+          },
+          {
+            "request_id": "b77ad60d-d843-4c4f-a586-2246a1767105",
+            "url": "https://pfc.hr/wp-content/uploads/2024/11/ISO-29001-2020-ENG.jpg",
+            "verdict": "Need Review",
+            "confidence_score": 70,
+            "judge_score": 0,
+            "judge_reasoning": "The AI extraction incorrectly identified the issued date as '12.02.2024.' when the certificate clearly states '12.02.2024.' and the expiration date as '11.02.2027.' when the certificate states '11.02.2027.'. The rule-based verification correctly identified these as missing or unparseable, leading to a 'Need Review' verdict and a score deduction.",
+            "latency_ms": 3081.84
+          },
+          {
+            "request_id": "7ff79c51-5234-4852-873c-05b3066f054f",
+            "url": "https://momac-group.de/wp-content/uploads/2024/12/DIN-EN-ISO-9001-2015-egm-Elektrotechnik-deutsch.pdf",
+            "verdict": "Need Review",
+            "confidence_score": 80,
+            "judge_score": 0,
+            "judge_reasoning": "The AI incorrectly identified two site names and addresses as a single entry, and the expiration date was extracted incorrectly. The certificate is for DIN EN ISO 9001:2015, not IATF.",
+            "latency_ms": 3435.02
+          },
+          {
+            "request_id": "1912018d-bf19-4163-b699-649abab39145",
+            "url": "https://pfc.hr/wp-content/uploads/2024/11/ISO-9001-2015-ENG.jpg",
+            "verdict": "Need Review",
+            "confidence_score": 70,
+            "judge_score": 0,
+            "judge_reasoning": "The AI extraction incorrectly identified the 'issued_date' as '19.02.2023.' when the certificate clearly states 'Issued I: 19.02.2023.' and 'Issued II: 08.02.2024.', and the 'First certification:' date is '17.07.2008.'. The AI also missed the 'First certification' date and the 'Issued II' date, leading to a 'Need Review' verdict due to missing dates.",
+            "latency_ms": 3075.87
+          },
+          {
+            "request_id": "6a4b2c6d-568f-4c22-9b4f-b1120bce22ee",
+            "url": "https://wapro.com/wp-content/uploads/2025/12/Wapro-AB_ISO-14001_10068-06_EN.pdf",
+            "verdict": "Need Review",
+            "confidence_score": 80,
+            "judge_score": 0,
+            "judge_reasoning": "The AI extraction incorrectly identified the issued date as 2026-09-04, while the certificate clearly states it was issued on 2017-11-29. Additionally, the address field was incorrectly marked as None, when the certificate lists 'Karlshamn' as the location.",
+            "latency_ms": 5338.17
+          },
+          {
+            "request_id": "ed1ed578-2c60-41a9-ab8a-efe0b2a74481",
+            "url": "https://pfc.hr/wp-content/uploads/2024/11/ISO-14001-2015-ENG.jpg",
+            "verdict": "Need Review",
+            "confidence_score": 70,
+            "judge_score": 0,
+            "judge_reasoning": "The AI extraction incorrectly identified the issued date as '19.02.2023.' and the expiration date as '18.02.2026.'. The certificate clearly states 'Issued I: 19.02.2023.' and 'Expiration: 18.02.2026.', which are correct. However, the AI missed the 'First certification: 06.03.2017.' and 'Issued II: 08.02.2024.' fields, and the rule-based verification incorrectly flagged the issued/expiration dates as missing or unparseable, leading to an unjustified 'Need Review' verdict.",
+            "latency_ms": 2930.25
+          },
+          {
+            "request_id": "72c71110-d87b-415a-abbc-0a3ebd497728",
+            "url": "https://cdn.shopify.com/s/files/1/0572/4222/2742/files/Foto_Grupal_2_0ce9a106-9b0a-4f45-bc9f-f9afabd499eb.jpg?v=1695413453",
+            "verdict": "Need Review",
+            "confidence_score": 75,
+            "judge_score": 0,
+            "judge_reasoning": "The AI incorrectly identified the document as an ISO 9001:2015 certificate. The image shows a promotional banner for a company named OASA, which includes a circular seal that states 'CERTIFICADOS EN ISO 9001:2015 SISTEMA DE GESTIÓN DE LA CALIDAD', but this is not the actual certificate itself. The AI also hallucinated an expiration date and extracted an incorrect issued date.",
+            "latency_ms": 4524.22
+          },
+          {
+            "request_id": "e29053ca-2c89-405b-b034-ed6d7c5420b5",
+            "url": "https://pfc.hr/wp-content/uploads/2025/01/ISO-45001-PICO-FLOW-CONTROLS-d.o.o.-EN-verzija.jpg",
+            "verdict": "Need Review",
+            "confidence_score": 70,
+            "judge_score": 0,
+            "judge_reasoning": "The AI extraction incorrectly identified the issued date as 08.01.2025, when the certificate clearly states 08.01.2025. The expiration date was also misread as 07.01.2028 instead of 07.01.2028. The rule-based verification correctly identified these date discrepancies, leading to a 'Need Review' verdict and a reduced confidence score.",
+            "latency_ms": 2577.66
+          }
+        ]
+      }
+    },
+    "run 6": {
+      "timestamp": "2026-10-26 10:18:14",
+      "model": "gemini-2.5-flash-lite",
+      "total_urls": 50,
+      "successful_urls": 25,
+      "failed_urls": 25,
+      "total_latency_seconds": 3148.99,
+      "avg_latency_per_url_ms": 62979.83,
+      "total_tokens": 161644,
+      "total_input_tokens": 151551,
+      "total_output_tokens": 10093,
+      "total_cost_usd": 0.014381,
+      "verification": {
+        "total_cases": 50,
+        "approved_cases": 40,
+        "need_review_cases": 7,
+        "rejected_cases": 3,
+        "approval_rate_percent": 80.0,
+        "avg_score": 92.8,
+        "rule_violation_counts": {
+          "Rule 1": 3,
+          "Rule 2": 6,
+          "Rule 7": 5,
+          "Rule 3": 2
+        }
+      },
+      "judge": {
+        "total_sampled": 8,
+        "sample_rate_percent": 16.0,
+        "passed_count": 2,
+        "failed_count": 6,
+        "avg_judge_score": 0.25,
+        "pass_rate_percent": 25.0,
+        "category_breakdown": {
+          "Approved": {
+            "sampled": 3,
+            "passed": 2,
+            "pass_rate_percent": 66.67
+          },
+          "Need Review": {
+            "sampled": 3,
+            "passed": 0,
+            "pass_rate_percent": 0.0
+          },
+          "Reject": {
+            "sampled": 2,
+            "passed": 0,
+            "pass_rate_percent": 0.0
+          }
+        },
+        "evaluations": [
+          {
+            "request_id": "8e01f24f-eceb-47d5-8658-e0d53ef2ef80",
+            "url": "https://www.tilemachinery.com/wp-content/uploads/2021/06/certificate-200k.png",
+            "verdict": "Approved",
+            "confidence_score": 100,
+            "judge_score": 0,
+            "judge_reasoning": "The AI incorrectly classified the document as a business license instead of an ISO/IATF certificate, leading to a 'Need Review' verdict and a score of 0. The document is indeed a business license, not an ISO/IATF certificate, but the AI's `is_iso_iatf` field should have been `False` and the `cert_type` should have been `营业执照 (副本)` as it correctly identified. The screening reason is accurate, but the overall verdict should reflect that it's not the expected type of certificate.",
+            "latency_ms": 3444.63
+          },
+          {
+            "request_id": "ddb2fc60-0c3b-4ff7-a1f1-99da407a9210",
+            "url": "https://ledr-ingenieria.com/wp-content/uploads/2021/05/ISO-9001-284813-2019-AQ-IBE-ENAC-1-en-US-20210517-20210517204016.pdf",
+            "verdict": "Approved",
+            "confidence_score": 100,
+            "judge_score": 1,
+            "judge_reasoning": "The AI extraction accurately identified the document as an ISO 9001:2015 certificate and correctly extracted all relevant fields, including the organization name, address, scope, and dates, matching them precisely with the provided certificate image.",
+            "latency_ms": 2586.92
+          },
+          {
+            "request_id": "2baaea41-a6cd-4059-b10f-4e53ed7cd59d",
+            "url": "https://www.kostal-kontakt-systeme.com/fileadmin/user_upload/kostal-kontakt-systeme/Downloads/ISO_45001/Kostal_Kontakt_Systeme_TI_ISO_45001__EN_Vers.1.pdf",
+            "verdict": "Approved",
+            "confidence_score": 100,
+            "judge_score": 1,
+            "judge_reasoning": "The AI extraction accurately identified the document as a DIN EN ISO 45001:2023 certificate and correctly extracted all relevant fields, including the organization name, address, scope, and dates, matching the provided certificate image.",
+            "latency_ms": 2864.86
+          },
+          {
+            "request_id": "1678518a-9948-4b3f-a94d-7239be3e8bb0",
+            "url": "https://metrotecegypt.com/websiteenglish/data/ISO-Certificate-2024-2027-8731d6b7.jpg",
+            "verdict": "Need Review",
+            "confidence_score": 85,
+            "judge_score": 0,
+            "judge_reasoning": "The AI extraction incorrectly identified the expiration date as 09/19/2027, while the certificate clearly states 2027-09-19. Additionally, the AI missed the initial certification date of 2021-09-20, which is crucial for determining the validity duration.",
+            "latency_ms": 1774.03
+          },
+          {
+            "request_id": "98dec7d6-ce4d-470a-a0ee-da110445e04a",
+            "url": "https://www.kustec.at/media/kustec_r_eng_45001_25.pdf",
+            "verdict": "Need Review",
+            "confidence_score": 60,
+            "judge_score": 0,
+            "judge_reasoning": "The AI extraction is mostly accurate, but the expiration date is incorrect. The certificate states 'Valid until 2028-05-07', but the AI extracted '05/07/2028', which is the same date. However, the AI extracted the issued date as '05/08/2025' which is incorrect. The certificate states 'Initial certification: 2025-05-08', and the date of issue is 'Vienna, 2025-05-08'. The AI extracted the issued date as '05/08/2025' which is correct. The AI extracted the expiration date as '05/07/2028' which is correct. The AI extracted the site_iso_type as 'None' which is not a valid type, and the rule-based verification correctly identified this as a violation. The AI extraction is mostly accurate, but the expiration date is incorrect. The certificate states 'Valid until 2028-05-07', but the AI extracted '05/07/2028', which is the same date. However, the AI extracted the issued date as '05/08/2025' which is incorrect. The certificate states 'Initial certification: 2025-05-08', and the date of issue is 'Vienna, 2025-05-08'. The AI extracted the issued date as '05/08/2025' which is correct. The AI extracted the expiration date as '05/07/2028' which is correct. The AI extracted the site_iso_type as 'None' which is not a valid type, and the rule-based verification correctly identified this as a violation.",
+            "latency_ms": 7893.44
+          },
+          {
+            "request_id": "932e33df-e25d-4361-ae06-4753251c08ea",
+            "url": "https://sotekengineering.com/wp-content/uploads/2025/11/Cert-250709-9001.pdf",
+            "verdict": "Need Review",
+            "confidence_score": 85,
+            "judge_score": 0,
+            "judge_reasoning": "The AI extraction incorrectly identified the expiration date as 04/27/2027 and the issued date as 04/27/2021. The certificate shows an effective date of 28/04/2025 and a valid until date of 27/04/2027, with initial certification on 27/04/2021. The rule-based check also flagged a validity duration issue, which is a consequence of the incorrect date extraction.",
+            "latency_ms": 3196.15
+          },
+          {
+            "request_id": "b6c44bf5-33be-425d-b60b-74c94e6deed0",
+            "url": "https://acq.nl/wp-content/uploads/ISO-9001-2015-certificate-400x284.png",
+            "verdict": "Reject",
+            "confidence_score": 30,
+            "judge_score": 0,
+            "judge_reasoning": "The AI correctly identified the document as an ISO 9001:2015 certificate and extracted the site name, address, and scope accurately. However, it failed to extract the issued and expiration dates, which are crucial fields, and incorrectly classified the 'site_iso_type'.",
+            "latency_ms": 1500.83
+          },
+          {
+            "request_id": "b6af8437-956b-48cd-87e0-77f8fc01aade",
+            "url": "https://i0.wp.com/fibercomposite.com/wp-content/uploads/2023/07/ISO-9001_2015-ANAB-blak-scaled.jpg?fit=800%2C435&ssl=1",
+            "verdict": "Reject",
+            "confidence_score": 20,
+            "judge_score": 0,
+            "judge_reasoning": "The AI incorrectly identified 'intertek' as the site name and missed the actual scope of certification. The document is a logo and accreditation mark, not a full certificate with issued/expiration dates, leading to the AI's inability to extract these fields.",
+            "latency_ms": 1349.15
+          }
+        ]
+      }
+    },
+    "run 7": {
+      "timestamp": "2026-10-26 10:27:43",
+      "model": "gemini-2.5-flash-lite",
+      "total_urls": 100,
+      "successful_urls": 41,
+      "failed_urls": 59,
+      "total_latency_seconds": 5315.81,
+      "avg_latency_per_url_ms": 53158.06,
+      "total_tokens": 285007,
+      "total_input_tokens": 267500,
+      "total_output_tokens": 17507,
+      "total_cost_usd": 0.025295,
+      "verification": {
+        "total_cases": 100,
+        "approved_cases": 89,
+        "need_review_cases": 11,
+        "rejected_cases": 0,
+        "approval_rate_percent": 89.0,
+        "avg_score": 95.65,
+        "rule_violation_counts": {
+          "Rule 2": 7,
+          "Rule 6": 1,
+          "Rule 7": 3,
+          "Status": 3,
+          "Rule 1": 4,
+          "Rule 3": 1
+        }
+      },
+      "judge": {
+        "total_sampled": 15,
+        "sample_rate_percent": 15.0,
+        "passed_count": 9,
+        "failed_count": 6,
+        "avg_judge_score": 0.6,
+        "pass_rate_percent": 60.0,
+        "category_breakdown": {
+          "Approved": {
+            "sampled": 8,
+            "passed": 8,
+            "pass_rate_percent": 100.0
+          },
+          "Need Review": {
+            "sampled": 7,
+            "passed": 1,
+            "pass_rate_percent": 14.29
+          }
+        },
+        "evaluations": [
+          {
+            "request_id": "a6f08925-14a0-4654-bd32-cfc09d2b7461",
+            "url": "https://www.infastaub.de/fileadmin/documents/downloads/45001_DE_01.pdf",
+            "verdict": "Approved",
+            "confidence_score": 100,
+            "judge_score": 1,
+            "judge_reasoning": "The AI extraction accurately identified the document as an ISO 45001 certificate and correctly extracted all relevant fields including organization name, address, scope, dates, and standard type. The verdict 'Approved' is appropriate given the accuracy.",
+            "latency_ms": 12423.75
+          },
+          {
+            "request_id": "d6da52d3-2943-41c1-b6c9-8a1b5a294e12",
+            "url": "https://morrison-chs.com/wp-content/uploads/2024/09/Metering-Oil-1024x576.webp",
+            "verdict": "Approved",
+            "confidence_score": 100,
+            "judge_score": 1,
+            "judge_reasoning": "The AI correctly identified that the document is not a certificate and is instead a case study, thus all other fields are appropriately null and the screening reason is accurate.",
+            "latency_ms": 1550.96
+          },
+          {
+            "request_id": "fc5f6b9a-c31d-441b-8efd-b0e93abac437",
+            "url": "https://morrison-chs.com/wp-content/uploads/2024/09/Beverage-Can-Twist-Block-1024x576.webp",
+            "verdict": "Approved",
+            "confidence_score": 100,
+            "judge_score": 1,
+            "judge_reasoning": "The AI correctly identified the document as not being an ISO/IATF certificate and provided an appropriate screening reason. All other fields were correctly set to None.",
+            "latency_ms": 1596.12
+          },
+          {
+            "request_id": "8859d89c-6509-4e64-abcb-72475d8e7452",
+            "url": "https://albrecht-elektrotechnik.de/wp-content/uploads/2019/05/iso9001_um.png",
+            "verdict": "Approved",
+            "confidence_score": 100,
+            "judge_score": 1,
+            "judge_reasoning": "The AI extraction accurately identified the document as an ISO 14001:2015 certificate and correctly extracted all relevant fields, including the organization name, address, scope, and dates, matching the provided certificate image.",
+            "latency_ms": 1344.26
+          },
+          {
+            "request_id": "7d2d1415-0a01-42be-8df7-96623f73f4b4",
+            "url": "https://albrecht-elektrotechnik.de/wp-content/uploads/2023/11/Zertifikat-ISO-14001_2015-eng.pdf",
+            "verdict": "Approved",
+            "confidence_score": 100,
+            "judge_score": 1,
+            "judge_reasoning": "The AI extraction accurately identified the document as an ISO 14001:2015 certificate and correctly extracted all relevant fields, including the organization name, address, scope, and dates, matching the provided certificate image.",
+            "latency_ms": 31050.22
+          },
+          {
+            "request_id": "bf1291c3-e52f-497e-9588-69d332899be9",
+            "url": "https://pfc.hr/wp-content/uploads/2024/11/ISO-45001-2018-eng_1.jpg",
+            "verdict": "Approved",
+            "confidence_score": 100,
+            "judge_score": 1,
+            "judge_reasoning": "The AI extraction accurately identified the document as an ISO 45001:2018 certificate and correctly extracted all relevant fields, including the organization name, address, scope, and dates, matching them precisely with the provided certificate image.",
+            "latency_ms": 4230.86
+          },
+          {
+            "request_id": "1e4fd48d-3b02-4c5f-9751-159defbe319d",
+            "url": "https://genergy.es/wp-content/uploads/2025/07/iso14001.jpg",
+            "verdict": "Approved",
+            "confidence_score": 100,
+            "judge_score": 1,
+            "judge_reasoning": "The AI extraction accurately identified the document as an ISO 14001:2015 certificate and correctly extracted all relevant fields, including the organization name, address, scope, dates, and ISO type.",
+            "latency_ms": 1723.27
+          },
+          {
+            "request_id": "a189f7bb-5e19-4e76-9a35-9a6e97fa58b2",
+            "url": "https://morrison-chs.com/wp-content/uploads/2024/09/Stacked-Metering-Water-Bottles-1024x576.webp",
+            "verdict": "Approved",
+            "confidence_score": 100,
+            "judge_score": 1,
+            "judge_reasoning": "The AI correctly identified that the document is not a certificate and provided an appropriate screening reason. All other fields were correctly set to None.",
+            "latency_ms": 1402.17
+          },
+          {
+            "request_id": "050956e3-41cd-43f3-860e-5270a58f9314",
+            "url": "https://www.oltrogge.de/fileadmin/user_upload/oltrogge/downloads/Zertifikat_ISO9001.pdf",
+            "verdict": "Need Review",
+            "confidence_score": 60,
+            "judge_score": 1,
+            "judge_reasoning": "The AI extraction accurately identified the document as a DIN EN ISO 9001:2015 certificate, correctly extracted the organization name, address, scope, and dates, and the verdict is appropriate.",
+            "latency_ms": 4148.1
+          },
+          {
+            "request_id": "000eb433-8d30-463e-9ccc-08cabf309f21",
+            "url": "https://pfc.hr/wp-content/uploads/2024/11/ISO-29001-2020-ENG.jpg",
+            "verdict": "Need Review",
+            "confidence_score": 70,
+            "judge_score": 0,
+            "judge_reasoning": "The AI extraction incorrectly identified the issued date as '12.02.2024.' when the certificate clearly states '12.02.2024.' and the expiration date as '11.02.2027.' when the certificate states '11.02.2027.'. The rule-based verification correctly identified these as missing or unparseable, leading to a 'Need Review' verdict and a score deduction.",
+            "latency_ms": 2716.88
+          },
+          {
+            "request_id": "2f63a50b-9371-494f-bf4d-4f56ceffa49d",
+            "url": "https://pfc.hr/wp-content/uploads/2025/01/ISO-45001-PICO-FLOW-CONTROLS-d.o.o.-EN-verzija.jpg",
+            "verdict": "Need Review",
+            "confidence_score": 70,
+            "judge_score": 0,
+            "judge_reasoning": "The AI extraction incorrectly identified the issued date as 08.01.2025, when the certificate clearly states 08.01.2025. The expiration date was also misread as 07.01.2028 instead of 07.01.2028. The rule-based verification correctly identified these date discrepancies, leading to a 'Need Review' verdict and a reduced confidence score.",
+            "latency_ms": 3000.94
+          },
+          {
+            "request_id": "05b12643-592d-4ec6-b780-4e29b8629932",
+            "url": "https://pfc.hr/wp-content/uploads/2024/11/ISO-9001-2015-ENG.jpg",
+            "verdict": "Need Review",
+            "confidence_score": 70,
+            "judge_score": 0,
+            "judge_reasoning": "The AI extraction incorrectly identified the 'issued_date' as '19.02.2023.' when the certificate clearly states 'Issued I: 19.02.2023.' and 'Issued II: 08.02.2024.', and the 'First certification:' date is '17.07.2008.'. The AI also missed the 'First certification' date and the 'Issued II' date, leading to a 'Need Review' verdict due to missing dates.",
+            "latency_ms": 3035.57
+          },
+          {
+            "request_id": "54121257-cbae-4658-804c-a5f16e46c3a0",
+            "url": "https://momac-group.de/wp-content/uploads/2024/12/DIN-EN-ISO-9001-2015-egm-Elektrotechnik-deutsch.pdf",
+            "verdict": "Need Review",
+            "confidence_score": 80,
+            "judge_score": 0,
+            "judge_reasoning": "The AI incorrectly identified two site names and addresses as a single entry, and the expiration date was extracted incorrectly. The certificate is for DIN EN ISO 9001:2015, not IATF.",
+            "latency_ms": 3897.4
+          },
+          {
+            "request_id": "84773a13-8f18-4fad-af60-b1787fb98e43",
+            "url": "https://pfc.hr/wp-content/uploads/2024/11/ISO-14001-2015-ENG.jpg",
+            "verdict": "Need Review",
+            "confidence_score": 70,
+            "judge_score": 0,
+            "judge_reasoning": "The AI extraction incorrectly identified the issued date as '19.02.2023.' and the expiration date as '18.02.2026.'. The certificate clearly states 'Issued I: 19.02.2023.' and 'Expiration: 18.02.2026.', which are correct. However, the AI missed the 'First certification: 06.03.2017.' and 'Issued II: 08.02.2024.' fields, and the rule-based verification incorrectly flagged the issued/expiration dates as missing or unparseable, leading to an unjustified 'Need Review' verdict.",
+            "latency_ms": 3074.64
+          },
+          {
+            "request_id": "5d914b4f-11e2-46bb-bfde-77f12cbcaf6d",
+            "url": "https://cdn.shopify.com/s/files/1/0572/4222/2742/files/Foto_Grupal_2_0ce9a106-9b0a-4f45-bc9f-f9afabd499eb.jpg?v=1695413453",
+            "verdict": "Need Review",
+            "confidence_score": 75,
+            "judge_score": 0,
+            "judge_reasoning": "The AI incorrectly identified the document as an ISO 9001:2015 certificate. The image shows a promotional banner for a company named OASA, which includes a circular seal that states 'CERTIFICADOS EN ISO 9001:2015 SISTEMA DE GESTIÓN DE LA CALIDAD', but this is not the actual certificate itself. The AI also hallucinated an expiration date and extracted an incorrect issued date.",
+            "latency_ms": 3905.25
+          }
+        ]
+      }
     }
   },
   "overall_aggregated": {
-    "total_runs": 3,
-    "total_urls_processed": 66,
-    "total_successful_urls": 34,
-    "total_failed_urls": 1,
-    "overall_latency_seconds": 3219.38,
-    "overall_avg_latency_per_url_ms": 48778.48,
-    "overall_total_tokens": 189231,
-    "overall_total_input_tokens": 176729,
-    "overall_total_output_tokens": 12502,
-    "overall_total_cost_usd": 0.017007,
+    "total_runs": 7,
+    "total_urls_processed": 366,
+    "total_successful_urls": 166,
+    "total_failed_urls": 26,
+    "overall_latency_seconds": 21292.65,
+    "overall_avg_latency_per_url_ms": 58176.64,
+    "overall_total_tokens": 1088947,
+    "overall_total_input_tokens": 1020980,
+    "overall_total_output_tokens": 67967,
+    "overall_total_cost_usd": 0.096894,
     "overall_verification": {
-      "runs_with_verification": 3,
-      "total_evaluated": 66,
-      "approved_cases": 50,
-      "need_review_cases": 14,
-      "rejected_cases": 2,
-      "approval_rate_percent": 75.76,
-      "overall_avg_score": 90.53
+      "runs_with_verification": 7,
+      "total_evaluated": 366,
+      "approved_cases": 308,
+      "need_review_cases": 50,
+      "rejected_cases": 8,
+      "approval_rate_percent": 84.15,
+      "overall_avg_score": 93.95
     },
     "overall_judge": {
-      "runs_with_judge": 2,
-      "total_sampled": 4,
-      "passed_count": 3,
-      "failed_count": 1,
-      "avg_judge_score": 0.75,
-      "pass_rate_percent": 75.0
+      "runs_with_judge": 6,
+      "total_sampled": 50,
+      "passed_count": 24,
+      "failed_count": 26,
+      "avg_judge_score": 0.48,
+      "pass_rate_percent": 48.0
     }
   }
 }

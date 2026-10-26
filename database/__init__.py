@@ -11,6 +11,10 @@ from .db import (
     log_certificate_request,
     update_judge_result,
     get_all_records,
+    has_reference_data,
+    get_reference_records,
+    get_recent_production_records,
+    get_production_count,
 )
 
 __all__ = [
@@ -19,4 +23,8 @@ __all__ = [
     "log_certificate_request",
     "update_judge_result",
     "get_all_records",
+    "has_reference_data",
+    "get_reference_records",
+    "get_recent_production_records",
+    "get_production_count",
 ]

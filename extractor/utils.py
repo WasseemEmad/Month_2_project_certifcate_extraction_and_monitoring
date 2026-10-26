@@ -138,7 +138,7 @@ def prepare_images_for_cert_url(
     If return_meta=True: returns (images_list, error_reason, meta_dict).
     meta_dict contains: {"doc_type": "pdf"|"image"|"unknown", "page_count": int}
     """
-    meta: Dict[str, Any] = {"doc_type": "unknown", "page_count": 0}
+    meta: Dict[str, Any] = {"doc_type": "unknown", "page_count": 0, "pixel_size": 0}
 
     def _ret(images_list: List[Tuple[str, str]], err: Optional[str]):
         if return_meta:
@@ -161,6 +161,12 @@ def prepare_images_for_cert_url(
         img_path = os.path.join(cert_dir, f"direct_image{ext}")
         if not download_cert_file(url, img_path):
             return _ret([], "did not open need review")
+        try:
+            doc = fitz.open(img_path)
+            meta["pixel_size"] = int(doc[0].rect.width * doc[0].rect.height)
+            doc.close()
+        except Exception:
+            meta["pixel_size"] = 0
         return _ret([(img_path, get_mime_type(img_path))], None)
 
     # 2) If detected as PDF
@@ -211,6 +217,12 @@ def prepare_images_for_cert_url(
             ext = ".jpg" if header.startswith(b"\xff\xd8\xff") else ".png"
             img_path = os.path.join(cert_dir, f"direct_image{ext}")
             os.replace(generic_path, img_path)
+            try:
+                doc = fitz.open(img_path)
+                meta["pixel_size"] = int(doc[0].rect.width * doc[0].rect.height)
+                doc.close()
+            except Exception:
+                meta["pixel_size"] = 0
             return _ret([(img_path, get_mime_type(img_path))], None)
 
         return _ret([], "did not open need review")

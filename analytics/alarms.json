@@ -1,0 +1,185 @@
+[
+  {
+    "alarm_id": "ae7fd1e8-1223-4818-894a-ca0ff54305cb",
+    "timestamp": "2026-10-26 10:32:28",
+    "from_index": 51,
+    "to_index": 100,
+    "severity": "WARNING",
+    "category": "INPUT_DRIFT",
+    "metric": "pdf_page_count",
+    "message": "Significant shift in PDF page count: -20.1% change (Cohen's d: -0.505)",
+    "reference_value": 1.44,
+    "recent_value": 1.15,
+    "delta": -20.1,
+    "threshold": "relative_change >= 20% or |cohens_d| >= 0.50"
+  },
+  {
+    "alarm_id": "b2e15414-87c6-445b-b224-decc7d6ec2cd",
+    "timestamp": "2026-10-26 10:32:28",
+    "from_index": 51,
+    "to_index": 100,
+    "severity": "WARNING",
+    "category": "NOVEL_LANGUAGE",
+    "metric": "certificate_language",
+    "message": "Novel certificate language(s) observed in production: ['Bilingual (danish/english)', 'Chinese', 'Dutch', 'German', 'Italian', 'Spanish']",
+    "reference_value": "Not in reference baseline",
+    "recent_value": [
+      "Bilingual (danish/english)",
+      "Chinese",
+      "Dutch",
+      "German",
+      "Italian",
+      "Spanish"
+    ],
+    "delta": 6,
+    "threshold": "len(novel_languages) > 0"
+  },
+  {
+    "alarm_id": "588e5369-b4bf-4b88-a9b4-2aad054d35b0",
+    "timestamp": "2026-10-26 10:32:28",
+    "from_index": 51,
+    "to_index": 100,
+    "severity": "WARNING",
+    "category": "OUTPUT_DRIFT",
+    "metric": "screening_false_flags",
+    "message": "Shift in false rates: is_certificate=False changed by +0.0 pp, is_iso_iatf=False changed by -18.0 pp",
+    "reference_value": {
+      "is_certificate_false_pct": 20.0,
+      "is_iso_false_pct": 46.0
+    },
+    "recent_value": {
+      "is_certificate_false_pct": 20.0,
+      "is_iso_false_pct": 28.0
+    },
+    "delta": 18.0,
+    "threshold": "|pp_change| >= 15.0 pp"
+  },
+  {
+    "alarm_id": "7387bf9c-7520-4e0e-ac13-89ba9506eb9e",
+    "timestamp": "2026-10-26 10:35:25",
+    "from_index": 101,
+    "to_index": 150,
+    "severity": "WARNING",
+    "category": "INPUT_DRIFT",
+    "metric": "image_pixel_size",
+    "message": "Significant shift in Image pixel resolution: +56.8% change (Cohen's d: 0.545)",
+    "reference_value": 593757.0,
+    "recent_value": 930933.33,
+    "delta": 56.8,
+    "threshold": "relative_change >= 20% or |cohens_d| >= 0.50"
+  },
+  {
+    "alarm_id": "e79d6ba6-0035-4530-bb96-d89b1a02b278",
+    "timestamp": "2026-10-26 10:35:25",
+    "from_index": 101,
+    "to_index": 150,
+    "severity": "WARNING",
+    "category": "NOVEL_LANGUAGE",
+    "metric": "certificate_language",
+    "message": "Novel certificate language(s) observed in production: ['German']",
+    "reference_value": "Not in reference baseline",
+    "recent_value": [
+      "German"
+    ],
+    "delta": 1,
+    "threshold": "len(novel_languages) > 0"
+  },
+  {
+    "alarm_id": "d8fef6f5-87dd-4c43-b879-bc8d41615cda",
+    "timestamp": "2026-10-26 10:35:25",
+    "from_index": 101,
+    "to_index": 150,
+    "severity": "WARNING",
+    "category": "OUTPUT_DRIFT",
+    "metric": "screening_false_flags",
+    "message": "Shift in false rates: is_certificate=False changed by +58.0 pp, is_iso_iatf=False changed by +32.0 pp",
+    "reference_value": {
+      "is_certificate_false_pct": 20.0,
+      "is_iso_false_pct": 46.0
+    },
+    "recent_value": {
+      "is_certificate_false_pct": 78.0,
+      "is_iso_false_pct": 78.0
+    },
+    "delta": 58.0,
+    "threshold": "|pp_change| >= 15.0 pp"
+  },
+  {
+    "alarm_id": "1039cd98-0030-4260-94e5-3ef2e09f6cec",
+    "timestamp": "2026-10-26 10:35:25",
+    "from_index": 101,
+    "to_index": 150,
+    "severity": "CRITICAL",
+    "category": "QUALITY_DRIFT",
+    "metric": "error_rate",
+    "message": "Operational pipeline error rate increased by +32.0 pp (from 50.0% to 82.0%)",
+    "reference_value": 50.0,
+    "recent_value": 82.0,
+    "delta": 32.0,
+    "threshold": "delta_pp >= 10.0 pp"
+  },
+  {
+    "alarm_id": "8e71dd81-017e-4fc4-9d6b-d91d096b532d",
+    "timestamp": "2026-10-26 10:36:50",
+    "from_index": 101,
+    "to_index": 150,
+    "severity": "WARNING",
+    "category": "INPUT_DRIFT",
+    "metric": "image_pixel_size",
+    "message": "Significant shift in Image pixel resolution: +56.8% change (Cohen's d: 0.545)",
+    "reference_value": 593757.0,
+    "recent_value": 930933.33,
+    "delta": 56.8,
+    "threshold": "relative_change >= 20% or |cohens_d| >= 0.50"
+  },
+  {
+    "alarm_id": "8426d2f6-2cad-45b5-a9f2-5038fdcb235b",
+    "timestamp": "2026-10-26 10:36:50",
+    "from_index": 101,
+    "to_index": 150,
+    "severity": "WARNING",
+    "category": "NOVEL_LANGUAGE",
+    "metric": "certificate_language",
+    "message": "Novel certificate language(s) observed in production: ['German']",
+    "reference_value": "Not in reference baseline",
+    "recent_value": [
+      "German"
+    ],
+    "delta": 1,
+    "threshold": "len(novel_languages) > 0"
+  },
+  {
+    "alarm_id": "c576e305-c883-4554-8167-35d44c4ce2cf",
+    "timestamp": "2026-10-26 10:36:50",
+    "from_index": 101,
+    "to_index": 150,
+    "severity": "WARNING",
+    "category": "OUTPUT_DRIFT",
+    "metric": "screening_false_flags",
+    "message": "Shift in false rates: is_certificate=False changed by +58.0 pp, is_iso_iatf=False changed by +32.0 pp",
+    "reference_value": {
+      "is_certificate_false_pct": 20.0,
+      "is_iso_false_pct": 46.0
+    },
+    "recent_value": {
+      "is_certificate_false_pct": 78.0,
+      "is_iso_false_pct": 78.0
+    },
+    "delta": 58.0,
+    "threshold": "|pp_change| >= 15.0 pp"
+  },
+  {
+    "alarm_id": "e41db6e2-e648-4962-a780-d8d9559deb5b",
+    "timestamp": "2026-10-26 10:36:50",
+    "from_index": 101,
+    "to_index": 150,
+    "severity": "CRITICAL",
+    "category": "QUALITY_DRIFT",
+    "metric": "error_rate",
+    "message": "Operational pipeline error rate increased by +32.0 pp (from 50.0% to 82.0%)",
+    "reference_value": 50.0,
+    "recent_value": 82.0,
+    "delta": 32.0,
+    "threshold": "delta_pp >= 10.0 pp"
+  }
+]

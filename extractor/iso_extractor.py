@@ -21,6 +21,7 @@ from .prompts import (
     CERT_SCREENING_PROMPT,
     CERT_EXTRACTION_PROMPT,
     CERT_SCOPE_CLASSIFY_PROMPT,
+    CERT_LANGUAGE_PROMPT,
     GENERAL_TYPE_DEFS,
 )
 from .utils import (
@@ -329,6 +330,74 @@ class ISOExtractor:
             "status": "Failed after 3 attempts",
         }, metric
 
+    def detect_certificate_language(self, image_path: str, mime_type: str) -> Tuple[Dict[str, Any], StepMetric]:
+        """
+        Detects the primary natural language of the certificate content using Gemini.
+        Returns (result_dict, StepMetric).
+        """
+        start = time.perf_counter()
+        with open(image_path, "rb") as f:
+            image_bytes = f.read()
+
+        last_error = None
+        with generation_llm_extraction("language_detection", self.model_name, CERT_LANGUAGE_PROMPT) as gen_obs:
+            for attempt in range(3):
+                try:
+                    response = self.client.models.generate_content(
+                        model=self.model_name,
+                        contents=[
+                            CERT_LANGUAGE_PROMPT,
+                            Part.from_bytes(data=image_bytes, mime_type=mime_type),
+                        ],
+                        config={"response_mime_type": "application/json", "temperature": 0.0},
+                    )
+                    latency_ms = (time.perf_counter() - start) * 1000
+                    usage = self._extract_usage(response)
+                    cost_usd = estimate_cost(usage["input"], usage["output"], self.model_name)
+
+                    metric = StepMetric(
+                        step_name="language_detection",
+                        latency_ms=latency_ms,
+                        input_tokens=usage["input"],
+                        output_tokens=usage["output"],
+                        cost_usd=cost_usd,
+                        retry_attempts=attempt + 1,
+                        status="success",
+                    )
+
+                    raw = (response.text or "").strip()
+                    cleaned = clean_json_markdown(raw)
+                    try:
+                        res = json.loads(cleaned)
+                    except json.JSONDecodeError:
+                        res = try_repair_json(raw)
+
+                    lang_val = res.get("language", "English") if isinstance(res, dict) else "English"
+                    gen_obs.update(
+                        output={"language": lang_val},
+                        usage_details=usage,
+                        metadata={"cost_usd": cost_usd, "latency_ms": latency_ms},
+                    )
+                    return {"language": lang_val, "status": "OK"}, metric
+                except Exception as e:
+                    last_error = str(e)
+                    time.sleep(2)
+
+            gen_obs.update(level="ERROR", status_message=str(last_error))
+
+        latency_ms = (time.perf_counter() - start) * 1000
+        metric = StepMetric(
+            step_name="language_detection",
+            latency_ms=latency_ms,
+            input_tokens=0,
+            output_tokens=0,
+            cost_usd=0.0,
+            retry_attempts=3,
+            status="error",
+            error=last_error,
+        )
+        return {"language": "Unknown", "status": "Error"}, metric
+
     def _merge_page_results(self, page_results: List[Dict[str, Any]]) -> Dict[str, Any]:
         """Merges extracted fields across pages taking the first non-null value."""
         merged = {
@@ -382,6 +451,8 @@ class ISOExtractor:
             "site_iso_type_status": None,
             "doc_type": "unknown",
             "page_count": 0,
+            "image_pixel_size": 0,
+            "certificate_language": None,
             "latency_ms": 0.0,
             "cost_usd": 0.0,
             "total_tokens": 0,
@@ -398,6 +469,7 @@ class ISOExtractor:
         url_metrics.download_latency_ms = (time.perf_counter() - dl_start) * 1000
         result_record["doc_type"] = meta.get("doc_type", "unknown")
         result_record["page_count"] = meta.get("page_count", 0)
+        result_record["image_pixel_size"] = meta.get("pixel_size", 0)
 
         if dl_err or not images:
             result_record["status"] = "did not open need review"
@@ -447,6 +519,7 @@ class ISOExtractor:
         # Check if a certificate but NOT ISO/IATF
         if not is_iso_iatf:
             result_record["status"] = "Not an ISO/IATF certificate"
+            result_record["certificate_language"] = None
             tot_lat = (time.perf_counter() - overall_start) * 1000
             url_metrics.finalize(tot_lat, status="Not an ISO/IATF certificate")
             result_record["latency_ms"] = url_metrics.total_latency_ms
@@ -510,7 +583,16 @@ class ISOExtractor:
         result_record["iso_product"] = scope_res.get("iso_product")
         result_record["site_iso_type_status"] = scope_res.get("status")
 
-        # ── Step 6: Determine final status ───────────────────────────────────
+        # ── Step 6: Certificate language detection ───────────────────────────
+        # Only run language detection if it passes both is_cert and is_iso flags
+        if is_cert and is_iso_iatf and images:
+            lang_res, lang_metric = self.detect_certificate_language(images[0][0], images[0][1])
+            url_metrics.language_detection = lang_metric
+            result_record["certificate_language"] = lang_res.get("language")
+        else:
+            result_record["certificate_language"] = None
+
+        # ── Step 7: Determine final status ───────────────────────────────────
         missing = [f for f in CORE_CERT_FIELDS if not merged.get(f)]
         if missing:
             labels = {

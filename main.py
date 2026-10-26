@@ -29,8 +29,16 @@ from extractor import ISOExtractor, RunAnalytics, URLMetrics
 from dataset_validation import DatasetValidator
 from verifier import CertificateVerifier
 from tracing import trace_certificate, span_verification, flush_traces
-from database import log_certificate_request, DEFAULT_DB_PATH
+from database import (
+    log_certificate_request,
+    DEFAULT_DB_PATH,
+    has_reference_data,
+    get_reference_records,
+    get_recent_production_records,
+    get_production_count,
+)
 from judge import LLMJudge
+from drift import execute_drift_test, print_drift_dashboard
 
 # ── Logging Configuration ─────────────────────────────────────────────────────
 logging.basicConfig(
@@ -208,8 +216,10 @@ def execute_extraction(
     enable_db_logging: bool = False,
     enable_llm_judge: bool = False,
     judge_sample_ratio: float = 0.15,
+    traffic_type: str = "production",
+    enable_drift_monitoring: bool = False,
 ) -> pd.DataFrame:
-    """Runs multithreaded extraction on a list of certificate URLs, with optional verifier, tracing, DB logging, and LLM judge."""
+    """Runs multithreaded extraction on a list of certificate URLs, with optional verifier, tracing, DB logging, LLM judge, and drift detection."""
     extractor = ISOExtractor(api_key=api_key, model_name=model_name)
     run_analytics = RunAnalytics(model_name=model_name)
 
@@ -221,7 +231,7 @@ def execute_extraction(
     metrics_by_url: Dict[str, URLMetrics] = {}
     completed_count = 0
 
-    print(f"\nProcessing {total_urls} certificates with {workers} thread(s)...")
+    print(f"\nProcessing {total_urls} certificates with {workers} thread(s) (traffic: {traffic_type})...")
 
     def process_url_worker(index: int, cert_url: str) -> Tuple[int, Dict[str, Any], URLMetrics]:
         if enable_tracing:
@@ -255,18 +265,59 @@ def execute_extraction(
                 run_analytics.record_url_metrics(metric)
                 completed_count += 1
 
+                # 1. Apply single-row verification rule scoring immediately
+                if verifier is not None:
+                    verif_res = verifier.verify_row(record)
+                    record.update(verif_res.to_dict())
+
+                record["traffic_type"] = traffic_type
+
+                # 2. Log to SQLite database immediately
+                if enable_db_logging:
+                    req_id = log_certificate_request(
+                        record=record,
+                        metrics=metric,
+                        db_path=DEFAULT_DB_PATH,
+                    )
+                    record["request_id"] = req_id
+
                 status = record.get("status", "Unknown")
                 cert_type = record.get("cert_type") or "N/A"
                 is_cert = record.get("is_certificate")
                 is_iso = record.get("is_iso_iatf")
+                cert_lang = record.get("certificate_language") or "N/A"
                 lat_s = metric.total_latency_ms / 1000.0
                 cost = metric.total_cost_usd
 
                 logger.info(
                     f"[{completed_count}/{total_urls}] Finished URL #{idx+1} | "
-                    f"Status: {status} | Latency: {lat_s:.2f}s | Cost: ${cost:.5f} | "
+                    f"Status: {status} | Lang: {cert_lang} | Latency: {lat_s:.2f}s | Cost: ${cost:.5f} | "
                     f"Cert: {is_cert} | ISO/IATF: {is_iso} | Type: {cert_type}"
                 )
+
+                # 3. Intermediate 50-sample drift test cadence
+                if enable_drift_monitoring and traffic_type == "production" and (completed_count % 50 == 0):
+                    try:
+                        ref_records = get_reference_records(DEFAULT_DB_PATH)
+                        recent_records = get_recent_production_records(limit=50, db_path=DEFAULT_DB_PATH)
+                        if ref_records and len(recent_records) >= 5:
+                            total_prod = get_production_count(DEFAULT_DB_PATH)
+                            to_idx = total_prod
+                            from_idx = max(1, total_prod - len(recent_records) + 1)
+                            print(f"\n[DRIFT MONITOR] Running drift test at 50-sample cadence (Samples #{from_idx} to #{to_idx})...")
+                            drift_rep, alarms_list = execute_drift_test(
+                                ref_records=ref_records,
+                                recent_records=recent_records,
+                                batch_index=completed_count,
+                                from_index=from_idx,
+                                to_index=to_idx,
+                                save_reports=True,
+                                drift_report_path="analytics/drift_test.json",
+                                alarms_path="analytics/alarms.json",
+                            )
+                            print_drift_dashboard(drift_rep, alarms_list)
+                    except Exception as drift_err:
+                        logger.warning(f"Error during intermediate drift test check: {drift_err}")
 
     except KeyboardInterrupt:
         logger.warning("Interrupted by user. Collecting partial results...")
@@ -283,32 +334,16 @@ def execute_extraction(
 
     df_out = pd.DataFrame(valid_results)
 
-    # ── Optional Verification ──────────────────────────────────────────────────
+    # ── Optional Verification Summary ──────────────────────────────────────────
     verif_summary = None
     if verifier is not None:
-        print("\nExecuting rule-based verification and confidence scoring...")
+        print("\nFinalizing rule-based verification and confidence scoring...")
         if enable_tracing:
             with span_verification({"batch_size": len(df_out)}) as verif_span:
                 df_out, verif_summary = verifier.verify_dataframe(df_out)
                 verif_span.update(output=verif_summary)
         else:
             df_out, verif_summary = verifier.verify_dataframe(df_out)
-
-    # ── Optional SQLite Logging ────────────────────────────────────────────────
-    if enable_db_logging:
-        print(f"\nLogging {len(df_out)} certificate requests to SQLite ({DEFAULT_DB_PATH})...")
-        request_ids = []
-        for idx, row in df_out.iterrows():
-            row_dict = row.to_dict()
-            metric_item = metrics_by_url.get(row_dict.get("url"))
-            req_id = log_certificate_request(
-                record=row_dict,
-                metrics=metric_item,
-                db_path=DEFAULT_DB_PATH,
-            )
-            request_ids.append(req_id)
-        df_out["request_id"] = request_ids
-        print(f"Logged {len(request_ids)} record(s) to SQLite table 'certificate_requests'.")
 
     # ── Post-Batch Stratified LLM-as-a-Judge Evaluation (~15%) ─────────────────
     judge_summary = None
@@ -321,12 +356,37 @@ def execute_extraction(
             db_path=DEFAULT_DB_PATH,
         )
 
+    # ── Final Post-Batch Drift Check (with updated Judge scores) ───────────────
+    if enable_drift_monitoring and traffic_type == "production" and len(df_out) > 0:
+        try:
+            ref_records = get_reference_records(DEFAULT_DB_PATH)
+            recent_records = get_recent_production_records(limit=50, db_path=DEFAULT_DB_PATH)
+            if ref_records and recent_records:
+                total_prod = get_production_count(DEFAULT_DB_PATH)
+                to_idx = total_prod
+                from_idx = max(1, total_prod - len(recent_records) + 1)
+                print(f"\n[FINAL DRIFT CHECK] Running post-batch drift test with latest production window (Samples #{from_idx} to #{to_idx})...")
+                drift_rep, alarms_list = execute_drift_test(
+                    ref_records=ref_records,
+                    recent_records=recent_records,
+                    batch_index=completed_count,
+                    from_index=from_idx,
+                    to_index=to_idx,
+                    save_reports=True,
+                    drift_report_path="analytics/drift_test.json",
+                    alarms_path="analytics/alarms.json",
+                )
+                print_drift_dashboard(drift_rep, alarms_list)
+        except Exception as drift_err:
+            logger.warning(f"Error during post-batch drift test check: {drift_err}")
+
     # Flush traces to Langfuse if enabled
     if enable_tracing:
         flush_traces()
 
     ordered_columns = [
         "request_id",
+        "traffic_type",
         "url",
         "status",
         "verification_status",
@@ -336,6 +396,8 @@ def execute_extraction(
         "is_iso_iatf",
         "cert_type",
         "screening_reason",
+        "certificate_language",
+        "image_pixel_size",
         "site_name",
         "address",
         "scope",
@@ -649,6 +711,40 @@ def run_mode_production():
 
     verifier = CertificateVerifier(initial_score=100)
 
+    # ── 1. Check & Ingest Reference Set if not already present in SQLite ───────
+    if not has_reference_data(DEFAULT_DB_PATH):
+        ref_file = "reference_set.xlsx"
+        if os.path.exists(ref_file):
+            print("\n" + "=" * 75)
+            print(f"[DRIFT BASELINE] No reference baseline found in SQLite ({DEFAULT_DB_PATH}).")
+            print(f"Ingesting baseline certificates from '{ref_file}' before production batch...")
+            print("=" * 75)
+            try:
+                ref_urls = load_input_urls(ref_file)
+                execute_extraction(
+                    urls=ref_urls,
+                    api_key=api_key,
+                    model_name=model_name,
+                    workers=workers,
+                    output_path=None,
+                    save_analytics=False,
+                    verifier=verifier,
+                    enable_tracing=True,
+                    enable_db_logging=True,
+                    enable_llm_judge=True,
+                    judge_sample_ratio=0.15,
+                    traffic_type="reference",
+                    enable_drift_monitoring=False,
+                )
+                print("\n[DRIFT BASELINE] Reference set baseline successfully ingested into SQLite.")
+            except Exception as ref_err:
+                logger.warning(f"[DRIFT BASELINE] Could not ingest reference set: {ref_err}")
+        else:
+            logger.warning(f"[DRIFT BASELINE] '{ref_file}' not found. Intermediate drift checks will use available historical data.")
+    else:
+        logger.info(f"[DRIFT BASELINE] Reference set data already present in SQLite ({DEFAULT_DB_PATH}).")
+
+    # ── 2. Run Production Extraction & Drift Monitoring ───────────────────────
     execute_extraction(
         urls=urls,
         api_key=api_key,
@@ -661,6 +757,8 @@ def run_mode_production():
         enable_db_logging=True,
         enable_llm_judge=True,
         judge_sample_ratio=0.15,
+        traffic_type="production",
+        enable_drift_monitoring=True,
     )
 
 

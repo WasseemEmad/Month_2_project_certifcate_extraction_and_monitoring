@@ -133,6 +133,10 @@ def export_db_to_excel(
     print("=" * 65)
     print(f"Source Database   : {db_file.resolve()}")
     print(f"Total Rows Found  : {total_rows}")
+    if "traffic_type" in df.columns:
+        ref_n = int((df["traffic_type"] == "reference").sum())
+        prod_n = int((df["traffic_type"] == "production").sum())
+        print(f"Traffic Breakdown : Reference: {ref_n} | Production: {prod_n}")
     judged_count = int(df["judge_score"].notna().sum()) if "judge_score" in df.columns else 0
     print(f"Judged Rows       : {judged_count} / {total_rows}")
     print(f"Saved Excel File  : {out_file.resolve()}")

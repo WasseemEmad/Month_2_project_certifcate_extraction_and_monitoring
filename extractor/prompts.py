@@ -339,3 +339,18 @@ Just the raw JSON:
 
 Valid values for site_iso_type: "Silicon Wafer", "Fabrication", "IC Assembly", "Assembly", "Factory", "Undefined"
 """
+
+CERT_LANGUAGE_PROMPT = """Analyze the attached certificate document image and identify the primary language of the body text and content of the certificate.
+
+IMPORTANT INSTRUCTIONS:
+1. Do NOT decide based on the company name, logo, or postal address (which may be in English or local language).
+2. Focus on the main legal text, certification statement, standard headings, terms, dates text, and body wording of the certificate.
+3. Identify the predominant natural language of the certificate content (e.g., "English", "German", "French", "Chinese", "Spanish", "Japanese", "Italian", "Portuguese", etc.).
+4. If multiple languages are used equally (e.g., bilingual certificate like Chinese/English or German/English), return "Bilingual (Language1/Language2)" or the primary language.
+
+YOUR RESPONSE MUST BE STRICT VALID JSON AND NOTHING ELSE:
+{
+  "language": "<Name of language, e.g. English, German, French, etc.>",
+  "confidence": 1.0
+}
+"""

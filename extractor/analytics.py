@@ -101,6 +101,7 @@ class URLMetrics:
         self.screening: Optional[StepMetric] = None
         self.extraction: Optional[StepMetric] = None
         self.scope_classification: Optional[StepMetric] = None
+        self.language_detection: Optional[StepMetric] = None
         self.overhead_ms: float = 0.0
         self.error: Optional[str] = None
 
@@ -110,7 +111,7 @@ class URLMetrics:
         self.error = error
 
         step_latencies = sum(
-            s.latency_ms for s in [self.screening, self.extraction, self.scope_classification]
+            s.latency_ms for s in [self.screening, self.extraction, self.scope_classification, self.language_detection]
             if s is not None
         ) + self.download_latency_ms
         self.overhead_ms = round(max(0.0, self.total_latency_ms - step_latencies), 2)
@@ -118,14 +119,14 @@ class URLMetrics:
     @property
     def total_input_tokens(self) -> int:
         return sum(
-            s.input_tokens for s in [self.screening, self.extraction, self.scope_classification]
+            s.input_tokens for s in [self.screening, self.extraction, self.scope_classification, self.language_detection]
             if s is not None
         )
 
     @property
     def total_output_tokens(self) -> int:
         return sum(
-            s.output_tokens for s in [self.screening, self.extraction, self.scope_classification]
+            s.output_tokens for s in [self.screening, self.extraction, self.scope_classification, self.language_detection]
             if s is not None
         )
 
@@ -137,7 +138,7 @@ class URLMetrics:
     def total_cost_usd(self) -> float:
         return round(
             sum(
-                s.cost_usd for s in [self.screening, self.extraction, self.scope_classification]
+                s.cost_usd for s in [self.screening, self.extraction, self.scope_classification, self.language_detection]
                 if s is not None
             ),
             6
@@ -160,6 +161,9 @@ class URLMetrics:
                 "extraction": self.extraction.to_dict() if self.extraction else None,
                 "scope_classification": (
                     self.scope_classification.to_dict() if self.scope_classification else None
+                ),
+                "language_detection": (
+                    self.language_detection.to_dict() if self.language_detection else None
                 ),
             },
         }
